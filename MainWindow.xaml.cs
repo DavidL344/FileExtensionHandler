@@ -22,34 +22,55 @@ namespace FileExtensionHandler
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        internal Model.Parser Parser;
+        internal MainWindow(Model.Parser parser)
         {
             InitializeComponent();
 
-            //string arg = @"%userprofile%\Desktop\temp.flac";
-            //LoadAssociations(arg);
-            if (App.Args.Length == 1) LoadAssociations(App.Args[0]);
+            if (App.Args.Length == 1)
+            {
+                Parser = new Model.Parser(App.Args[0]);
+                if (LoadAssociations(App.Args[0])) return;
+            }
+            header.Text = "Welcome to fexth!";
+            lb_selection.Items.Clear();
+            footer.Text = "Call this app with a parameter to get started.";
         }
 
-        private void LoadAssociations(string filePath)
+        private bool LoadAssociations(string filePath)
         {
-            Model.Handler handler = new Model.Handler();
-            if (handler.Data == null) handler.GenerateSomeAssociations();
-
-            string fileExtension = Path.GetExtension(filePath);
-            List<Model.Association> associationsList = handler.Data[fileExtension].Associations;
+            List<Model.Association> associationsList = Parser.AssociationsList;
+            if (associationsList.Count == 0) return false;
 
             lb_selection.Items.Clear();
             foreach (Model.Association fileAssociation in associationsList)
             {
                 ListBoxItem listBoxItem = new ListBoxItem
                 {
-                    Content = $"{fileAssociation.Name}\r\n          {fileAssociation.Path} {fileAssociation.Arguments}",
-                    Tag = fileAssociation.Path
+                    Content = $"{fileAssociation.Name}\r\n          {fileAssociation.Path} {Environment.ExpandEnvironmentVariables(fileAssociation.Arguments)}"
                 };
                 lb_selection.Items.Add(listBoxItem);
             }
             footer.Text = $"{Path.GetFileName(filePath)}";
+            return true;
+        }
+
+        private void AppSelected(object sender, MouseButtonEventArgs e)
+        {
+            RunAnAppOfChoice();
+        }
+
+        private void AppSelected(object sender, KeyEventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Key.Enter)) RunAnAppOfChoice();
+        }
+
+        private void RunAnAppOfChoice(int id = -1)
+        {
+            if (id == -1) id = lb_selection.SelectedIndex;
+            if (Keyboard.IsKeyDown(Key.Escape)) id = -1;
+            if (id == -1) return;
+            Parser.RunApp(id);
         }
     }
 }

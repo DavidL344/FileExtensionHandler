@@ -3,8 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:FileExtensionHandler"
              xmlns:ui="http://schemas.modernwpf.com/2019"
-             Startup="OnStart"
-             StartupUri="MainWindow.xaml">
+             Startup="OnStart">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

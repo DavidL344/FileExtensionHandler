@@ -75,6 +75,7 @@
     <Compile Include="Model\Association.cs" />
     <Compile Include="Model\FileExtension.cs" />
     <Compile Include="Model\Handler.cs" />
+    <Compile Include="Model\Parser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

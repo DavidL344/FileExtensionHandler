@@ -10,35 +10,44 @@ namespace FileExtensionHandler.Model
 {
     internal class Handler
     {
-        internal Dictionary<string, FileExtension> Data;
-        internal string FilePath = Environment.ExpandEnvironmentVariables(@"%userprofile%\Desktop\associations.json");
+        internal Dictionary<string, FileExtension> Data {
+            get
+            {
+                if (File.Exists(FilePath))
+                {
+                    string jsonData = File.ReadAllText(FilePath);
+                    return JsonConvert.DeserializeObject<Dictionary<string, FileExtension>>(jsonData);
+                }
+                return null;
+            }
+        }
+        internal string FilePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\fexth\associations.json";
 
         public Handler()
         {
-            Load();
+            if (!Directory.Exists(Path.GetDirectoryName(FilePath))) Directory.CreateDirectory(Path.GetDirectoryName(FilePath));
         }
 
-        internal void Load()
+        internal void Save(Dictionary<string, FileExtension> data = null)
         {
-            Data = null;
-            if (File.Exists(FilePath))
-            {
-                string jsonData = File.ReadAllText(FilePath);
-                Data = JsonConvert.DeserializeObject<Dictionary<string, FileExtension>>(jsonData);
-                return;
-            }
-            Data = null;
-        }
-
-        internal void Save()
-        {
-            string jsonData = JsonConvert.SerializeObject(Data, Formatting.Indented);
+            if (data == null) data = Data;
+            string jsonData = JsonConvert.SerializeObject(data, Formatting.Indented);
             File.WriteAllText(FilePath, jsonData);
+        }
+
+        internal Association GetData(string fileExtension, int selectedIndex)
+        {
+            return Data[fileExtension].Associations[selectedIndex];
+        }
+
+        internal int GetCount(string fileExtension)
+        {
+            return Data[fileExtension].Associations.Count;
         }
 
         internal void GenerateSomeAssociations()
         {
-            Data = new Dictionary<string, FileExtension>
+            Dictionary<string, FileExtension> CustomData = new Dictionary<string, FileExtension>
             {
                 {
                     ".flac",
@@ -57,7 +66,7 @@ namespace FileExtensionHandler.Model
                     })
                 }
             };
-            Save();
+            Save(CustomData);
         }
     }
 }
