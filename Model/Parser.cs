@@ -13,6 +13,7 @@ namespace FileExtensionHandler.Model
     {
         internal Handler Handler = new Handler();
         internal List<Association> AssociationsList;
+        internal FileExtension FileExtensionInfo;
         internal string FilePath;
         internal string FileExtension;
 
@@ -24,6 +25,7 @@ namespace FileExtensionHandler.Model
             if (Handler.Data == null) Handler.GenerateSomeAssociations();
             if (Handler.Data.ContainsKey(FileExtension))
             {
+                FileExtensionInfo = Handler.Data[FileExtension];
                 AssociationsList = Handler.Data[FileExtension].Associations;
             }
             else

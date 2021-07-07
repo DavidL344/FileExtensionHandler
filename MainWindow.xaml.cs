@@ -51,7 +51,9 @@ namespace FileExtensionHandler
                 };
                 lb_selection.Items.Add(listBoxItem);
             }
-            footer.Text = $"{Path.GetFileName(filePath)}";
+
+            string filetype = !string.IsNullOrWhiteSpace(Parser.FileExtensionInfo.Type) ? Parser.FileExtensionInfo.Type : null;
+            footer.Text = $"{Path.GetFileName(filePath)}\r\n{filetype}";
             return true;
         }
 

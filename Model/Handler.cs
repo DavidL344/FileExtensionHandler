@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,10 +22,13 @@ namespace FileExtensionHandler.Model
                 return null;
             }
         }
-        internal string FilePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\fexth\associations.json";
+        internal string FilePath;
 
         public Handler()
         {
+            //FilePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\fexth\associations.json";
+            FilePath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\user\associations.json";
+
             if (!Directory.Exists(Path.GetDirectoryName(FilePath))) Directory.CreateDirectory(Path.GetDirectoryName(FilePath));
         }
 
@@ -55,7 +59,7 @@ namespace FileExtensionHandler.Model
                     {
                         new Association("Foobar2000 (FLAC)", @"C:\Program Files (x86)\foobar2000\foobar2000.exe", "%1"),
                         new Association("Windows Media Player (FLAC)", @"C:\Program Files (x86)\Windows Media Player\wmplayer.exe", "/prefetch:6 /Open %1")
-                    })
+                    }, "Free Lossless Audio Codec")
                 },
                 {
                     ".mp3",
@@ -63,7 +67,7 @@ namespace FileExtensionHandler.Model
                     {
                         new Association("Foobar2000", @"C:\Program Files (x86)\foobar2000\foobar2000.exe", "%1"),
                         new Association("Windows Media Player", @"C:\Program Files (x86)\Windows Media Player\wmplayer.exe", "/prefetch:6 /Open %1")
-                    })
+                    }, "MP3 Audio File")
                 }
             };
             Save(CustomData);

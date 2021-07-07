@@ -12,9 +12,13 @@ namespace FileExtensionHandler.Model
         [JsonProperty("associations")]
         public List<Association> Associations { get; internal set; }
 
-        public FileExtension(List<Association> associations)
+        [JsonProperty("type")]
+        public string Type { get; internal set; }
+
+        public FileExtension(List<Association> associations, string type)
         {
             this.Associations = associations;
+            this.Type = type;
         }
     }
 }
