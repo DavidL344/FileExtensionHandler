@@ -1,0 +1,27 @@
+﻿<Window x:Class="FileExtensionHandler.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        xmlns:local="clr-namespace:FileExtensionHandler"
+        mc:Ignorable="d"
+        ui:WindowHelper.UseModernWindowStyle="True"
+        Title="MainWindow" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False">
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock x:Name="header" Text="Please select an application to open the file with:" FontSize="16" TextAlignment="Center"/>
+        <ListBox x:Name="lb_selection" Grid.Row="1" Width="Auto" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10">
+            <ListBoxItem Content="Firefox Developer Edition&#x0a;          &quot;C:\Program Files\Firefox Developer Edition\firefox.exe&quot; &quot;%1&quot;"/>
+            <ListBoxItem Content="Firefox Developer Edition (Private)&#x0a;          &quot;C:\Program Files\Firefox Developer Edition\firefox.exe&quot; -private-window &quot;%1&quot;"/>
+            <ListBoxItem Content="Foobar2000&#x0a;          &quot;C:\Program Files (x86)\foobar2000\foobar2000.exe&quot; &quot;%1&quot;"/>
+            <ListBoxItem Content="Windows Media Player&#x0a;          &quot;C:\Program Files (x86)\Windows Media Player\wmplayer.exe&quot; /prefetch:6 /Open &quot;%1&quot;"/>
+        </ListBox>
+        <TextBlock x:Name="footer" Grid.Row="2" Text="Selected file: Sample.mp3" FontSize="14" TextAlignment="Center"/>
+    </Grid>
+</Window>
