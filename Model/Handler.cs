@@ -22,13 +22,21 @@ namespace FileExtensionHandler.Model
                 return null;
             }
         }
-        internal string FilePath;
+        internal string FilePath {
+            get
+            {
+                string File_LocalAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\fexth\associations.json";
+                string File_WorkingDirectoryUser = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\user\associations.json";
+                string Dir_WorkingDirectoryUser = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\user";
+
+                // Prioritize the working directory for more flexibility (otherwise default to LocalAppData)
+                if (File.Exists(File_WorkingDirectoryUser) || Directory.Exists(Dir_WorkingDirectoryUser)) return File_WorkingDirectoryUser;
+                return File_LocalAppData;
+            }
+        }
 
         public Handler()
         {
-            //FilePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\fexth\associations.json";
-            FilePath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + @"\user\associations.json";
-
             if (!Directory.Exists(Path.GetDirectoryName(FilePath))) Directory.CreateDirectory(Path.GetDirectoryName(FilePath));
         }
 
