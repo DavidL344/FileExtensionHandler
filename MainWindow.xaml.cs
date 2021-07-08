@@ -27,14 +27,14 @@ namespace FileExtensionHandler
         {
             InitializeComponent();
             this.Parser = parser;
-            if (App.Args.Length == 1) if (LoadAssociations(App.Args[0])) return;
+            if (App.Args.Length > 0) if (LoadAssociations()) return;
 
             header.Text = "Welcome to fexth!";
             lb_selection.Items.Clear();
             footer.Text = "Call this app with a parameter to get started.";
         }
 
-        private bool LoadAssociations(string filePath)
+        private bool LoadAssociations()
         {
             List<Model.Association> associationsList = Parser.AssociationsList;
             if (associationsList.Count == 0) return false;

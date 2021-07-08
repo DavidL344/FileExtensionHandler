@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Windows;
 
 namespace FileExtensionHandler.Model
@@ -19,12 +20,23 @@ namespace FileExtensionHandler.Model
         internal string FileType;
         internal string FileExtension;
 
-        internal Parser(string filePath)
+        internal Parser(string[] args)
         {
+            string filePath = args[0];
             string fexthProtocol = "fexth://";
             if (filePath.StartsWith(fexthProtocol))
             {
+                // Remove the protocol at the beginning of the argument
                 filePath = filePath.Remove(0, fexthProtocol.Length);
+
+                // If the file path contains spaces, it is split across multiple arguments
+                for (int i = 0; i < args.Length; i++)
+                    if (i != 0) filePath += $" {args[i]}";
+
+                // Support URL-encoded parameters
+                filePath = HttpUtility.UrlDecode(filePath);
+
+                // Browsers might add a backslash '\' at the end of the URL - this removes it
                 if (filePath.EndsWith("\\")) filePath = filePath.Remove(filePath.Length - 1);
             }
 

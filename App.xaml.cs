@@ -21,7 +21,7 @@ namespace FileExtensionHandler
             if (e.Args.Length > 0)
             {
                 Args = e.Args;
-                Parser = new Model.Parser(Args[0]);
+                Parser = new Model.Parser(Args);
                 Parser.ParseFile();
             }
 
