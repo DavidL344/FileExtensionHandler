@@ -8,11 +8,11 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("FileExtensionHandler")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("An alternative file extension handler")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("DavidL344")]
 [assembly: AssemblyProduct("FileExtensionHandler")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyCopyright("Copyright © 2021 DavidL344")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
