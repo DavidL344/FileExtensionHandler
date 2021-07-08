@@ -26,12 +26,9 @@ namespace FileExtensionHandler
         internal MainWindow(Model.Parser parser)
         {
             InitializeComponent();
+            this.Parser = parser;
+            if (App.Args.Length == 1) if (LoadAssociations(App.Args[0])) return;
 
-            if (App.Args.Length == 1)
-            {
-                Parser = new Model.Parser(App.Args[0]);
-                if (LoadAssociations(App.Args[0])) return;
-            }
             header.Text = "Welcome to fexth!";
             lb_selection.Items.Clear();
             footer.Text = "Call this app with a parameter to get started.";
@@ -52,8 +49,8 @@ namespace FileExtensionHandler
                 lb_selection.Items.Add(listBoxItem);
             }
 
-            string filetype = !string.IsNullOrWhiteSpace(Parser.FileExtensionInfo.Type) ? Parser.FileExtensionInfo.Type : null;
-            footer.Text = $"{Path.GetFileName(filePath)}\r\n{filetype}";
+            header.Text = $"Please select an application to open the {Parser.FileType} with:";
+            footer.Text = $"{Parser.FilePath}";
             return true;
         }
 

@@ -22,7 +22,7 @@ namespace FileExtensionHandler
             {
                 Args = e.Args;
                 Parser = new Model.Parser(Args[0]);
-                Parser.ParseArgs(Args);
+                Parser.ParseFile();
             }
 
             MainWindow window = new MainWindow(Parser)

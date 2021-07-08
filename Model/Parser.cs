@@ -15,11 +15,21 @@ namespace FileExtensionHandler.Model
         internal List<Association> AssociationsList;
         internal FileExtension FileExtensionInfo;
         internal string FilePath;
+        internal string FileName;
+        internal string FileType;
         internal string FileExtension;
 
         internal Parser(string filePath)
         {
+            string fexthProtocol = "fexth://";
+            if (filePath.StartsWith(fexthProtocol))
+            {
+                filePath = filePath.Remove(0, fexthProtocol.Length);
+                if (filePath.EndsWith("\\")) filePath = filePath.Remove(filePath.Length - 1);
+            }
+
             this.FilePath = filePath;
+            this.FileName = Path.GetFileName(filePath);
             this.FileExtension = Path.GetExtension(filePath);
 
             if (Handler.Data == null) Handler.GenerateSomeAssociations();
@@ -27,6 +37,8 @@ namespace FileExtensionHandler.Model
             {
                 FileExtensionInfo = Handler.Data[FileExtension];
                 AssociationsList = Handler.Data[FileExtension].Associations;
+
+                this.FileType = !string.IsNullOrWhiteSpace(FileExtensionInfo.Type) ? FileExtensionInfo.Type : null;
             }
             else
             {
@@ -50,12 +62,11 @@ namespace FileExtensionHandler.Model
             Application.Current.Shutdown();
         }
 
-        internal void ParseArgs(string[] args)
+        internal void ParseFile()
         {
-            if (Handler.GetCount(Path.GetExtension(args[0])) == 1)
+            if (Handler.GetCount(Path.GetExtension(FileExtension)) == 1)
             {
                 List<Association> associationsList = Handler.Data[FileExtension].Associations;
-
                 switch (associationsList.Count)
                 {
                     case 0:
@@ -64,7 +75,6 @@ namespace FileExtensionHandler.Model
                         RunApp(0);
                         break;
                     default:
-                        
                         break;
                 }
             }
