@@ -30,7 +30,8 @@ namespace FileExtensionHandler.Model
                 filePath = filePath.Remove(0, fexthProtocol.Length);
 
                 // If the file path contains spaces, it is split across multiple arguments
-                filePath += $" {string.Join(" ", args.Skip(1).ToArray())}";
+                for (int i = 1; i < args.Length; i++)
+                    filePath += $" {args[i]}";
 
                 // Support URL-encoded parameters
                 filePath = HttpUtility.UrlDecode(filePath);
@@ -47,6 +48,12 @@ namespace FileExtensionHandler.Model
                 }
             }
 
+            if (filePath.IndexOfAny(Path.GetInvalidPathChars()) != -1)
+                throw new ArgumentException("The path contains invalid characters!");
+
+            if (Path.GetFileName(filePath).IndexOfAny(Path.GetInvalidFileNameChars()) != -1)
+                throw new ArgumentException("The file name contains invalid characters!");
+
             this.FilePath = filePath;
             this.FileName = Path.GetFileName(filePath);
             this.FileExtension = Path.GetExtension(filePath);
@@ -61,7 +68,7 @@ namespace FileExtensionHandler.Model
             }
             else
             {
-                MessageBox.Show($"The there's no app associated with {FileExtension}!", "fexth", MessageBoxButton.OK, MessageBoxImage.Error);
+                throw new FileFormatException($"The there's no app associated with {FileExtension}!");
             }
         }
 

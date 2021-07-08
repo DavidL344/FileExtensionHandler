@@ -21,8 +21,15 @@ namespace FileExtensionHandler
             if (e.Args.Length > 0)
             {
                 Args = e.Args;
-                Parser = new Model.Parser(Args);
-                Parser.ParseFile();
+                try
+                {
+                    Parser = new Model.Parser(Args);
+                    Parser.ParseFile();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "fexth", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
 
             MainWindow window = new MainWindow(Parser)
