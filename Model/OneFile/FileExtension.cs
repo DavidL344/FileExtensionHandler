@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileExtensionHandler.Model
+namespace FileExtensionHandler.Model.OneFile
 {
     internal class FileExtension
     {

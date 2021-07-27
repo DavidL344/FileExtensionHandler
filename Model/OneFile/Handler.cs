@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileExtensionHandler.Model
+namespace FileExtensionHandler.Model.OneFile
 {
     internal class Handler
     {

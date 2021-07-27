@@ -14,25 +14,28 @@ namespace FileExtensionHandler
     public partial class App : Application
     {
         public static string[] Args { get; private set; } = new string[] { };
-        internal Model.Parser Parser;
+        internal Model.MultipleFiles.Parser Parser;
+        internal Model.MultipleFiles.Handler Handler;
 
         private void OnStart(object sender, StartupEventArgs e)
         {
-            if (e.Args.Length > 0)
+            
+            Args = e.Args;
+            if (Args.Length > 0)
             {
-                Args = e.Args;
                 try
                 {
-                    Parser = new Model.Parser(Args);
-                    Parser.ParseFile();
+                    Parser = new Model.MultipleFiles.Parser(Args);
+                    Handler = new Model.MultipleFiles.Handler(Parser.FilePath);
+                    Handler.ParseFile();
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "fexth", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Application.Current.Shutdown();
                 }
             }
-
-            MainWindow window = new MainWindow(Parser)
+            MainWindow window = new MainWindow(Handler)
             {
                 Title = ""
             };

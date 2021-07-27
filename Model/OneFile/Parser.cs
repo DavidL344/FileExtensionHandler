@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Windows;
 
-namespace FileExtensionHandler.Model
+namespace FileExtensionHandler.Model.OneFile
 {
     internal class Parser
     {

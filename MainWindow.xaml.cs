@@ -13,7 +13,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Path = System.IO.Path;
 
 namespace FileExtensionHandler
 {
@@ -22,12 +21,12 @@ namespace FileExtensionHandler
     /// </summary>
     public partial class MainWindow : Window
     {
-        internal Model.Parser Parser;
-        internal MainWindow(Model.Parser parser)
+        internal Model.MultipleFiles.Handler Handler;
+        internal MainWindow(Model.MultipleFiles.Handler handler)
         {
             InitializeComponent();
-            this.Parser = parser;
-            if (App.Args.Length > 0) if (LoadAssociations()) return;
+            this.Handler = handler;
+            if (Handler != null && App.Args.Length > 0) if (LoadAssociations()) return;
 
             header.Text = "Welcome to fexth!";
             lb_selection.Items.Clear();
@@ -36,21 +35,21 @@ namespace FileExtensionHandler
 
         private bool LoadAssociations()
         {
-            List<Model.Association> associationsList = Parser.AssociationsList;
+            List<Model.MultipleFiles.Association> associationsList = this.Handler.GetAssociations();
             if (associationsList.Count == 0) return false;
 
             lb_selection.Items.Clear();
-            foreach (Model.Association fileAssociation in associationsList)
+            foreach (Model.MultipleFiles.Association fileAssociation in associationsList)
             {
                 ListBoxItem listBoxItem = new ListBoxItem
                 {
-                    Content = $"{fileAssociation.Name}\r\n          {fileAssociation.Path} {Environment.ExpandEnvironmentVariables(fileAssociation.Arguments)}"
+                    Content = $"{fileAssociation.Name}\r\n          {fileAssociation.Command} {Environment.ExpandEnvironmentVariables(fileAssociation.Arguments)}"
                 };
                 lb_selection.Items.Add(listBoxItem);
             }
 
-            header.Text = $"Please select an application to open the {Parser.FileType} with:";
-            footer.Text = $"{Parser.FilePath}";
+            header.Text = $"Please select an application to open the {Handler.FileType} with:";
+            footer.Text = $"{Handler.FilePath}";
             return true;
         }
 
@@ -69,7 +68,7 @@ namespace FileExtensionHandler
             if (id == -1) id = lb_selection.SelectedIndex;
             if (Keyboard.IsKeyDown(Key.Escape)) id = -1;
             if (id == -1) return;
-            Parser.RunApp(id);
+            Handler.RunApp(id);
         }
     }
 }
