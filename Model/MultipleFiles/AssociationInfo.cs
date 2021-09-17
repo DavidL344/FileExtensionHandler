@@ -10,6 +10,13 @@ namespace FileExtensionHandler.Model.MultipleFiles
 {
     internal class AssociationInfo
     {
+        internal string Node
+        {
+            get
+            {
+                return Path.GetFileNameWithoutExtension(this.Location);
+            }
+        }
         internal readonly string Location;
         internal Association Data;
 

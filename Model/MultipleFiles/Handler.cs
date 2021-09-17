@@ -13,6 +13,7 @@ namespace FileExtensionHandler.Model.MultipleFiles
     {
         internal FileExtensionInfo FileExtensionEntry;
         internal List<AssociationInfo> Associations = new List<AssociationInfo>();
+        internal string DefaultAssociation;
         internal readonly string FilePath;
         internal readonly string FileName;
         internal readonly string FileType;
@@ -100,7 +101,8 @@ namespace FileExtensionHandler.Model.MultipleFiles
                         "fexth.foobar2000.play",
                         "fexth.foobar2000.add",
                         "fexth.wmplayer.play"
-                    }
+                    },
+                    DefaultAssociation = "fexth.wmplayer.play"
                 }
             };
             Save(); // Present multiple times to save the file extension information
@@ -117,7 +119,8 @@ namespace FileExtensionHandler.Model.MultipleFiles
                         "fexth.foobar2000.play",
                         "fexth.foobar2000.add",
                         "fexth.wmplayer.play"
-                    }
+                    },
+                    DefaultAssociation = "fexth.wmplayer.play"
                 }
             };
             Save();
@@ -132,6 +135,8 @@ namespace FileExtensionHandler.Model.MultipleFiles
 
             foreach (string associationInfo in FileExtensionEntry.Data.Associations)
                 Associations.Add(new AssociationInfo(associationInfo));
+
+            DefaultAssociation = FileExtensionEntry.Data.DefaultAssociation;
         }
 
         internal void Save()
@@ -143,18 +148,19 @@ namespace FileExtensionHandler.Model.MultipleFiles
 
         internal void ParseFile()
         {
-            if (this.GetCount() == 1)
+            switch (this.Associations.Count)
             {
-                switch (this.Associations.Count)
-                {
-                    case 0:
-                        break;
-                    case 1:
-                        RunApp(0);
-                        break;
-                    default:
-                        break;
-                }
+                case 0:
+                    break;
+                case 1:
+                    RunApp(0);
+                    break;
+                default:
+                    // TODO: check if the forced selection is enabled
+                    if (!string.IsNullOrEmpty(this.DefaultAssociation))
+                        for (int i = 0; i < Associations.Count; i++)
+                            if (Associations[i].Node == DefaultAssociation) RunApp(i);
+                    break;
             }
         }
 

@@ -33,5 +33,11 @@ namespace FileExtensionHandler.Model.MultipleFiles
         /// </summary>
         [JsonProperty("associations")]
         public string[] Associations { get; internal set; }
+
+        /// <summary>
+        /// A default association to use if forced selection is disabled (forced selection is not yet implemented).
+        /// </summary>
+        [JsonProperty("defaultAssociation")]
+        public string DefaultAssociation { get; internal set; }
     }
 }
