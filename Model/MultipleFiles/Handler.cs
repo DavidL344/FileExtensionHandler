@@ -49,7 +49,6 @@ namespace FileExtensionHandler.Model.MultipleFiles
         }
 
         internal Association GetData(int selectedIndex) => Associations[selectedIndex].Data;
-        internal int GetCount() => Associations.Count;
 
         internal void GenerateAssociations()
         {
@@ -89,6 +88,30 @@ namespace FileExtensionHandler.Model.MultipleFiles
                 }
             });
 
+            Associations.Add(new AssociationInfo("fexth.msedge.open")
+            {
+                Data = new Association
+                {
+                    Name = "Microsoft Edge",
+                    Icon = @"%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe",
+                    IconIndex = 0,
+                    Command = @"%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe",
+                    Arguments = "%1"
+                }
+            });
+
+            Associations.Add(new AssociationInfo("fexth.msedge.open-private")
+            {
+                Data = new Association
+                {
+                    Name = "Microsoft Edge (Private Window)",
+                    Icon = @"%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe",
+                    IconIndex = 0,
+                    Command = @"%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe",
+                    Arguments = "-inprivate %1"
+                }
+            });
+
             FileExtensionEntry = new FileExtensionInfo(".mp3")
             {
                 Data = new FileExtension
@@ -121,6 +144,24 @@ namespace FileExtensionHandler.Model.MultipleFiles
                         "fexth.wmplayer.play"
                     },
                     DefaultAssociation = "fexth.wmplayer.play"
+                }
+            };
+            Save();
+
+            FileExtensionEntry = new FileExtensionInfo(".pdf")
+            {
+                Data = new FileExtension
+                {
+                    Name = "PDF File",
+                    Icon = @"%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe",
+                    IconIndex = 13,
+                    Associations = new string[]
+                    {
+                        "fexth.foobar2000.play",
+                        "fexth.foobar2000.add",
+                        "fexth.wmplayer.play"
+                    },
+                    DefaultAssociation = "fexth.msedge.open"
                 }
             };
             Save();
