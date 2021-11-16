@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FileExtensionHandler.Core;
+using FileExtensionHandler.Model.Shared;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -23,19 +25,13 @@ namespace FileExtensionHandler
             {
                 try
                 {
-                    Model.Shared.Arguments arguments = new Model.Shared.Arguments(Args);
-                    Model.Shared.OpenedFile openedFile = new Model.Shared.OpenedFile(arguments.FilePath);
-
-                    AppPicker window = new AppPicker(openedFile)
-                    {
-                        Title = ""
-                    };
-                    window.ShowDialog();
+                    Handler handler = new Handler(Args);
+                    handler.Start();
                 }
                 catch (Exception ex)
                 {
                     if (Debug) throw;
-                    MessageBox.Show(ex.Message, "Fatal Error | fexth", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(String.Format("A fatal error has occured.\r\nException type: {0}\r\nException Description: {1}", e.GetType(), ex.Message), "Fatal Error | fexth", MessageBoxButton.OK, MessageBoxImage.Error);
                     Application.Current.Shutdown();
                 }
             }
@@ -46,7 +42,6 @@ namespace FileExtensionHandler
                     Title = ""
                 };
                 window.ShowDialog();
-                //MessageBox.Show("Welcome to fexth!\r\nCall this app with a file as a parameter to get started.", "fexth", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             Application.Current.Shutdown();
         }

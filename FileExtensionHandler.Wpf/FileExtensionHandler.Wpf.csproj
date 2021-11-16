@@ -40,7 +40,6 @@
     <Reference Include="netstandard" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -80,22 +79,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\MultipleFiles\Association.cs" />
-    <Compile Include="Model\MultipleFiles\AssociationInfo.cs" />
-    <Compile Include="Model\MultipleFiles\FileExtension.cs" />
-    <Compile Include="Model\MultipleFiles\FileExtensionInfo.cs" />
-    <Compile Include="Model\MultipleFiles\Handler.cs" />
-    <Compile Include="Model\MultipleFiles\Parser.cs" />
-    <Compile Include="Model\MultipleFiles\Vars.cs" />
-    <Compile Include="Model\OneFile\Association.cs" />
-    <Compile Include="Model\OneFile\FileExtension.cs" />
-    <Compile Include="Model\OneFile\Handler.cs" />
-    <Compile Include="Model\OneFile\Parser.cs" />
-    <Compile Include="Model\Shared\Arguments.cs" />
-    <Compile Include="Model\Shared\Association.cs" />
-    <Compile Include="Model\Shared\FileExtension.cs" />
     <Compile Include="Model\Shared\Handler.cs" />
-    <Compile Include="Model\Shared\OpenedFile.cs" />
     <Compile Include="Model\Shared\Vars.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -132,6 +116,12 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.1</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FileExtensionHandler.Core\FileExtensionHandler.Core.csproj">
+      <Project>{ac4e5d79-9445-444d-8547-da8c4e255db7}</Project>
+      <Name>FileExtensionHandler.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

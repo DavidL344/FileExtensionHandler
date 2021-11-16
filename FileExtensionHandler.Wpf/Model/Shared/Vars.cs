@@ -12,7 +12,6 @@ namespace FileExtensionHandler.Model.Shared
     {
         internal static string LocalAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         internal static string WorkingDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-        internal static string Protocol = "fexth://";
 
         internal static string DefaultSaveLocation
         {

@@ -1,4 +1,6 @@
-﻿using FileExtensionHandler.Model.Shared;
+﻿using FileExtensionHandler.Core;
+using FileExtensionHandler.Core.Model.Common;
+using FileExtensionHandler.Core.Model.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +22,13 @@ namespace FileExtensionHandler
     /// </summary>
     public partial class AppPicker : Window
     {
+        internal FileInformation FileInformation;
         internal OpenedFile OpenedFile;
-        internal AppPicker(OpenedFile openedFile)
+        internal AppPicker(FileInformation fileInformation)
         {
             InitializeComponent();
-            this.OpenedFile = openedFile;
+            this.FileInformation = fileInformation;
+            this.OpenedFile = fileInformation.Data;
             LoadAssociations();
         }
 
@@ -44,7 +48,7 @@ namespace FileExtensionHandler
             }
 
             header.Text = $"Please select an application to open the {OpenedFile.Type} with:";
-            footer.Text = $"{OpenedFile.Path}";
+            footer.Text = $"{OpenedFile.Location}";
             return;
         }
 
@@ -63,7 +67,7 @@ namespace FileExtensionHandler
             if (id == -1) id = lb_selection.SelectedIndex;
             if (Keyboard.IsKeyDown(Key.Escape)) id = -1;
             if (id == -1) return;
-            OpenedFile.OpenWith(id);
+            FileInformation.OpenWith(id);
             this.Close();
         }
     }

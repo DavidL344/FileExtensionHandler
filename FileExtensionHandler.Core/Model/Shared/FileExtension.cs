@@ -1,42 +1,43 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileExtensionHandler.Model.MultipleFiles
+namespace FileExtensionHandler.Core.Model.Shared
 {
-    internal class FileExtension
+    public class FileExtension
     {
         /// <summary>
-        /// The file type description.
+        /// A short file type description.
         /// </summary>
         [JsonProperty("name")]
         public string Name { get; internal set; }
 
         /// <summary>
-        /// The file type icon.
+        /// The icon used for the file extension in the handler.
         /// </summary>
         [JsonProperty("icon")]
         public string Icon { get; internal set; }
 
         /// <summary>
-        /// The index of the icon file (or an embedded icon) to be shown in the handler.
+        /// The index of the specified icon for the handler.
         /// </summary>
         [JsonProperty("iconIndex")]
         public int IconIndex { get; internal set; }
 
         /// <summary>
-        /// A list of associated apps. To modify, convert to List<string> first.
+        /// An array containing associations for the file extension.
         /// </summary>
+        /// <remarks>The elements can be modified by converting them to <![CDATA[ List<string> ]]> first.</remarks>
         [JsonProperty("associations")]
         public string[] Associations { get; internal set; }
 
         /// <summary>
-        /// A default association to use if forced selection is disabled (forced selection is not yet implemented).
+        /// A default association for the file extension.
         /// </summary>
+        /// <remarks>Can be overriden by forced selection.</remarks>
         [JsonProperty("defaultAssociation")]
         public string DefaultAssociation { get; internal set; }
     }
