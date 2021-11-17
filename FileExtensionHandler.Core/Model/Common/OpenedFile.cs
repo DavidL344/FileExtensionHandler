@@ -40,13 +40,13 @@ namespace FileExtensionHandler.Core.Model.Common
         /// <exception cref="FileNotFoundException"/>
         internal OpenedFile(string filePath, string associationsDir, string fileExtensionsDir, bool isFromProtocol)
         {
-            if (isFromProtocol && !this.Exists) throw new FileNotFoundException("The file you're trying to open doesn't exist!");
             if (!Directory.Exists(associationsDir)) throw new DirectoryNotFoundException("The directory with associations doesn't exist!");
             if (!Directory.Exists(fileExtensionsDir)) throw new DirectoryNotFoundException("The directory with file extension information doesn't exist!");
 
             this.Location = Path.GetFullPath(filePath);
             this.AssociationsDir = associationsDir;
             this.FileExtensionsDir = fileExtensionsDir;
+            if (!isFromProtocol && !this.Exists) throw new FileNotFoundException("The file you're trying to open doesn't exist!");
         }
 
         /// <exception cref="FileNotFoundException"/>

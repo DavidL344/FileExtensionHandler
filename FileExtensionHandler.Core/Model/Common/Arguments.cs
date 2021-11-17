@@ -13,7 +13,7 @@ namespace FileExtensionHandler.Core.Model.Common
         public readonly string[] RawArgs;
         public readonly bool IsFromProtocol;
         public string FilePath => IsFromProtocol ? ProtocolParse() : RawArgs[0];
-        public readonly string Protocol = "fexth://";
+        public readonly string[] Protocol = new string[] { "fexth://", "file:///" };
 
         public Arguments(string[] args)
         {
@@ -24,13 +24,26 @@ namespace FileExtensionHandler.Core.Model.Common
 
         private bool ProtocolCheck()
         {
-            return this.RawArgs[0].StartsWith(this.Protocol);
+            foreach (string protocol in Protocol)
+                if (this.RawArgs[0].StartsWith(protocol)) return true;
+            return false;
+        }
+
+        private string GetProtocol()
+        {
+            string value = "";
+            foreach (string protocol in Protocol)
+                if (this.RawArgs[0].Contains(protocol)) value += protocol;
+            return value;
         }
 
         private string ProtocolParse()
         {
+            // Get the protocol length to be removed from the first element
+            int ProtocolLength = GetProtocol().Length;
+
             // Remove the protocol at the beginning of the argument
-            string PathParsed = RawArgs[0].Remove(0, this.Protocol.Length);
+            string PathParsed = RawArgs[0].Remove(0, ProtocolLength);
 
             // If the file path contains spaces, it is split across multiple arguments
             for (int i = 1; i < this.RawArgs.Length; i++)
