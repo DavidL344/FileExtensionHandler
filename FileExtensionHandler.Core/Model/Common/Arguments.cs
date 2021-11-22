@@ -8,7 +8,7 @@ using System.Web;
 
 namespace FileExtensionHandler.Core.Model.Common
 {
-    public class Arguments
+    class Arguments
     {
         public readonly string[] RawArgs;
         public readonly bool IsFromProtocol;

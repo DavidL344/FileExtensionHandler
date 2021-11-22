@@ -1,5 +1,4 @@
-﻿using FileExtensionHandler.Core;
-using FileExtensionHandler.Model.Shared;
+﻿using FileExtensionHandler.Model.Shared;
 using System;
 using System.Collections.Generic;
 using System.Configuration;

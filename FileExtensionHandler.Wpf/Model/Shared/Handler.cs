@@ -1,5 +1,4 @@
 ﻿using FileExtensionHandler.Core;
-using FileExtensionHandler.Core.Model.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +20,7 @@ namespace FileExtensionHandler.Model.Shared
 
         internal void Start()
         {
-            this.FileInformation = GetFileInformationFromArgs();
+            this.FileInformation = GetFileInformation();
             if (this.FileInformation == null) return;
 
             int defaultAssociationIndex = FileInformation.Data.DefaultAssociationIndex;
@@ -39,21 +38,6 @@ namespace FileExtensionHandler.Model.Shared
         }
 
         internal FileInformation GetFileInformation()
-        {
-            try
-            {
-                Arguments arguments = new Arguments(Arguments);
-                return new FileInformation(arguments.FilePath, Vars.Dir_Associations, Vars.Dir_FileExtensions, arguments.IsFromProtocol);
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message, "Error | fexth", MessageBoxButton.OK, MessageBoxImage.Error);
-                return null;
-            }
-        }
-
-
-        internal FileInformation GetFileInformationFromArgs()
         {
             try
             {

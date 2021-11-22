@@ -18,9 +18,10 @@ namespace FileExtensionHandler.Core
         /// Loads the file information.
         /// </summary>
         /// <inheritdoc cref="FileHandler.OpenFile(string, string, string, bool)"/>
-        public FileInformation(string filePath, string associationsDir, string fileExtensionsDir, bool isFromProtocol = false)
+        public FileInformation(string filePath, string associationsDir, string fileExtensionsDir)
         {
-            FileHandler.OpenFile(filePath, associationsDir, fileExtensionsDir, isFromProtocol);
+            Arguments arguments = new Arguments(new string[] { filePath });
+            FileHandler.OpenFile(arguments.FilePath, associationsDir, fileExtensionsDir, arguments.IsFromProtocol);
             Data = FileHandler.OpenedFile;
         }
 
