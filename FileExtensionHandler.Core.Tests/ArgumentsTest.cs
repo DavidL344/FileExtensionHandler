@@ -1,11 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using FileExtensionHandler.Core.Tests.Samples;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using ModelArguments = FileExtensionHandler.Core.Model.Common.Arguments;
 using TestArguments = FileExtensionHandler.Core.Tests.Samples.Arguments;
-using Vars = FileExtensionHandler.Core.Tests.Samples.Vars;
 
 namespace FileExtensionHandler.Core.Tests
 {
@@ -31,9 +30,12 @@ namespace FileExtensionHandler.Core.Tests
         [TestMethod]
         public void ReadFileAssociations()
         {
-            FileInformation fileInformation = new FileInformation(TestArguments.Valid["Disk"][0], Vars.Dir_Associations, Vars.Dir_FileExtensions);
-            Assert.IsNotNull(fileInformation.Data.AssociationsList);
-            Assert.IsTrue(fileInformation.Data.AssociationsList.Count > 0);
+            foreach (KeyValuePair<string, string[]> validArgument in TestArguments.Valid)
+            {
+                FileInformation fileInformation = new FileInformation(validArgument.Value, Vars.Dir_Associations, Vars.Dir_FileExtensions);
+                Assert.IsNotNull(fileInformation.Data.AssociationsList);
+                Assert.IsTrue(fileInformation.Data.AssociationsList.Count > 0);
+            }
         }
 
         [TestMethod]
@@ -41,7 +43,7 @@ namespace FileExtensionHandler.Core.Tests
         {
             foreach (KeyValuePair<string, string[]> invalidArgument in TestArguments.Invalid)
             {
-                Assert.ThrowsException<ArgumentException>(() => new ModelArguments(invalidArgument.Value));
+                Assert.ThrowsException<ArgumentException>(() => new FileInformation(invalidArgument.Value, Vars.Dir_Associations, Vars.Dir_FileExtensions));
             }
         }
 
