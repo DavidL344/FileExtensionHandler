@@ -53,11 +53,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArgumentsTest.cs" />
+    <Compile Include="FilePathsTest.cs" />
     <Compile Include="Prerequisites\SaveData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Samples\Arguments.cs" />
     <Compile Include="Samples\Associations.cs" />
     <Compile Include="Samples\FileExtensions.cs" />
+    <Compile Include="Samples\FilePaths.cs" />
     <Compile Include="Samples\Vars.cs" />
   </ItemGroup>
   <ItemGroup>
