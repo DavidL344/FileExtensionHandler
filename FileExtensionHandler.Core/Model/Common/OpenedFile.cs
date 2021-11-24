@@ -15,8 +15,18 @@ namespace FileExtensionHandler.Core.Model.Common
         internal readonly string FileExtensionsDir;
 
         public readonly string Location;
+        private readonly bool IsFromProtocol;
         public string Name => Path.GetFileName(Location);
-        public string Extension => Path.GetExtension(Location);
+        public string Extension
+        {
+            get
+            {
+                if (!IsFromProtocol) return Path.GetExtension(Location);
+                string urlNoArgs = Location.Split('?')[0];
+                string urlLastParam = urlNoArgs.Split(new char[] { '/', '\\' }).Last();
+                return urlLastParam.Contains('.') ? urlLastParam.Substring(urlLastParam.LastIndexOf('.')) : throw new Exception("No file extension!");
+            }
+        }
         public string Type => !string.IsNullOrWhiteSpace(this.FileExtensionInfo.Name) ? this.FileExtensionInfo.Name : null;
         public bool Exists => File.Exists(Location);
         public string DefaultAssociation { get; private set; }
@@ -43,10 +53,17 @@ namespace FileExtensionHandler.Core.Model.Common
             if (!Directory.Exists(associationsDir)) throw new DirectoryNotFoundException("The directory with associations doesn't exist!");
             if (!Directory.Exists(fileExtensionsDir)) throw new DirectoryNotFoundException("The directory with file extension information doesn't exist!");
 
-            this.Location = Path.GetFullPath(filePath);
+            this.Location = filePath;
+            this.IsFromProtocol = isFromProtocol;
+
             this.AssociationsDir = associationsDir;
             this.FileExtensionsDir = fileExtensionsDir;
-            if (!isFromProtocol && !this.Exists) throw new FileNotFoundException("The file you're trying to open doesn't exist!");
+
+            if (!isFromProtocol)
+            {
+                this.Location = Path.GetFullPath(filePath);
+                if (!this.Exists) throw new FileNotFoundException("The file you're trying to open doesn't exist!");
+            }
         }
 
         /// <exception cref="FileNotFoundException"/>

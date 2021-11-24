@@ -70,8 +70,9 @@ namespace FileExtensionHandler.Core.Model.Common
             if (this.FilePath.IndexOfAny(Path.GetInvalidPathChars()) != -1)
                 throw new ArgumentException("The file path contains invalid characters!");
 
-            if (Path.GetFileName(this.FilePath).IndexOfAny(Path.GetInvalidFileNameChars()) != -1)
-                throw new ArgumentException("The file name contains invalid characters!");
+            if (!IsFromProtocol)
+                if (Path.GetFileName(this.FilePath).IndexOfAny(Path.GetInvalidFileNameChars()) != -1)
+                    throw new ArgumentException("The file name contains invalid characters!");
         }
     }
 }
