@@ -1,4 +1,4 @@
-﻿using FileExtensionHandler.Core.Model.Shared;
+﻿using FileExtensionHandler.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileExtensionHandler.Core.Model.Common
+namespace FileExtensionHandler.Core.Common
 {
     class FileHandler
     {
@@ -38,7 +38,7 @@ namespace FileExtensionHandler.Core.Model.Common
         internal ProcessStartInfo GetProcessData(int id)
         {
             if (id >= OpenedFile.AssociationsList.Count || id < 0) throw new ArgumentOutOfRangeException();
-            Association association = this.GetData(id);
+            Association association = GetData(id);
 
             string command = Environment.ExpandEnvironmentVariables(association.Command);
             return new ProcessStartInfo()

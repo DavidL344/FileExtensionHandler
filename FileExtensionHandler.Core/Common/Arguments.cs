@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace FileExtensionHandler.Core.Model.Common
+namespace FileExtensionHandler.Core.Common
 {
     class Arguments
     {
@@ -19,15 +19,15 @@ namespace FileExtensionHandler.Core.Model.Common
 
         public Arguments(string[] args)
         {
-            this.RawArgs = args;
-            this.IsFromProtocol = ProtocolCheck();
+            RawArgs = args;
+            IsFromProtocol = ProtocolCheck();
             ValidateCharacters();
         }
 
         private bool ProtocolCheck()
         {
             foreach (string protocol in Protocol)
-                if (this.RawArgs[0].StartsWith(protocol)) return true;
+                if (RawArgs[0].StartsWith(protocol)) return true;
             return false;
         }
 
@@ -35,7 +35,7 @@ namespace FileExtensionHandler.Core.Model.Common
         {
             string value = "";
             foreach (string protocol in Protocol)
-                if (this.RawArgs[0].Contains(protocol) && !ImmutableProtocol.Contains(protocol)) value += protocol;
+                if (RawArgs[0].Contains(protocol) && !ImmutableProtocol.Contains(protocol)) value += protocol;
             return value;
         }
 
@@ -48,8 +48,8 @@ namespace FileExtensionHandler.Core.Model.Common
             string PathParsed = RawArgs[0].Remove(0, ProtocolLength);
 
             // If the file path contains spaces, it is split across multiple arguments
-            for (int i = 1; i < this.RawArgs.Length; i++)
-                PathParsed += $" {this.RawArgs[i]}";
+            for (int i = 1; i < RawArgs.Length; i++)
+                PathParsed += $" {RawArgs[i]}";
 
             // Support URL-encoded parameters
             PathParsed = HttpUtility.UrlDecode(PathParsed);
@@ -69,11 +69,11 @@ namespace FileExtensionHandler.Core.Model.Common
 
         private void ValidateCharacters()
         {
-            if (this.FilePath.IndexOfAny(Path.GetInvalidPathChars()) != -1)
+            if (FilePath.IndexOfAny(Path.GetInvalidPathChars()) != -1)
                 throw new ArgumentException("The file path contains invalid characters!");
 
             if (!IsFromProtocol)
-                if (Path.GetFileName(this.FilePath).IndexOfAny(Path.GetInvalidFileNameChars()) != -1)
+                if (Path.GetFileName(FilePath).IndexOfAny(Path.GetInvalidFileNameChars()) != -1)
                     throw new ArgumentException("The file name contains invalid characters!");
         }
     }

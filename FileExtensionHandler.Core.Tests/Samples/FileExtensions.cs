@@ -1,4 +1,4 @@
-﻿using FileExtensionHandler.Core.Model.Shared;
+﻿using FileExtensionHandler.Core.Model;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

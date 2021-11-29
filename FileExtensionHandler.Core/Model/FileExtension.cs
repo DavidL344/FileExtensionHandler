@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileExtensionHandler.Core.Model.Shared
+namespace FileExtensionHandler.Core.Model
 {
     public class FileExtension
     {

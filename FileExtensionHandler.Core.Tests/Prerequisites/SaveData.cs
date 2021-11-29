@@ -1,4 +1,5 @@
-﻿using FileExtensionHandler.Core.Tests.Samples;
+﻿using FileExtensionHandler.Core.Model;
+using FileExtensionHandler.Core.Tests.Samples;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -38,7 +39,7 @@ namespace FileExtensionHandler.Core.Tests.Prerequisites
             }
 
             List<string> files = new List<string>();
-            foreach (KeyValuePair<string, Model.Shared.FileExtension> fileExtension in fileExtensions.Collection)
+            foreach (KeyValuePair<string, FileExtension> fileExtension in fileExtensions.Collection)
                 files.Add(fileExtension.Key);
 
             foreach (string file in files)

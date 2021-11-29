@@ -73,12 +73,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\Common\Arguments.cs" />
+    <Compile Include="Common\Arguments.cs" />
     <Compile Include="FileInformation.cs" />
-    <Compile Include="Model\Common\FileHandler.cs" />
-    <Compile Include="Model\Shared\Association.cs" />
-    <Compile Include="Model\Shared\FileExtension.cs" />
-    <Compile Include="Model\Common\OpenedFile.cs" />
+    <Compile Include="Common\FileHandler.cs" />
+    <Compile Include="Model\Association.cs" />
+    <Compile Include="Model\FileExtension.cs" />
+    <Compile Include="Common\OpenedFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

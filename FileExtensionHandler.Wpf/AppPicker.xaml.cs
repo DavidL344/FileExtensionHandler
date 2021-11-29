@@ -1,6 +1,6 @@
 ﻿using FileExtensionHandler.Core;
-using FileExtensionHandler.Core.Model.Common;
-using FileExtensionHandler.Core.Model.Shared;
+using FileExtensionHandler.Core.Common;
+using FileExtensionHandler.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;

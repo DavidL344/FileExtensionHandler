@@ -1,4 +1,4 @@
-﻿using FileExtensionHandler.Core.Model.Shared;
+﻿using FileExtensionHandler.Core.Model;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileExtensionHandler.Core.Model.Common
+namespace FileExtensionHandler.Core.Common
 {
     public class OpenedFile
     {
@@ -27,14 +27,14 @@ namespace FileExtensionHandler.Core.Model.Common
                 return urlLastParam.Contains('.') ? urlLastParam.Substring(urlLastParam.LastIndexOf('.')) : throw new Exception("No file extension!");
             }
         }
-        public string Type => !string.IsNullOrWhiteSpace(this.FileExtensionInfo.Name) ? this.FileExtensionInfo.Name : null;
+        public string Type => !string.IsNullOrWhiteSpace(FileExtensionInfo.Name) ? FileExtensionInfo.Name : null;
         public bool Exists => File.Exists(Location);
         public string DefaultAssociation { get; private set; }
         public int DefaultAssociationIndex
         {
             get
             {
-                if (!string.IsNullOrEmpty(this.DefaultAssociation))
+                if (!string.IsNullOrEmpty(DefaultAssociation))
                     for (int i = 0; i < AssociationsList.Count; i++)
                         if (AssociationsList[i].Node == DefaultAssociation) return i;
                 return -1;
@@ -53,16 +53,16 @@ namespace FileExtensionHandler.Core.Model.Common
             if (!Directory.Exists(associationsDir)) throw new DirectoryNotFoundException("The directory with associations doesn't exist!");
             if (!Directory.Exists(fileExtensionsDir)) throw new DirectoryNotFoundException("The directory with file extension information doesn't exist!");
 
-            this.Location = filePath;
-            this.IsFromProtocol = isFromProtocol;
+            Location = filePath;
+            IsFromProtocol = isFromProtocol;
 
-            this.AssociationsDir = associationsDir;
-            this.FileExtensionsDir = fileExtensionsDir;
+            AssociationsDir = associationsDir;
+            FileExtensionsDir = fileExtensionsDir;
 
             if (!isFromProtocol)
             {
-                this.Location = Path.GetFullPath(filePath);
-                if (!this.Exists) throw new FileNotFoundException("The file you're trying to open doesn't exist!");
+                Location = Path.GetFullPath(filePath);
+                if (!Exists) throw new FileNotFoundException("The file you're trying to open doesn't exist!");
             }
         }
 
@@ -71,18 +71,18 @@ namespace FileExtensionHandler.Core.Model.Common
         internal void LoadInfo()
         {
             FileExtensionInfo = LoadFileExtensionInfo();
-            if (FileExtensionInfo.Associations.Length == 0) throw new IndexOutOfRangeException($"The there's no app associated with {this.Extension}!");
-            this.DefaultAssociation = FileExtensionInfo.DefaultAssociation;
+            if (FileExtensionInfo.Associations.Length == 0) throw new IndexOutOfRangeException($"The there's no app associated with {Extension}!");
+            DefaultAssociation = FileExtensionInfo.DefaultAssociation;
 
             AssociationsList = LoadAssociationsList();
         }
 
         private FileExtension LoadFileExtensionInfo()
         {
-            string fileExtensionDefinitionPath = this.FileExtensionsDir + $@"\{this.Extension}.json";
+            string fileExtensionDefinitionPath = FileExtensionsDir + $@"\{Extension}.json";
 
             if (!File.Exists(fileExtensionDefinitionPath))
-                throw new FileNotFoundException($"The there's no app associated with {this.Extension}!");
+                throw new FileNotFoundException($"The there's no app associated with {Extension}!");
             string jsonData = File.ReadAllText(fileExtensionDefinitionPath);
             return JsonConvert.DeserializeObject<FileExtension>(jsonData);
         }
@@ -93,7 +93,7 @@ namespace FileExtensionHandler.Core.Model.Common
             list.Clear();
             foreach (string associationName in FileExtensionInfo.Associations)
             {
-                string fileAssociationPath = this.AssociationsDir + $@"\{associationName}.json";
+                string fileAssociationPath = AssociationsDir + $@"\{associationName}.json";
 
                 // Skip the current iteration if the association file doesn't exist
                 if (!File.Exists(fileAssociationPath)) continue;
