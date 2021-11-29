@@ -13,7 +13,9 @@ namespace FileExtensionHandler.Core.Model.Common
         public readonly string[] RawArgs;
         public readonly bool IsFromProtocol;
         public string FilePath => IsFromProtocol ? ProtocolParse() : RawArgs[0];
-        public readonly string[] Protocol = new string[] { "fexth://", "file:///" };
+
+        public readonly string[] Protocol = new string[] { "fexth://", "file:///", "http://", "https://" };
+        public readonly string[] ImmutableProtocol = new string[] { "http://", "https://" };
 
         public Arguments(string[] args)
         {
@@ -33,7 +35,7 @@ namespace FileExtensionHandler.Core.Model.Common
         {
             string value = "";
             foreach (string protocol in Protocol)
-                if (this.RawArgs[0].Contains(protocol)) value += protocol;
+                if (this.RawArgs[0].Contains(protocol) && !ImmutableProtocol.Contains(protocol)) value += protocol;
             return value;
         }
 
