@@ -59,11 +59,16 @@ namespace FileExtensionHandler.Core.Tests.Samples
                     Associations = (string[])sample[4],
                     DefaultAssociation = (string)sample[5]
                 });
-            }
 
-            CollectionNoDefaults = Collection;
-            foreach (KeyValuePair<string, FileExtension> entry in CollectionNoDefaults)
-                entry.Value.DefaultAssociation = null;
+                CollectionNoDefaults.Add((string)sample[0], new FileExtension
+                {
+                    Name = (string)sample[1],
+                    Icon = (string)sample[2],
+                    IconIndex = (int)sample[3],
+                    Associations = (string[])sample[4],
+                    DefaultAssociation = null
+                });
+            }
         }
 
         internal void WriteToDisk(bool includeDefaults = true)
