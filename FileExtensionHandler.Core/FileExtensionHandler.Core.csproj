@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Arguments.cs" />
+    <Compile Include="Common\OpenedKey.cs" />
     <Compile Include="FileInformation.cs" />
     <Compile Include="Common\FileHandler.cs" />
     <Compile Include="Model\Association.cs" />

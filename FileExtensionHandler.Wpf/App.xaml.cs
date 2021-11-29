@@ -15,11 +15,11 @@ namespace FileExtensionHandler
     public partial class App : Application
     {
         public static string[] Args { get; private set; } = new string[] { };
-        private readonly bool Debug = false;
+        private readonly bool Debug = true;
 
         private void OnStart(object sender, StartupEventArgs e)
         {
-            Args = Debug ? new string[] { Environment.ExpandEnvironmentVariables(@"%userprofile%\Desktop\temp.mp3") } : e.Args;
+            Args = Debug ? new string[] { Environment.ExpandEnvironmentVariables(@"%userprofile%\Desktop\fexth_stuff\fexth.mp3.reg") } : e.Args;
             if (Args.Length > 0)
             {
                 try

@@ -80,11 +80,38 @@ namespace FileExtensionHandler.Core.Common
         private FileExtension LoadFileExtensionInfo()
         {
             string fileExtensionDefinitionPath = FileExtensionsDir + $@"\{Extension}.json";
+            if (File.Exists(fileExtensionDefinitionPath))
+            {
+                string jsonData = File.ReadAllText(fileExtensionDefinitionPath);
+                return JsonConvert.DeserializeObject<FileExtension>(jsonData);
+            }
+            //throw new FileNotFoundException($"The there's no app associated with {Extension}!");
 
-            if (!File.Exists(fileExtensionDefinitionPath))
-                throw new FileNotFoundException($"The there's no app associated with {Extension}!");
-            string jsonData = File.ReadAllText(fileExtensionDefinitionPath);
-            return JsonConvert.DeserializeObject<FileExtension>(jsonData);
+            try
+            {
+                // Registry fallback
+                OpenedKey openedFileExtensionKey = new OpenedKey($@"HKCR\{Extension}");
+                string regFileExtension = openedFileExtensionKey.GetDefaultValue();
+
+                OpenedKey openedFileAssociationKey = new OpenedKey($@"HKCR\{regFileExtension}");
+                object[] icon = new OpenedKey($@"HKCR\{regFileExtension}\DefaultIcon").GetDefaultValue().Split(',');
+
+                return new FileExtension()
+                {
+                    Name = openedFileAssociationKey.GetDefaultValue(),
+                    Icon = (string)icon[0],
+                    IconIndex = (int)icon[1],
+                    Associations = new string[] { openedFileAssociationKey.GetDefaultValue() },
+                    DefaultAssociation = openedFileAssociationKey.GetDefaultValue()
+                };
+            }
+            catch
+            {
+                return new FileExtension()
+                {
+                    Associations = new string[] { }
+                };
+            };
         }
 
         private List<Association> LoadAssociationsList()
@@ -96,12 +123,34 @@ namespace FileExtensionHandler.Core.Common
                 string fileAssociationPath = AssociationsDir + $@"\{associationName}.json";
 
                 // Skip the current iteration if the association file doesn't exist
-                if (!File.Exists(fileAssociationPath)) continue;
+                if (!File.Exists(fileAssociationPath))
+                {
+                    OpenedKey openedKey = new OpenedKey($@"HKCR\{associationName}");
+                    OpenedKey commandKey = new OpenedKey($@"HKCR\{associationName}\shell\open\command");
+
+                    string name = openedKey.GetDefaultValue();
+                    string command = commandKey.GetDefaultValue();
+                    object[] icon = new OpenedKey($@"HKCR\{associationName}\DefaultIcon").GetDefaultValue().Split(',');
+
+                    Association regAssociation = new Association()
+                    {
+                        Node = associationName,
+                        Name = name,
+                        Icon = (string)icon[0],
+                        IconIndex = (int)icon[1],
+                        Command = command,
+                        Arguments = null
+                    };
+                    list.Add(regAssociation);
+                    continue;
+                }
                 string jsonData = File.ReadAllText(fileAssociationPath);
                 Association association = JsonConvert.DeserializeObject<Association>(jsonData);
                 association.Node = associationName;
                 list.Add(association);
             }
+
+            if (list.Count == 0) throw new FileNotFoundException($"The there's no app associated with {Extension}!");
             return list;
         }
     }

@@ -61,6 +61,11 @@ namespace FileExtensionHandler.Core
                 id = Data.DefaultAssociationIndex;
             }
             ProcessStartInfo processStartInfo = FileHandler.GetProcessData(id);
+
+            if (processStartInfo.Arguments == null)
+            {
+                // Did I just really spend my time parsing the registry values when I just could call the file?
+            }
             Process.Start(processStartInfo);
         }
     }
