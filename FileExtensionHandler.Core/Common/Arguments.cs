@@ -8,14 +8,14 @@ using System.Web;
 
 namespace FileExtensionHandler.Core.Common
 {
-    class Arguments
+    public class Arguments
     {
         public readonly string[] RawArgs;
         public readonly bool IsFromProtocol;
         public string FilePath => IsFromProtocol ? ProtocolParse() : RawArgs[0];
 
-        public readonly string[] Protocol = new string[] { "fexth://", "file:///", "http://", "https://" };
-        public readonly string[] ImmutableProtocol = new string[] { "http://", "https://" };
+        private readonly string[] Protocol = new string[] { "fexth://", "file:///", "http://", "https://" };
+        private readonly string[] ImmutableProtocol = new string[] { "http://", "https://" };
 
         public Arguments(string[] args)
         {

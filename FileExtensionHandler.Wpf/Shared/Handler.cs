@@ -1,6 +1,8 @@
 ﻿using FileExtensionHandler.Core;
+using FileExtensionHandler.Core.Common;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,7 +23,7 @@ namespace FileExtensionHandler.Shared
         internal void Start()
         {
             this.FileInformation = GetFileInformation();
-            if (this.FileInformation == null) return;
+                if (this.FileInformation == null) return;
 
             int defaultAssociationIndex = FileInformation.Data.DefaultAssociationIndex;
             if (defaultAssociationIndex != -1)
@@ -45,6 +47,12 @@ namespace FileExtensionHandler.Shared
             }
             catch (Exception e)
             {
+                if (e is AssociationsNotFoundException)
+                {
+                    Arguments arguments = new Arguments(Arguments);
+                    Process.Start(arguments.FilePath);
+                    return null;
+                }
                 MessageBox.Show(e.Message, "Error | fexth", MessageBoxButton.OK, MessageBoxImage.Error);
                 return null;
             }

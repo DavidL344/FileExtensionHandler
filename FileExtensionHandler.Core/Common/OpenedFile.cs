@@ -70,9 +70,11 @@ namespace FileExtensionHandler.Core.Common
 
         /// <inheritdoc cref="LoadFileExtensionInfo()"/>
         /// <inheritdoc cref="LoadAssociationsList()"/>
+        /// <exception cref="AssociationsNotFoundException"/>
         internal void LoadInfo()
         {
             FileExtensionInfo = LoadFileExtensionInfo();
+            if (FileExtensionInfo.Associations.Length == 0) throw new AssociationsNotFoundException($"The there's no app associated with {Extension}!");
             DefaultAssociation = FileExtensionInfo.DefaultAssociation;
             AssociationsList = LoadAssociationsList();
         }
@@ -85,10 +87,7 @@ namespace FileExtensionHandler.Core.Common
                 throw new AssociationsNotFoundException($"The there's no app associated with {Extension}!");
             
             string jsonData = File.ReadAllText(fileExtensionDefinitionPath);
-            FileExtension jsonObject = JsonConvert.DeserializeObject<FileExtension>(jsonData);
-            
-            if (jsonObject.Associations.Length == 0) throw new AssociationsNotFoundException($"The there's no app associated with {Extension}!");
-            return jsonObject;
+            return JsonConvert.DeserializeObject<FileExtension>(jsonData);
         }
 
         private List<Association> LoadAssociationsList()
