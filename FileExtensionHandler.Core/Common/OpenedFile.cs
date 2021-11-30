@@ -44,14 +44,16 @@ namespace FileExtensionHandler.Core.Common
         public List<Association> AssociationsList { get; private set; }
         public FileExtension FileExtensionInfo { get; private set; }
 
+        /// <param name="filePath">The path containing the file.</param>
         /// <param name="associationsDir">The directory containing associations.</param>
         /// <param name="fileExtensionsDir">The directory containing file extension information.</param>
-        /// <exception cref="DirectoryNotFoundException"/>
+        /// <param name="isFromProtocol">Defines if the path comes from a protocol.</param>
+        /// <exception cref="DataDirectoryNotFoundException"/>
         /// <exception cref="FileNotFoundException"/>
         internal OpenedFile(string filePath, string associationsDir, string fileExtensionsDir, bool isFromProtocol)
         {
-            if (!Directory.Exists(associationsDir)) throw new DirectoryNotFoundException("The directory with associations doesn't exist!");
-            if (!Directory.Exists(fileExtensionsDir)) throw new DirectoryNotFoundException("The directory with file extension information doesn't exist!");
+            if (!Directory.Exists(associationsDir)) throw new DataDirectoryNotFoundException("The directory with associations doesn't exist!");
+            if (!Directory.Exists(fileExtensionsDir)) throw new DataDirectoryNotFoundException("The directory with file extension information doesn't exist!");
 
             Location = filePath;
             IsFromProtocol = isFromProtocol;
@@ -66,25 +68,27 @@ namespace FileExtensionHandler.Core.Common
             }
         }
 
-        /// <exception cref="FileNotFoundException"/>
-        /// <exception cref="IndexOutOfRangeException"/>
+        /// <inheritdoc cref="LoadFileExtensionInfo()"/>
+        /// <inheritdoc cref="LoadAssociationsList()"/>
         internal void LoadInfo()
         {
             FileExtensionInfo = LoadFileExtensionInfo();
-            if (FileExtensionInfo.Associations.Length == 0) throw new IndexOutOfRangeException($"The there's no app associated with {Extension}!");
             DefaultAssociation = FileExtensionInfo.DefaultAssociation;
-
             AssociationsList = LoadAssociationsList();
         }
 
+        /// <exception cref="AssociationsNotFoundException"/>
         private FileExtension LoadFileExtensionInfo()
         {
             string fileExtensionDefinitionPath = FileExtensionsDir + $@"\{Extension}.json";
-
             if (!File.Exists(fileExtensionDefinitionPath))
-                throw new FileNotFoundException($"The there's no app associated with {Extension}!");
+                throw new AssociationsNotFoundException($"The there's no app associated with {Extension}!");
+            
             string jsonData = File.ReadAllText(fileExtensionDefinitionPath);
-            return JsonConvert.DeserializeObject<FileExtension>(jsonData);
+            FileExtension jsonObject = JsonConvert.DeserializeObject<FileExtension>(jsonData);
+            
+            if (jsonObject.Associations.Length == 0) throw new AssociationsNotFoundException($"The there's no app associated with {Extension}!");
+            return jsonObject;
         }
 
         private List<Association> LoadAssociationsList()

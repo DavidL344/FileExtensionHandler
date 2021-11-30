@@ -41,6 +41,7 @@ namespace FileExtensionHandler.Core.Tests.Prerequisites
             List<string> files = new List<string>();
             foreach (KeyValuePair<string, FileExtension> fileExtension in fileExtensions.Collection)
                 files.Add(fileExtension.Key);
+            files.Add(".unknownFileExtension");
 
             foreach (string file in files)
             {

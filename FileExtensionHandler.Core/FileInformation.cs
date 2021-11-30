@@ -14,9 +14,6 @@ namespace FileExtensionHandler.Core
         internal FileHandler FileHandler = new FileHandler();
         public OpenedFile Data;
 
-        /// <summary>
-        /// Loads the file information.
-        /// </summary>
         /// <inheritdoc cref="FileHandler.OpenFile(string, string, string, bool)"/>
         public FileInformation(string filePath, string associationsDir, string fileExtensionsDir)
         {
@@ -25,14 +22,7 @@ namespace FileExtensionHandler.Core
             Data = FileHandler.OpenedFile;
         }
 
-        /// <summary>
-        /// Loads the file information from the arguments passed.
-        /// </summary>
-        /// <param name="args">Command line arguments passed to the app.</param>
-        /// <param name="associationsDir">The directory containing associations.</param>
-        /// <param name="fileExtensionsDir">The directory containing file extension information.</param>
-        /// <exception cref="DirectoryNotFoundException"/>
-        /// <exception cref="FileNotFoundException"/>
+        /// <inheritdoc cref="FileHandler.OpenFile(string[], string, string)"/>
         public FileInformation(string[] args, string associationsDir, string fileExtensionsDir)
         {
             FileHandler.OpenFile(args, associationsDir, fileExtensionsDir);

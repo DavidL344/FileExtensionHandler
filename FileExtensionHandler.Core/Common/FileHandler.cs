@@ -13,18 +13,23 @@ namespace FileExtensionHandler.Core.Common
     {
         public OpenedFile OpenedFile;
 
-        /// <param name="filePath">The path containing the file.</param>
-        /// <param name="associationsDir">The directory containing associations.</param>
-        /// <param name="fileExtensionsDir">The directory containing file extension information.</param>
-        /// <param name="isFromProtocol">Defines if the path comes from a protocol.</param>
-        /// <exception cref="DirectoryNotFoundException"/>
-        /// <exception cref="FileNotFoundException"/>
+        /// <summary>
+        /// Loads the file information.
+        /// </summary>
+        /// <inheritdoc cref="OpenedFile.OpenedFile(string, string, string, bool)"/>
+        /// <inheritdoc cref="OpenedFile.LoadInfo()"/>
         internal void OpenFile(string filePath, string associationsDir, string fileExtensionsDir, bool isFromProtocol)
         {
             OpenedFile = new OpenedFile(filePath, associationsDir, fileExtensionsDir, isFromProtocol);
             OpenedFile.LoadInfo();
         }
 
+        /// <summary>
+        /// Loads the file information from the arguments passed.
+        /// </summary>
+        /// <param name="args">Command line arguments passed to the app.</param>
+        /// <inheritdoc cref="OpenedFile.OpenedFile(string, string, string, bool)"/>
+        /// <inheritdoc cref="OpenedFile.LoadInfo()"/>
         internal void OpenFile(string[] args, string associationsDir, string fileExtensionsDir)
         {
             Arguments arguments = new Arguments(args);

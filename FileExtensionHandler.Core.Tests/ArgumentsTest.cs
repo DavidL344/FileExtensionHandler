@@ -1,4 +1,5 @@
-﻿using FileExtensionHandler.Core.Tests.Samples;
+﻿using FileExtensionHandler.Core.Common;
+using FileExtensionHandler.Core.Tests.Samples;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -50,7 +51,7 @@ namespace FileExtensionHandler.Core.Tests
         [TestMethod]
         public void CatchNotAssociatedFileExtension()
         {
-            Assert.ThrowsException<FileNotFoundException>(() => new FileInformation(TestArguments.FileWithNoFileExtensionInfo, Vars.Dir_Associations, Vars.Dir_FileExtensions));
+            Assert.ThrowsException<AssociationsNotFoundException>(() => new FileInformation(TestArguments.FileWithNoFileExtensionInfo, Vars.Dir_Associations, Vars.Dir_FileExtensions));
         }
     }
 }
