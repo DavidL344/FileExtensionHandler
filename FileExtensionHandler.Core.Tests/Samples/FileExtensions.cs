@@ -46,6 +46,11 @@ namespace FileExtensionHandler.Core.Tests.Samples
                         "fexth.msedge.open",
                         "fexth.msedge.open-private"
                     }, "fexth.msedge.open"
+                },
+                new object[] {
+                    ".noassociations", "A file extension with no associations",
+                    null, 0,
+                    new string[] { }, null
                 }
             };
 

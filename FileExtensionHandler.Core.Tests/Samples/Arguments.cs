@@ -51,5 +51,6 @@ namespace FileExtensionHandler.Core.Tests.Samples
             { "FexthStreamed_FileName", new string[] { $"fexth://{BaselinePath}".Replace('\\', '/').Reverse().ToString().Insert(0, "|").Reverse().ToString() } },
         };
         public static readonly string[] FileWithNoFileExtensionInfo = new string[] { Path.ChangeExtension(BaselinePath, ".unknownFileExtension") };
+        public static readonly string[] FileWithNoAssociations = new string[] { Path.ChangeExtension(BaselinePath, ".noassociations") };
     }
 }

@@ -32,5 +32,6 @@ namespace FileExtensionHandler.Core.Tests.Samples
             { "FexthDiskFileProtocol_FileName", $"fexth://file:///{BaselinePath}".Replace('\\', '/').Reverse().ToString().Insert(0, "|").Reverse().ToString() }
         };
         public static readonly string FileWithNoFileExtensionInfo = Path.ChangeExtension(BaselinePath, ".unknownFileExtension");
+        public static readonly string FileWithNoAssociations = Path.ChangeExtension(BaselinePath, ".noassociations");
     }
 }

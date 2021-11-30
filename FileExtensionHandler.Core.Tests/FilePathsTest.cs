@@ -45,5 +45,11 @@ namespace FileExtensionHandler.Core.Tests
         {
             Assert.ThrowsException<AssociationsNotFoundException>(() => new FileInformation(FilePaths.FileWithNoFileExtensionInfo, Vars.Dir_Associations, Vars.Dir_FileExtensions));
         }
+
+        [TestMethod]
+        public void CatchNoFileAssociations()
+        {
+            Assert.ThrowsException<AssociationsNotFoundException>(() => new FileInformation(FilePaths.FileWithNoAssociations, Vars.Dir_Associations, Vars.Dir_FileExtensions));
+        }
     }
 }
