@@ -21,7 +21,7 @@ namespace FileExtensionHandler.Core.Tests.Samples
             { "FexthDiskFileProtocol", new string[] { $"fexth://file:///{BaselinePath}".Replace('\\', '/') } },
 
             { "Streamed", new string[] { StreamablePath } },
-            { "FexthStreamedFileProtocol", new string[] { $"fexth:///{StreamablePath}" } }
+            { "FexthStreamedFileProtocol", new string[] { $"fexth://{StreamablePath}" } }
         };
 
         public static readonly Dictionary<string, string[]> Invalid = new Dictionary<string, string[]>()
@@ -48,7 +48,7 @@ namespace FileExtensionHandler.Core.Tests.Samples
 
             // fexth://https://*
             { "FexthStreamed_Path", new string[] { $"fexth://{BaselinePath}".Replace('\\', '/').Insert(0, "|") } },
-            { "FexthStreamed_FileName", new string[] { $"fexth://{BaselinePath}".Replace('\\', '/').Reverse().ToString().Insert(0, "|").Reverse().ToString() } },
+            { "FexthStreamed_FileName", new string[] { $"fexth://{BaselinePath}".Replace('\\', '/').Reverse().ToString().Insert(0, "|").Reverse().ToString() } }
         };
         public static readonly string[] FileWithNoFileExtensionInfo = new string[] { Path.ChangeExtension(BaselinePath, ".unknownFileExtension") };
         public static readonly string[] FileWithNoAssociations = new string[] { Path.ChangeExtension(BaselinePath, ".noassociations") };

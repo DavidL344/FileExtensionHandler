@@ -27,25 +27,21 @@ namespace FileExtensionHandler.Core.Tests.Samples
                     null, 0,
                     @"%ProgramFiles(x86)%\foobar2000\foobar2000.exe", "/add %1"
                 },
-
                 new object[] {
                     "fexth.wmplayer.play", "Windows Media Player",
                     null, 0,
                     @"%ProgramFiles(x86)%\Windows Media Player\wmplayer.exe", "/prefetch:6 /Open %1"
                 },
-
                 new object[] {
                     "fexth.msedge.open", "Microsoft Edge",
                     @"%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe", 0,
                     @"%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe", "%1"
                 },
-
                 new object[] {
                     "fexth.msedge.open-private", "Microsoft Edge (Private Window)",
                     @"%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe", 0,
                     @"%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe", "-inprivate %1"
-                },
-                
+                }
             };
 
             foreach (object[] sample in samples)

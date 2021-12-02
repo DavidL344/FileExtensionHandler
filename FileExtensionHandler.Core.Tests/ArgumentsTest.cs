@@ -24,7 +24,7 @@ namespace FileExtensionHandler.Core.Tests
             foreach (KeyValuePair<string, string[]> validArgument in TestArguments.Valid)
             {
                 FileInformation fileInformation = new FileInformation(validArgument.Value, Vars.Dir_Associations, Vars.Dir_FileExtensions);
-                Assert.AreEqual(Path.GetExtension(Path.GetExtension(validArgument.Value.Last())), fileInformation.Data.Extension);
+                Assert.AreEqual(Path.GetExtension(validArgument.Value.Last()), fileInformation.Data.Extension);
             }
         }
 

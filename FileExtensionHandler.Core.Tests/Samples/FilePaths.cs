@@ -15,7 +15,7 @@ namespace FileExtensionHandler.Core.Tests.Samples
             { "Disk", BaselinePath },
             { "DiskFileProtocol", $"file:///{BaselinePath}".Replace('\\', '/') },
             { "FexthDisk", $"fexth://{BaselinePath}".Replace('\\', '/') },
-            { "FexthDiskFileProtocol", $"fexth://file:///{BaselinePath}".Replace('\\', '/') },
+            { "FexthDiskFileProtocol", $"fexth://file:///{BaselinePath}".Replace('\\', '/') }
         };
         public static readonly Dictionary<string, string> Invalid = new Dictionary<string, string>()
         {
