@@ -1,5 +1,4 @@
 ﻿using FileExtensionHandler.Core;
-using FileExtensionHandler.Core.Common;
 using FileExtensionHandler.Core.Model;
 using System;
 using System.Collections.Generic;
@@ -23,18 +22,16 @@ namespace FileExtensionHandler
     public partial class AppPicker : Window
     {
         internal FileInformation FileInformation;
-        internal OpenedFile OpenedFile;
         internal AppPicker(FileInformation fileInformation)
         {
             InitializeComponent();
             this.FileInformation = fileInformation;
-            this.OpenedFile = fileInformation.Data;
             LoadAssociations();
         }
 
         private void LoadAssociations()
         {
-            List<Association> associationsList = OpenedFile.AssociationsList;
+            List<Association> associationsList = FileInformation.Associations;
             if (associationsList.Count == 0) return;
 
             lb_selection.Items.Clear();
@@ -47,8 +44,8 @@ namespace FileExtensionHandler
                 lb_selection.Items.Add(listBoxItem);
             }
 
-            header.Text = $"Please select an application to open the {OpenedFile.Type} with:";
-            footer.Text = $"{OpenedFile.Location}";
+            header.Text = $"Please select an application to open the {FileInformation.Type} with:";
+            footer.Text = $"{FileInformation.Location}";
             return;
         }
 
@@ -59,6 +56,7 @@ namespace FileExtensionHandler
 
         private void AppSelected(object sender, KeyEventArgs e)
         {
+            if (Keyboard.IsKeyDown(Key.Down) && lb_selection.SelectedIndex == -1) lb_selection.SelectedIndex = 0;
             if (Keyboard.IsKeyDown(Key.Enter)) RunAnAppOfChoice();
         }
 

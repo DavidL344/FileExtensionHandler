@@ -1,9 +1,9 @@
-﻿using FileExtensionHandler.Core.Common;
-using FileExtensionHandler.Core.Tests.Samples;
+﻿using FileExtensionHandler.Core.Tests.Samples;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace FileExtensionHandler.Core.Tests
 {
@@ -16,18 +16,18 @@ namespace FileExtensionHandler.Core.Tests
             foreach (KeyValuePair<string, string> validFilePath in FilePaths.Valid)
             {
                 FileInformation fileInformation = new FileInformation(validFilePath.Value, Vars.Dir_Associations, Vars.Dir_FileExtensions);
-                Assert.AreEqual(Path.GetExtension(Path.GetExtension(validFilePath.Value)), fileInformation.Data.Extension);
+                Assert.AreEqual(Path.GetExtension(validFilePath.Value), fileInformation.FileExtension.Node);
             }
         }
 
         [TestMethod]
         public void ReadFileAssociations()
         {
-            foreach (KeyValuePair<string, string> validArgument in FilePaths.Valid)
+            foreach (KeyValuePair<string, string> validFilePath in FilePaths.Valid)
             {
-                FileInformation fileInformation = new FileInformation(validArgument.Value, Vars.Dir_Associations, Vars.Dir_FileExtensions);
-                Assert.IsNotNull(fileInformation.Data.AssociationsList);
-                Assert.IsTrue(fileInformation.Data.AssociationsList.Count > 0);
+                FileInformation fileInformation = new FileInformation(validFilePath.Value, Vars.Dir_Associations, Vars.Dir_FileExtensions);
+                Assert.IsNotNull(fileInformation.Associations);
+                Assert.IsTrue(fileInformation.Associations.Count > 0);
             }
         }
 
@@ -41,15 +41,42 @@ namespace FileExtensionHandler.Core.Tests
         }
 
         [TestMethod]
-        public void CatchNotAssociatedFileExtension()
+        public void CatchNoAssociatedFileExtension()
         {
-            Assert.ThrowsException<AssociationsNotFoundException>(() => new FileInformation(FilePaths.FileWithNoFileExtensionInfo, Vars.Dir_Associations, Vars.Dir_FileExtensions));
+            FileInformation fileInformation = new FileInformation(FilePaths.FileWithNoFileExtensionInfo, Vars.Dir_Associations, Vars.Dir_FileExtensions);
+            Assert.IsNull(fileInformation.FileExtension);
         }
 
         [TestMethod]
         public void CatchNoFileAssociations()
         {
-            Assert.ThrowsException<AssociationsNotFoundException>(() => new FileInformation(FilePaths.FileWithNoAssociations, Vars.Dir_Associations, Vars.Dir_FileExtensions));
+            FileInformation fileInformation = new FileInformation(FilePaths.FileWithNoAssociations, Vars.Dir_Associations, Vars.Dir_FileExtensions);
+            Assert.AreEqual(0, fileInformation.Associations.Count);
+            Assert.IsNull(fileInformation.DefaultAssociation);
+            Assert.AreEqual(-1, fileInformation.DefaultAssociationIndex);
+        }
+
+        [TestMethod]
+        public void DetectCallsFromAppProtocol()
+        {
+            foreach (KeyValuePair<string, string> validFilePath in FilePaths.Valid)
+            {
+                FileInformation fileInformation = new FileInformation(validFilePath.Value, Vars.Dir_Associations, Vars.Dir_FileExtensions);
+                if (validFilePath.Key.Contains("Disk")) Assert.IsFalse(fileInformation.Streamed);
+                if (validFilePath.Key.Contains("Streamed")) Assert.IsTrue(fileInformation.Streamed);
+
+                if (validFilePath.Key.Contains("Fexth"))
+                {
+                    Assert.IsTrue(fileInformation.CalledFromAppProtocol);
+                    Assert.IsTrue(fileInformation.ProtocolsUsed.Contains("fexth://"));
+                }
+
+                if (validFilePath.Key.Contains("FileProtocol"))
+                {
+                    Assert.IsTrue(fileInformation.ProtocolsUsed.Contains("file:///"));
+                    Assert.IsFalse(fileInformation.Streamed);
+                }
+            }
         }
     }
 }

@@ -9,20 +9,15 @@ using TestArguments = FileExtensionHandler.Core.Tests.Samples.Arguments;
 namespace FileExtensionHandler.Core.Tests
 {
     [TestClass]
-    public class ArgumentsTest
+    public class ParsedArgsTest
     {
-        [AssemblyInitialize]
-        public static void AssemblyInit(TestContext context)
-        {
-            new Prerequisites.SaveData();
-        }
-
         [TestMethod]
         public void GetFileInformation()
         {
             foreach (KeyValuePair<string, string[]> validArgument in TestArguments.Valid)
             {
-                FileInformation fileInformation = new FileInformation(validArgument.Value, Vars.Dir_Associations, Vars.Dir_FileExtensions);
+                Arguments arguments = new Arguments(validArgument.Value);
+                FileInformation fileInformation = new FileInformation(arguments, Vars.Dir_Associations, Vars.Dir_FileExtensions);
                 Assert.AreEqual(Path.GetExtension(validArgument.Value.Last()), fileInformation.FileExtension.Node);
             }
         }
@@ -32,7 +27,7 @@ namespace FileExtensionHandler.Core.Tests
         {
             foreach (KeyValuePair<string, string[]> validArgument in TestArguments.Valid)
             {
-                FileInformation fileInformation = new FileInformation(validArgument.Value, Vars.Dir_Associations, Vars.Dir_FileExtensions);
+                FileInformation fileInformation = new FileInformation(new Arguments(validArgument.Value), Vars.Dir_Associations, Vars.Dir_FileExtensions);
                 Assert.IsNotNull(fileInformation.Associations);
                 Assert.IsTrue(fileInformation.Associations.Count > 0);
             }
@@ -43,21 +38,21 @@ namespace FileExtensionHandler.Core.Tests
         {
             foreach (KeyValuePair<string, string[]> invalidArgument in TestArguments.Invalid)
             {
-                Assert.ThrowsException<ArgumentException>(() => new FileInformation(invalidArgument.Value, Vars.Dir_Associations, Vars.Dir_FileExtensions));
+                Assert.ThrowsException<ArgumentException>(() => new FileInformation(new Arguments(invalidArgument.Value), Vars.Dir_Associations, Vars.Dir_FileExtensions));
             }
         }
 
         [TestMethod]
         public void CatchNoAssociatedFileExtension()
         {
-            FileInformation fileInformation = new FileInformation(TestArguments.FileWithNoFileExtensionInfo, Vars.Dir_Associations, Vars.Dir_FileExtensions);
+            FileInformation fileInformation = new FileInformation(new Arguments(TestArguments.FileWithNoFileExtensionInfo), Vars.Dir_Associations, Vars.Dir_FileExtensions);
             Assert.IsNull(fileInformation.FileExtension);
         }
 
         [TestMethod]
         public void CatchNoFileAssociations()
         {
-            FileInformation fileInformation = new FileInformation(TestArguments.FileWithNoAssociations, Vars.Dir_Associations, Vars.Dir_FileExtensions);
+            FileInformation fileInformation = new FileInformation(new Arguments(TestArguments.FileWithNoAssociations), Vars.Dir_Associations, Vars.Dir_FileExtensions);
             Assert.AreEqual(0, fileInformation.Associations.Count);
             Assert.IsNull(fileInformation.DefaultAssociation);
             Assert.AreEqual(-1, fileInformation.DefaultAssociationIndex);
@@ -68,7 +63,7 @@ namespace FileExtensionHandler.Core.Tests
         {
             foreach (KeyValuePair<string, string[]> validArgument in TestArguments.Valid)
             {
-                FileInformation fileInformation = new FileInformation(validArgument.Value, Vars.Dir_Associations, Vars.Dir_FileExtensions);
+                FileInformation fileInformation = new FileInformation(new Arguments(validArgument.Value), Vars.Dir_Associations, Vars.Dir_FileExtensions);
                 if (validArgument.Key.Contains("Disk")) Assert.IsFalse(fileInformation.Streamed);
                 if (validArgument.Key.Contains("Streamed")) Assert.IsTrue(fileInformation.Streamed);
 

@@ -21,7 +21,7 @@ namespace FileExtensionHandler.Core.Tests.Samples
             { "FexthDiskFileProtocol", new string[] { $"fexth://file:///{BaselinePath}".Replace('\\', '/') } },
 
             { "Streamed", new string[] { StreamablePath } },
-            { "FexthStreamedFileProtocol", new string[] { $"fexth://{StreamablePath}" } }
+            { "FexthStreamed", new string[] { $"fexth://{StreamablePath}" } }
         };
 
         public static readonly Dictionary<string, string[]> Invalid = new Dictionary<string, string[]>()

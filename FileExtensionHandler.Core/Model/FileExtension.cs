@@ -10,6 +10,13 @@ namespace FileExtensionHandler.Core.Model
     public class FileExtension
     {
         /// <summary>
+        /// The file extension's file name.
+        /// </summary>
+        /// <remarks>Used for targetting the association by its file name.</remarks>
+        [JsonIgnore]
+        public string Node { get; internal set; }
+
+        /// <summary>
         /// A short file type description.
         /// </summary>
         [JsonProperty("name")]

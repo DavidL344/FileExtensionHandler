@@ -1,5 +1,4 @@
 ﻿using FileExtensionHandler.Core;
-using FileExtensionHandler.Core.Common;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -23,12 +22,11 @@ namespace FileExtensionHandler.Shared
         internal void Start()
         {
             this.FileInformation = GetFileInformation();
-                if (this.FileInformation == null) return;
+            if (this.FileInformation == null) return;
 
-            int defaultAssociationIndex = FileInformation.Data.DefaultAssociationIndex;
-            if (defaultAssociationIndex != -1)
+            if (FileInformation.DefaultAssociationIndex != -1)
             {
-                FileInformation.OpenWith(defaultAssociationIndex);
+                FileInformation.OpenWith(FileInformation.DefaultAssociationIndex);
                 return;
             }
 
@@ -41,21 +39,12 @@ namespace FileExtensionHandler.Shared
 
         internal FileInformation GetFileInformation()
         {
-            try
-            {
-                return new FileInformation(Arguments, Vars.Dir_Associations, Vars.Dir_FileExtensions);
-            }
-            catch (Exception e)
-            {
-                if (e is AssociationsNotFoundException)
-                {
-                    Arguments arguments = new Arguments(Arguments);
-                    Process.Start(arguments.FilePath);
-                    return null;
-                }
-                MessageBox.Show(e.Message, "Error | fexth", MessageBoxButton.OK, MessageBoxImage.Error);
-                return null;
-            }
+            FileInformation fileInformation = new FileInformation(Arguments, Vars.Dir_Associations, Vars.Dir_FileExtensions);
+            if (fileInformation.Associations.Count > 0) return fileInformation;
+
+            Arguments arguments = new Arguments(Arguments);
+            Process.Start(arguments.ParsedNoParameters);
+            return null;
         }
     }
 }

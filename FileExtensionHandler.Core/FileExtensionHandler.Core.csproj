@@ -73,19 +73,16 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\Arguments.cs" />
-    <Compile Include="Common\AssociationsNotFoundException.cs" />
-    <Compile Include="Common\DataDirectoryNotFoundException.cs" />
+    <Compile Include="Arguments.cs" />
     <Compile Include="FileInformation.cs" />
-    <Compile Include="Common\FileHandler.cs" />
     <Compile Include="Model\Association.cs" />
     <Compile Include="Model\FileExtension.cs" />
-    <Compile Include="Common\OpenedFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

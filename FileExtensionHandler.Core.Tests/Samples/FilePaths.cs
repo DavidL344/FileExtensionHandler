@@ -10,12 +10,18 @@ namespace FileExtensionHandler.Core.Tests.Samples
     class FilePaths
     {
         private static readonly string BaselinePath = $@"{Vars.Dir_Files}\Sample.mp3";
+        private static readonly string StreamablePath = $@"https://www.example.com/Sample.mp3";
+
         public static readonly Dictionary<string, string> Valid = new Dictionary<string, string>()
         {
             { "Disk", BaselinePath },
             { "DiskFileProtocol", $"file:///{BaselinePath}".Replace('\\', '/') },
+
             { "FexthDisk", $"fexth://{BaselinePath}".Replace('\\', '/') },
-            { "FexthDiskFileProtocol", $"fexth://file:///{BaselinePath}".Replace('\\', '/') }
+            { "FexthDiskFileProtocol", $"fexth://file:///{BaselinePath}".Replace('\\', '/') },
+
+            { "Streamed", StreamablePath },
+            { "FexthStreamed", $"fexth://{StreamablePath}" }
         };
         public static readonly Dictionary<string, string> Invalid = new Dictionary<string, string>()
         {
