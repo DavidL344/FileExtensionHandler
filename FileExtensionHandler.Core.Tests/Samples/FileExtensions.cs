@@ -51,6 +51,11 @@ namespace FileExtensionHandler.Core.Tests.Samples
                     ".noassociations", "A file extension with no associations",
                     null, 0,
                     new string[] { }, null
+                },
+                new object[] {
+                    "", "A file with no file extension",
+                    null, 0,
+                    new string[] { }, null
                 }
             };
 

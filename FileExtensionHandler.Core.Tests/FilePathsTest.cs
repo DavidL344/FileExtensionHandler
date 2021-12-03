@@ -41,6 +41,13 @@ namespace FileExtensionHandler.Core.Tests
         }
 
         [TestMethod]
+        public void CatchNoFileExtension()
+        {
+            FileInformation fileInformation = new FileInformation(FilePaths.FileWithNoFileExtension, Vars.Dir_Associations, Vars.Dir_FileExtensions);
+            Assert.AreEqual("", fileInformation.FileExtension.Node);
+        }
+
+        [TestMethod]
         public void CatchNoAssociatedFileExtension()
         {
             FileInformation fileInformation = new FileInformation(FilePaths.FileWithNoFileExtensionInfo, Vars.Dir_Associations, Vars.Dir_FileExtensions);

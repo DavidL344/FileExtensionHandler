@@ -42,6 +42,7 @@ namespace FileExtensionHandler.Core.Tests.Prerequisites
             foreach (KeyValuePair<string, FileExtension> fileExtension in fileExtensions.Collection)
                 files.Add(fileExtension.Key);
             files.Add(".unknownFileExtension");
+            files.Add(""); // A file with no file extension
 
             foreach (string file in files)
             {
