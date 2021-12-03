@@ -27,13 +27,13 @@ namespace FileExtensionHandler.Core.Tests.Prerequisites
         {
             FileExtensions fileExtensions = new FileExtensions();
 
-            if (!File.Exists(Vars.Dir_Associations))
+            if (!Directory.EnumerateFiles(Vars.Dir_Associations).Any())
             {
                 Associations associations = new Associations();
                 associations.WriteToDisk();
             }
 
-            if (!File.Exists(Vars.Dir_FileExtensions))
+            if (!Directory.EnumerateFiles(Vars.Dir_FileExtensions).Any())
             {
                 fileExtensions.WriteToDisk();
             }
