@@ -8,13 +8,15 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Home">
 
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,50">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock x:Name="header" Text="Welcome to fexth!" FontSize="16" TextAlignment="Center"/>
-        <TextBlock x:Name="footer" Grid.Row="2" Text="Call this app with a parameter to get started." FontSize="14" TextAlignment="Center"/>
+        <TextBlock Grid.Row="0" Text="Welcome to fexth!" FontSize="16" TextAlignment="Center" Margin="0, 0, 0, 20"/>
+        <TextBlock x:Name="txt_instructions" Grid.Row="1" FontSize="14" TextAlignment="Center"/>
+        <Button x:Name="btn_newAssociations" Grid.Row="2" Content="Generate file associations" Visibility="Collapsed" HorizontalAlignment="Center" Margin="10" Click="SaveSamplesToDisk"/>
+        <Button x:Name="btn_openAppDir" Grid.Row="2" Content="Open application data directory" HorizontalAlignment="Center" Margin="10" Click="OpenAppDataDir"/>
     </Grid>
 </Page>
