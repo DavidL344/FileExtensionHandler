@@ -28,5 +28,35 @@ namespace FileExtensionHandler.Shared
 
         internal static string Dir_Associations => DefaultSaveLocation + @"\Associations";
         internal static string Dir_FileExtensions => DefaultSaveLocation + @"\File Extensions";
+
+
+        #region Assembly Attribute Accessors
+        internal static string AssemblyTitle
+        {
+            get
+            {
+                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
+                if (attributes.Length > 0)
+                {
+                    AssemblyTitleAttribute titleAttribute = (AssemblyTitleAttribute)attributes[0];
+                    if (titleAttribute.Title != "")
+                    {
+                        return titleAttribute.Title;
+                    }
+                }
+                return Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().CodeBase);
+            }
+        }
+        internal static string AssemblyVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        internal static string AssemblyVersionShort
+        {
+            get
+            {
+                string[] versionArray = AssemblyVersion.Split('.');
+                versionArray = versionArray.Take(versionArray.Count() - 1).ToArray();
+                return String.Join(".", versionArray);
+            }
+        }
+        #endregion
     }
 }

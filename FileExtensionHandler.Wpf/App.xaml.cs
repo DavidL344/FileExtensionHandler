@@ -40,10 +40,7 @@ namespace FileExtensionHandler
             }
             else
             {
-                MainWindow window = new MainWindow
-                {
-                    Title = ""
-                };
+                MainWindow window = new MainWindow();
                 window.ShowDialog();
             }
             Application.Current.Shutdown();
