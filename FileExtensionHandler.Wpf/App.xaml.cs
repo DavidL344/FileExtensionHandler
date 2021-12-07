@@ -30,12 +30,11 @@ namespace FileExtensionHandler
                 }
                 catch (Exception ex)
                 {
-                    if (Debug) throw;
-                    int errorCode = (ex is Win32Exception) ? (ex as Win32Exception).NativeErrorCode : ex.HResult;
-                    
                     // Suppress the exception when the user cancels the UAC prompt
-                    if (errorCode != 1223) MessageBox.Show(String.Format("A fatal error has occured.\r\nException type: {0}\r\nException Description: {1}", ex.GetType(), ex.Message), "Fatal Error | fexth", MessageBoxButton.OK, MessageBoxImage.Error);
-                    Application.Current.Shutdown();
+                    int errorCode = (ex is Win32Exception) ? (ex as Win32Exception).NativeErrorCode : ex.HResult;
+                    if (errorCode != 1223 && !Debug) MessageBox.Show(String.Format("A fatal error has occured.\r\nException type: {0}\r\nException Description: {1}", ex.GetType(), ex.Message), "Fatal Error | fexth", MessageBoxButton.OK, MessageBoxImage.Error);
+                    if (errorCode != 1223 && Debug) throw;
+                    this.Close();
                 }
             }
             else
@@ -43,7 +42,12 @@ namespace FileExtensionHandler
                 MainWindow window = new MainWindow();
                 window.ShowDialog();
             }
-            Application.Current.Shutdown();
+            this.Close();
+        }
+
+        private void Close()
+        {
+            if (Application.Current != null) Application.Current.Shutdown();
         }
     }
 }
