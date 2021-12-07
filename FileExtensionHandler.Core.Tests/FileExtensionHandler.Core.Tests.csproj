@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArgumentsTest.cs" />
+    <Compile Include="ControllerTest.cs" />
     <Compile Include="FilePathsTest.cs" />
     <Compile Include="ParsedArgsTest.cs" />
     <Compile Include="Prerequisites\SaveData.cs" />

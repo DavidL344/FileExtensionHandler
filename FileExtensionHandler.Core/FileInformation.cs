@@ -1,5 +1,5 @@
-﻿using FileExtensionHandler.Core.Model;
-using Newtonsoft.Json;
+﻿using FileExtensionHandler.Core.Controller;
+using FileExtensionHandler.Core.Model;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -102,33 +102,12 @@ namespace FileExtensionHandler.Core
         private FileExtension GetFileExtensionInfo()
         {
             string fileExtension = Path.GetExtension(Arguments.ParsedNoParameters);
-            string fileExtensionJson = Dir_FileExtensions + $@"\{fileExtension}.json";
-            if (!File.Exists(fileExtensionJson)) return null;
-
-            string jsonData = File.ReadAllText(fileExtensionJson);
-            FileExtension data = JsonConvert.DeserializeObject<FileExtension>(jsonData);
-            data.Node = fileExtension;
-            return data;
+            return FileExtensionsController.LoadFromJson(fileExtension, Dir_FileExtensions);
         }
 
         private List<Association> GetAssociations()
         {
-            List<Association> list = new List<Association>();
-            if (FileExtension == null || FileExtension.Associations.Length == 0) return list;
-
-            foreach (string associationName in FileExtension.Associations)
-            {
-                string fileAssociationPath = Dir_Associations + $@"\{associationName}.json";
-
-                // Skip the current iteration if the association file doesn't exist
-                if (!File.Exists(fileAssociationPath)) continue;
-                string jsonData = File.ReadAllText(fileAssociationPath);
-                Association association = JsonConvert.DeserializeObject<Association>(jsonData);
-
-                association.Node = associationName;
-                list.Add(association);
-            }
-            return list;
+            return AssociationsController.MakeList(FileExtension, Dir_Associations);
         }
 
         private Association GetData(int selectedIndex)
@@ -141,6 +120,7 @@ namespace FileExtensionHandler.Core
         /// </summary>
         /// <param name="id">ID of the association from the file extension's list.</param>
         /// <returns>ProcessStartInfo for the selected association.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"/>
         private ProcessStartInfo GetProcessData(int id)
         {
             if (id >= Associations.Count || id < 0) throw new ArgumentOutOfRangeException();
