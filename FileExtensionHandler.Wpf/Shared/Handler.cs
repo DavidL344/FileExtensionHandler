@@ -30,7 +30,7 @@ namespace FileExtensionHandler.Shared
                 return;
             }
 
-            AppPicker window = new AppPicker(this.FileInformation)
+            MainWindow window = new MainWindow("AppPicker", this.FileInformation)
             {
                 Title = ""
             };

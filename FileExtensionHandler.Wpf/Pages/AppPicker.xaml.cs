@@ -12,14 +12,15 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace FileExtensionHandler
+namespace FileExtensionHandler.Pages
 {
     /// <summary>
     /// Interaction logic for AppPicker.xaml
     /// </summary>
-    public partial class AppPicker : Window
+    public partial class AppPicker : Page
     {
         internal FileInformation FileInformation;
         internal AppPicker(FileInformation fileInformation)
@@ -66,7 +67,7 @@ namespace FileExtensionHandler
             if (Keyboard.IsKeyDown(Key.Escape)) id = -1;
             if (id == -1) return;
             FileInformation.OpenWith(id);
-            this.Close();
+            Application.Current.Shutdown();
         }
     }
 }

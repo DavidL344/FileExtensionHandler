@@ -1,4 +1,5 @@
-﻿using FileExtensionHandler.Pages;
+﻿using FileExtensionHandler.Core;
+using FileExtensionHandler.Pages;
 using FileExtensionHandler.Shared;
 using ModernWpf.Controls;
 using System;
@@ -24,11 +25,11 @@ namespace FileExtensionHandler
     /// </summary>
     public partial class MainWindow : Window
     {
-        internal MainWindow(string page = "Home")
+        internal MainWindow(string page = "Home", FileInformation fileInformation = null)
         {
             InitializeComponent();
             Title = $"{Vars.AssemblyTitle} v{Vars.AssemblyVersionShort}";
-            NavigateToPage(page, true);
+            NavigateToPage(page, true, fileInformation);
         }
 
         private void NavigateToPage(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
@@ -44,7 +45,7 @@ namespace FileExtensionHandler
             }
         }
 
-        private void NavigateToPage(string pageName, bool forcedLoad = false)
+        private void NavigateToPage(string pageName, bool forcedLoad = false, FileInformation fileInformation = null)
         {
             int menuItemIndex = -1;
             for (int i = 0; i < nv_main.MenuItems.Count; i++)
@@ -56,7 +57,21 @@ namespace FileExtensionHandler
                 }
             }
 
-            if (pageName == "AppPicker") nv_main.Visibility = Visibility.Collapsed;
+            if (pageName == "AppPicker")
+            {
+                if (fileInformation != null)
+                {
+                    Title = "";
+                    nv_main.IsPaneVisible = false;
+                    contentFrame.Navigate(new Pages.AppPicker(fileInformation));
+                    return;
+                }
+            }
+            else
+            {
+                Title = $"{Vars.AssemblyTitle} v{Vars.AssemblyVersionShort}";
+            }
+
             pageName = "FileExtensionHandler.Pages." + pageName;
             Type pageType = typeof(Home).Assembly.GetType(pageName);
 
@@ -66,7 +81,8 @@ namespace FileExtensionHandler
                 contentFrame.Navigate(pageType);
                 return;
             }
-            if (forcedLoad) nv_main.SelectedItem = nv_main.MenuItems.OfType<NavigationViewItem>().First();
+            if (forcedLoad && nv_main.MenuItems.Count > 0)
+                nv_main.SelectedItem = nv_main.MenuItems.OfType<NavigationViewItem>().First();
         }
     }
 }
