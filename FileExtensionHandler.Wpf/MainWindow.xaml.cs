@@ -1,5 +1,6 @@
 ﻿using FileExtensionHandler.Core;
 using FileExtensionHandler.Pages;
+using FileExtensionHandler.Settings.Controller;
 using FileExtensionHandler.Shared;
 using ModernWpf.Controls;
 using System;
@@ -25,6 +26,7 @@ namespace FileExtensionHandler
     /// </summary>
     public partial class MainWindow : Window
     {
+        internal SettingsController SettingsController = new SettingsController();
         internal MainWindow(string page = "Home", FileInformation fileInformation = null)
         {
             InitializeComponent();
@@ -34,9 +36,10 @@ namespace FileExtensionHandler
 
         private void NavigateToPage(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
+            LoadSettings();
             if (args.IsSettingsSelected)
             {
-                contentFrame.Navigate(typeof(Pages.Settings));
+                contentFrame.Navigate(new Pages.Settings(SettingsController));
             }
             else
             {
@@ -83,6 +86,11 @@ namespace FileExtensionHandler
             }
             if (forcedLoad && nv_main.MenuItems.Count > 0)
                 nv_main.SelectedItem = nv_main.MenuItems.OfType<NavigationViewItem>().First();
+        }
+
+        public void LoadSettings()
+        {
+            nv_main.PaneDisplayMode = SettingsController.Settings.GUI.Navbar_PaneDisplayMode;
         }
     }
 }

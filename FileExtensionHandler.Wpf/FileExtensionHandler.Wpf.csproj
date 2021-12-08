@@ -92,6 +92,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Settings\Controller\ChecksumController.cs" />
+    <Compile Include="Settings\Model\Settings.cs" />
+    <Compile Include="Settings\Model\GUI.cs" />
     <Compile Include="Pages\AppPicker.xaml.cs">
       <DependentUpon>AppPicker.xaml</DependentUpon>
     </Compile>
@@ -107,6 +110,7 @@
     <Compile Include="Pages\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Settings\Controller\SettingsController.cs" />
     <Compile Include="Shared\Handler.cs" />
     <Compile Include="Shared\Vars.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

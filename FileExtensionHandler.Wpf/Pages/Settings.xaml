@@ -6,9 +6,32 @@
       xmlns:local="clr-namespace:FileExtensionHandler.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Settings">
-
-    <Grid>
-        <TextBlock Text="Coming Soon!" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+      Title="Settings"
+      Background="White">
+      <!-- temp: white background -->
+    <Page.Resources>
+        <Style x:Key="TextKey" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0, 0, 10, 0"/>
+        </Style>
+    </Page.Resources>
+    <Grid x:Name="grd_main" Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource TextKey}" Text="Navbar pane display mode: "/>
+        <ComboBox x:Name="cb_Navbar_PaneDisplayMode" Grid.Row="0" Grid.Column="1" SelectionChanged="Save">
+            <ComboBoxItem Content="Auto"/>
+            <ComboBoxItem Content="Left"/>
+            <ComboBoxItem Content="Top"/>
+            <ComboBoxItem Content="Left (compact)"/>
+            <ComboBoxItem Content="Left (minimal)"/>
+        </ComboBox>
     </Grid>
 </Page>
