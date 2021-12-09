@@ -45,7 +45,7 @@ namespace FileExtensionHandler.Pages
                 lb_selection.Items.Add(listBoxItem);
             }
 
-            header.Text = $"Please select an application to open the {FileInformation.Type} with:";
+            header.Text = $"Please select an application to open the {FileInformation.Type ?? "unassociated file"} with:";
             footer.Text = $"{FileInformation.Location}";
             return;
         }

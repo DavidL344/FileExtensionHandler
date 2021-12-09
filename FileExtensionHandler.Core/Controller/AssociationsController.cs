@@ -29,7 +29,21 @@ namespace FileExtensionHandler.Core.Controller
         internal static List<Association> MakeList(FileExtension fileExtension, string associationsDir)
         {
             List<Association> list = new List<Association>();
-            if (fileExtension == null || fileExtension.Associations.Length == 0) return list;
+            if (fileExtension == null) return list;
+            if (fileExtension.Associations.Length == 0)
+            {
+                if (fileExtension.Node != null) return list;
+
+                // The file has no file extension and there's no JSON file to handle the case
+                List<string> allAssociations = new List<string>();
+                DirectoryInfo directoryInfo = new DirectoryInfo(associationsDir);
+                foreach (FileInfo file in directoryInfo.GetFiles("*.json"))
+                {
+                    allAssociations.Add(Path.GetFileNameWithoutExtension(file.FullName));
+                }  
+                fileExtension.Associations = allAssociations.ToArray();
+            }
+            
 
             foreach (string associationName in fileExtension.Associations)
             {

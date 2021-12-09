@@ -41,6 +41,7 @@ namespace FileExtensionHandler.Shared
         {
             FileInformation fileInformation = new FileInformation(Arguments, Vars.Dir_Associations, Vars.Dir_FileExtensions);
             if (fileInformation.Associations.Count > 0) return fileInformation;
+            if (fileInformation.FileExtension != null && fileInformation.FileExtension.Node == null) return fileInformation;
 
             Arguments arguments = new Arguments(Arguments);
             Process.Start(arguments.ParsedNoParameters);
