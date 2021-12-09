@@ -32,7 +32,8 @@ namespace FileExtensionHandler.Pages
 
         private void LoadAssociations()
         {
-            if (FileInformation.FileExtension.Node == null) chk_remember.Visibility = Visibility.Collapsed;
+            if (FileInformation.FileExtension.Node == null || FileInformation.FileExtension.DefaultCheckboxHide)
+                chk_remember.Visibility = Visibility.Collapsed;
             List<Association> associationsList = FileInformation.Associations;
             if (associationsList.Count == 0) return;
 

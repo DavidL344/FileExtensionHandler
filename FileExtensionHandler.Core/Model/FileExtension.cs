@@ -47,5 +47,8 @@ namespace FileExtensionHandler.Core.Model
         /// <remarks>Can be overriden by forced selection.</remarks>
         [JsonProperty("defaultAssociation")]
         public string DefaultAssociation { get; set; }
+
+        [JsonProperty("defaultCheckboxHide")]
+        public bool DefaultCheckboxHide { get; set; }
     }
 }
