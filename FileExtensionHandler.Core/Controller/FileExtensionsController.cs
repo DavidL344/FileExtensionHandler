@@ -9,15 +9,16 @@ using System.Threading.Tasks;
 
 namespace FileExtensionHandler.Core.Controller
 {
-    public class FileExtensionsController
+    internal class FileExtensionsController
     {
         /// <summary>
         /// Saves the file extension information to the disk.
         /// </summary>
         /// <param name="fileExtensionClass">The file extension class to serialize.</param>
-        /// <param name="filePath">The path where the file will be saved.</param>
-        public static void SaveToJson(FileExtension fileExtensionClass, string filePath)
+        /// <param name="fileExtensionsDir">The directory containing file extension information.</param>
+        internal static void SaveToJson(FileExtension fileExtensionClass, string fileExtensionsDir)
         {
+            string filePath = $@"{fileExtensionsDir}\{fileExtensionClass.Node}.json";
             string jsonData = Serialize(fileExtensionClass);
             File.WriteAllText(filePath, jsonData);
         }
@@ -28,7 +29,7 @@ namespace FileExtensionHandler.Core.Controller
         /// <param name="fileExtension">The file extension name of the "<![CDATA[<file extension>]]>.json" file.</param>
         /// <param name="fileExtensionsDir">The directory containing file extension information.</param>
         /// <returns>Desearialized file extension information.</returns>
-        public static FileExtension LoadFromJson(string fileExtension, string fileExtensionsDir)
+        internal static FileExtension LoadFromJson(string fileExtension, string fileExtensionsDir)
         {
             string filePath = $@"{fileExtensionsDir}\{fileExtension}.json";
             if (!File.Exists(filePath))
@@ -50,7 +51,7 @@ namespace FileExtensionHandler.Core.Controller
         /// </summary>
         /// <param name="fileExtensionClass">The file extension class to serialize.</param>
         /// <returns>A JSON serialized class.</returns>
-        public static string Serialize(FileExtension fileExtensionClass)
+        internal static string Serialize(FileExtension fileExtensionClass)
         {
             return JsonConvert.SerializeObject(fileExtensionClass, Formatting.Indented);
         }
@@ -61,7 +62,7 @@ namespace FileExtensionHandler.Core.Controller
         /// <param name="fileExtensionJson">A JSON serialized class.</param>
         /// <param name="node">The file extension name of the "<![CDATA[<file extension>]]>.json" file.</param>
         /// <returns>A deserialized file extension class.</returns>
-        public static FileExtension Deserialize(string fileExtensionJson, string node = null)
+        internal static FileExtension Deserialize(string fileExtensionJson, string node = null)
         {
             FileExtension data = JsonConvert.DeserializeObject<FileExtension>(fileExtensionJson);
             data.Node = node;

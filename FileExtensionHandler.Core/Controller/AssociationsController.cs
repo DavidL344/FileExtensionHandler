@@ -9,15 +9,16 @@ using System.Threading.Tasks;
 
 namespace FileExtensionHandler.Core.Controller
 {
-    public class AssociationsController
+    internal class AssociationsController
     {
         /// <summary>
         /// Saves the association information to the disk.
         /// </summary>
         /// <param name="associationClass">The association class to serialize.</param>
         /// <param name="filePath">The path where the file will be saved.</param>
-        public static void SaveToJson(Association associationClass, string filePath)
+        internal static void SaveToJson(Association associationClass, string associationsDir)
         {
+            string filePath = $@"{associationsDir}\{associationClass.Node}.json";
             string jsonData = Serialize(associationClass);
             File.WriteAllText(filePath, jsonData);
         }
@@ -28,7 +29,7 @@ namespace FileExtensionHandler.Core.Controller
         /// <param name="association">The association name of the "<![CDATA[<association name>]]>.json" file.</param>
         /// <param name="associationsDir">The directory containing associations.</param>
         /// <returns>Desearialized association information.</returns>
-        public static Association LoadFromJson(string association, string associationsDir)
+        internal static Association LoadFromJson(string association, string associationsDir)
         {
             string filePath = $@"{associationsDir}\{association}.json";
             string jsonData = File.ReadAllText(filePath);
@@ -41,7 +42,7 @@ namespace FileExtensionHandler.Core.Controller
         /// <param name="fileExtension">The file extension class with associations.</param>
         /// <param name="associationsDir">The directory containing associations.</param>
         /// <returns>A list of association classes.</returns>
-        public static List<Association> MakeList(FileExtension fileExtension, string associationsDir)
+        internal static List<Association> MakeList(FileExtension fileExtension, string associationsDir)
         {
             List<Association> list = new List<Association>();
             if (fileExtension == null) return list;
@@ -80,7 +81,7 @@ namespace FileExtensionHandler.Core.Controller
         /// </summary>
         /// <param name="associationClass">The association class to serialize.</param>
         /// <returns>A JSON serialized class.</returns>
-        public static string Serialize(Association associationClass)
+        internal static string Serialize(Association associationClass)
         {
             return JsonConvert.SerializeObject(associationClass, Formatting.Indented);
         }
@@ -91,7 +92,7 @@ namespace FileExtensionHandler.Core.Controller
         /// <param name="associationJson">A JSON serialized class.</param>
         /// <param name="node">The association name of the "<![CDATA[<association name>]]>.json" file.</param>
         /// <returns>A deserialized association class.</returns>
-        public static Association Deserialize(string associationJson, string node = null)
+        internal static Association Deserialize(string associationJson, string node = null)
         {
             Association data = JsonConvert.DeserializeObject<Association>(associationJson);
             data.Node = node;

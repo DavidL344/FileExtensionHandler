@@ -150,5 +150,28 @@ namespace FileExtensionHandler.Core
             ProcessStartInfo processStartInfo = GetProcessData(id);
             Process.Start(processStartInfo);
         }
+
+        /// <summary>
+        /// Saves the file extension information to the disk.
+        /// </summary>
+        public void SaveFileExtensionInfo()
+        {
+            FileExtensionsController.SaveToJson(FileExtension, Dir_FileExtensions);
+        }
+
+        /// <summary>
+        /// Saves the association information to the disk.
+        /// </summary>
+        /// <param name="index">Index of the association in the list to update.</param>
+        /// <remarks>If there's no index specified, all association info will be saved to disk.</remarks>
+        public void SaveAssociationInfo(int? index = null)
+        {
+            if (index != null)
+            {
+                AssociationsController.SaveToJson(Associations[(int)index], Dir_Associations);
+                return;
+            }
+            for (int i = 0; i < Associations.Count; i++) SaveAssociationInfo(i);
+        }
     }
 }
