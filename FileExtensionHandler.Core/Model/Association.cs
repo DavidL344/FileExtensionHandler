@@ -20,32 +20,32 @@ namespace FileExtensionHandler.Core.Model
         /// The name of the association.
         /// </summary>
         [JsonProperty("name")]
-        public string Name { get; internal set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// The icon used for the association in the File Explorer.
         /// </summary>
         [JsonProperty("icon")]
-        public string Icon { get; internal set; }
+        public string Icon { get; set; }
 
         /// <summary>
         /// The index of the specified icon for the File Explorer.
         /// </summary>
         [JsonProperty("iconIndex")]
-        public int IconIndex { get; internal set; }
+        public int IconIndex { get; set; }
 
         /// <summary>
         /// The associated app's path.
         /// </summary>
         /// <remarks>Environment variables are expanded during runtime.</remarks>
         [JsonProperty("command")]
-        public string Command { get; internal set; }
+        public string Command { get; set; }
 
         /// <summary>
         /// The arguments passed to the associated app. 
         /// </summary>
         /// <remarks>Environment variables are expanded during runtime.</remarks>
         [JsonProperty("arguments")]
-        public string Arguments { get; internal set; }
+        public string Arguments { get; set; }
     }
 }

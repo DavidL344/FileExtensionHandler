@@ -20,32 +20,32 @@ namespace FileExtensionHandler.Core.Model
         /// A short file type description.
         /// </summary>
         [JsonProperty("name")]
-        public string Name { get; internal set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// The icon used for the file extension in the handler.
         /// </summary>
         [JsonProperty("icon")]
-        public string Icon { get; internal set; }
+        public string Icon { get; set; }
 
         /// <summary>
         /// The index of the specified icon for the handler.
         /// </summary>
         [JsonProperty("iconIndex")]
-        public int IconIndex { get; internal set; }
+        public int IconIndex { get; set; }
 
         /// <summary>
         /// An array containing associations for the file extension.
         /// </summary>
         /// <remarks>The elements can be modified by converting them to <![CDATA[ List<string> ]]> first.</remarks>
         [JsonProperty("associations")]
-        public string[] Associations { get; internal set; }
+        public string[] Associations { get; set; }
 
         /// <summary>
         /// A default association for the file extension.
         /// </summary>
         /// <remarks>Can be overriden by forced selection.</remarks>
         [JsonProperty("defaultAssociation")]
-        public string DefaultAssociation { get; internal set; }
+        public string DefaultAssociation { get; set; }
     }
 }
