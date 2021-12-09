@@ -13,14 +13,16 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <TextBlock x:Name="header" Text="Please select an application to open the file with:" FontSize="16" TextAlignment="Center"/>
-        <ListBox x:Name="lb_selection" Grid.Row="1" Width="Auto" MaxWidth="750" MaxHeight="300" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10" MouseLeftButtonUp="AppSelected" KeyDown="AppSelected">
+        <CheckBox x:Name="chk_remember" Grid.Row="1" Content="Remember this choice" HorizontalAlignment="Center" Margin="0, 5, 0, 0"/>
+        <ListBox x:Name="lb_selection" Grid.Row="2" Width="Auto" MaxWidth="750" MaxHeight="300" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0, 10" Loaded="ListBoxLoaded" MouseLeftButtonUp="AppSelected" KeyDown="AppSelected">
             <ListBoxItem Content="Firefox Developer Edition&#x0a;          &quot;C:\Program Files\Firefox Developer Edition\firefox.exe&quot; &quot;%1&quot;"/>
             <ListBoxItem Content="Firefox Developer Edition (Private)&#x0a;          &quot;C:\Program Files\Firefox Developer Edition\firefox.exe&quot; -private-window &quot;%1&quot;"/>
             <ListBoxItem Content="Foobar2000&#x0a;          &quot;C:\Program Files (x86)\foobar2000\foobar2000.exe&quot; &quot;%1&quot;"/>
             <ListBoxItem Content="Windows Media Player&#x0a;          &quot;C:\Program Files (x86)\Windows Media Player\wmplayer.exe&quot; /prefetch:6 /Open &quot;%1&quot;"/>
         </ListBox>
-        <TextBlock x:Name="footer" Grid.Row="2" Text="Selected file: Sample.mp3" FontSize="14" TextAlignment="Center"/>
+        <TextBlock x:Name="footer" Grid.Row="3" Text="Selected file: Sample.mp3" FontSize="14" TextAlignment="Center"/>
     </Grid>
 </Page>

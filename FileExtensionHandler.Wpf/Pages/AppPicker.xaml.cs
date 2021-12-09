@@ -32,6 +32,7 @@ namespace FileExtensionHandler.Pages
 
         private void LoadAssociations()
         {
+            if (FileInformation.FileExtension.Node == null) chk_remember.Visibility = Visibility.Collapsed;
             List<Association> associationsList = FileInformation.Associations;
             if (associationsList.Count == 0) return;
 
@@ -66,8 +67,26 @@ namespace FileExtensionHandler.Pages
             if (id == -1) id = lb_selection.SelectedIndex;
             if (Keyboard.IsKeyDown(Key.Escape)) id = -1;
             if (id == -1) return;
+
+            if ((bool)chk_remember.IsChecked)
+            {
+                FileInformation.FileExtension.DefaultAssociation = FileInformation.Associations[id].Node;
+                FileInformation.SaveFileExtensionInfo();
+            }
             FileInformation.OpenWith(id);
             Application.Current.Shutdown();
+        }
+
+        private void ListBoxLoaded(object sender, RoutedEventArgs e)
+        {
+            int maxShownRows = 3; // 3-5 rows; default = 3
+            int onScreenItems = lb_selection.Items.Count > 5 ? 5 : lb_selection.Items.Count;
+
+            if (maxShownRows < 3 || maxShownRows > 5) maxShownRows = 3;
+            double maxHeight = lb_selection.ActualHeight / onScreenItems * maxShownRows;
+
+            lb_selection.Width = lb_selection.ActualWidth;
+            if (lb_selection.ActualHeight > maxHeight) lb_selection.Height = maxHeight;
         }
     }
 }
