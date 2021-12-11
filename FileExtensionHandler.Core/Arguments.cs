@@ -63,15 +63,10 @@ namespace FileExtensionHandler.Core
             pathParsed = HttpUtility.UrlDecode(pathParsed);
 
             // Browsers might add a character at the end of the URL - this removes it
-            switch (pathParsed.Last())
-            {
-                case '/':
-                case '\\':
-                    pathParsed = pathParsed.Remove(pathParsed.Length - 1);
-                    break;
-                default:
-                    break;
-            }
+            if (pathParsed.Length == 0) return pathParsed;
+            char[] trailingCharacters = { '/', '\\' };
+            if (trailingCharacters.Contains(pathParsed.Last()))
+                pathParsed = pathParsed.Remove(pathParsed.Length - 1);
             return pathParsed;
         }
 
