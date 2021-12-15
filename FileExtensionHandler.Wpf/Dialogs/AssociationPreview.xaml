@@ -1,4 +1,4 @@
-﻿<ui:ContentDialog x:Class="FileExtensionHandler.Dialogs.AssociationDetails"
+﻿<ui:ContentDialog x:Class="FileExtensionHandler.Dialogs.AssociationPreview"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -22,21 +22,13 @@
     <Grid x:Name="grd_main">
         <ui:SimpleStackPanel Spacing="12" VerticalAlignment="Center">
             <TextBlock Text="Name:"/>
-            <TextBox x:Name="txt_name"/>
-
-            <ui:SimpleStackPanel x:Name="stck_optional" Spacing="12" Visibility="Collapsed">
-                <TextBlock Text="Icon path:"/>
-                <TextBox x:Name="txt_icon"/>
-
-                <TextBlock Text="Icon index:"/>
-                <ui:NumberBox x:Name="num_icon"/>
-            </ui:SimpleStackPanel>
+            <TextBox x:Name="txt_name" TextWrapping="Wrap" KeyDown="PreventEditing"/>
 
             <TextBlock Text="Command:"/>
-            <TextBox x:Name="txt_command"/>
+            <TextBox x:Name="txt_command" TextWrapping="Wrap" KeyDown="PreventEditing"/>
 
             <TextBlock Text="Arguments:"/>
-            <TextBox x:Name="txt_arguments"/>
+            <TextBox x:Name="txt_arguments" TextWrapping="Wrap" KeyDown="PreventEditing"/>
         </ui:SimpleStackPanel>
     </Grid>
 </ui:ContentDialog>

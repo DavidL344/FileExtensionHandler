@@ -21,29 +21,20 @@ namespace FileExtensionHandler.Dialogs
     /// <summary>
     /// Interaction logic for AssociationDetails.xaml
     /// </summary>
-    public partial class AssociationDetails
+    public partial class AssociationPreview
     {
         private readonly string SampleFilePath;
-        public AssociationDetails(Association association, bool editMode = false, string sampleFilePath = null)
+        public AssociationPreview(Association association, string sampleFilePath = null)
         {
             InitializeComponent();
             if (association != null) LoadInfo(association);
             this.SampleFilePath = sampleFilePath;
-
-            if (editMode)
-            {
-                stck_optional.Visibility = Visibility.Visible;
-                this.Height = 550;
-                this.PrimaryButtonText = "Save";
-            }
         }
 
         private void LoadInfo(Association association)
         {
             Title = $"Association \"{association.Node}\"";
             txt_name.Text = association.Name;
-            txt_icon.Text = association.Icon;
-            num_icon.Text = association.IconIndex.ToString();
             txt_command.Text = association.Command;
             txt_arguments.Text = association.Arguments;
         }
@@ -61,6 +52,31 @@ namespace FileExtensionHandler.Dialogs
                 WorkingDirectory = System.IO.Path.GetDirectoryName(fileName)
             };
             Process.Start(processStartInfo);
+        }
+
+        private void PreventEditing(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.C:
+                case Key.V:
+                case Key.A:
+                    if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control) return;
+                    break;
+
+                case Key.Left:
+                case Key.Up:
+                case Key.Right:
+                case Key.Down:
+                case Key.PageUp:
+                case Key.PageDown:
+                case Key.Home:
+                case Key.End:
+                    return;
+                default:
+                    break;
+            }
+            e.Handled = true;
         }
     }
 }

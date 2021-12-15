@@ -152,7 +152,7 @@ namespace FileExtensionHandler.Pages
             if (selectedIndex == -1) return;
             Association associationFromIndex = FileInformation.Associations[selectedIndex];
 
-            new Dialogs.AssociationDetails(associationFromIndex, false, txt_sampleFilePath.Text).ShowAsync();
+            new Dialogs.AssociationPreview(associationFromIndex, txt_sampleFilePath.Text).ShowAsync();
             lb_viewer.SelectedIndex = -1;
         }
     }
