@@ -22,7 +22,7 @@
             <TextBlock Text="File Extension:" Grid.Column="0" FontSize="16" VerticalAlignment="Center" Margin="0, 0, 10, 0"/>
             <ComboBox x:Name="cb_fileExtensions" Grid.Column="1" MinWidth="110" SelectionChanged="DataUpdated"/>
         </Grid>
-        <ListBox x:Name="lb_viewer" Grid.Row="1" Width="568" Height="272.8" Margin="10">
+        <ListBox x:Name="lb_viewer" Grid.Row="1" Width="568" Height="272.8" Margin="10" SelectionChanged="OpenAssociationInformation">
             <ListBoxItem Content="File associations will be displayed here."/>
         </ListBox>
         <Grid Grid.Row="2" HorizontalAlignment="Center">

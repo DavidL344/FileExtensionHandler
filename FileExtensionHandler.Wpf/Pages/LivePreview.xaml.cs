@@ -145,5 +145,15 @@ namespace FileExtensionHandler.Pages
                                         .Select(s => s[random.Next(s.Length)])
                                         .ToArray());
         }
+
+        private void OpenAssociationInformation(object sender, SelectionChangedEventArgs e)
+        {
+            int selectedIndex = lb_viewer.SelectedIndex;
+            if (selectedIndex == -1) return;
+            Association associationFromIndex = FileInformation.Associations[selectedIndex];
+
+            new Dialogs.AssociationDetails(associationFromIndex, false, txt_sampleFilePath.Text).ShowAsync();
+            lb_viewer.SelectedIndex = -1;
+        }
     }
 }
