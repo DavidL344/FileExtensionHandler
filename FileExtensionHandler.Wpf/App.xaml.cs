@@ -20,29 +20,29 @@ namespace FileExtensionHandler
 
         private void OnStart(object sender, StartupEventArgs e)
         {
-            Args = Debug ? new string[] { Environment.ExpandEnvironmentVariables(@"%userprofile%\Desktop\temp.mp3") } : e.Args;
-            if (Args.Length > 0)
+            try
             {
-                try
+                Args = Debug ? new string[] { Environment.ExpandEnvironmentVariables(@"%userprofile%\Desktop\temp.mp3") } : e.Args;
+                if (Args.Length > 0)
                 {
                     Handler handler = new Handler(Args);
                     handler.Start();
                 }
-                catch (Exception ex)
+                else
                 {
-                    // Suppress the exception when the user cancels the UAC prompt
-                    int errorCode = (ex is Win32Exception) ? (ex as Win32Exception).NativeErrorCode : ex.HResult;
-                    if (errorCode != 1223 && !Debug) MessageBox.Show(String.Format("A fatal error has occured.\r\nException type: {0}\r\nException Description: {1}", ex.GetType(), ex.Message), "Fatal Error | fexth", MessageBoxButton.OK, MessageBoxImage.Error);
-                    if (errorCode != 1223 && Debug) throw;
-                    this.Close();
+                    MainWindow window = new MainWindow();
+                    window.ShowDialog();
                 }
+                this.Close();
             }
-            else
+            catch (Exception ex)
             {
-                MainWindow window = new MainWindow();
-                window.ShowDialog();
+                // Suppress the exception when the user cancels the UAC prompt
+                int errorCode = (ex is Win32Exception) ? (ex as Win32Exception).NativeErrorCode : ex.HResult;
+                if (errorCode != 1223 && !Debug) MessageBox.Show(String.Format("A fatal error has occured.\r\nException type: {0}\r\nException Description: {1}", ex.GetType(), ex.Message), "Fatal Error | fexth", MessageBoxButton.OK, MessageBoxImage.Error);
+                if (errorCode != 1223 && Debug) throw;
+                this.Close();
             }
-            this.Close();
         }
 
         private void Close()

@@ -8,32 +8,35 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="LivePreview">
 
-    <Grid Margin="10" HorizontalAlignment="Center">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="0" HorizontalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="File Extension:" Grid.Column="0" FontSize="16" VerticalAlignment="Center" Margin="0, 0, 10, 0"/>
-            <ComboBox x:Name="cb_fileExtensions" Grid.Column="1" MinWidth="110" SelectionChanged="DataUpdated"/>
-        </Grid>
-        <ListBox x:Name="lb_viewer" Grid.Row="1" Width="568" Height="272.8" Margin="10" SelectionChanged="OpenAssociationInformation">
-            <ListBoxItem Content="File associations will be displayed here."/>
-        </ListBox>
-        <Grid Grid.Row="2" HorizontalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="Sample File Path:" Grid.Column="0" FontSize="16" VerticalAlignment="Center"/>
-            <TextBox x:Name="txt_sampleFilePath" Grid.Column="1" Width="250" TextChanged="DataUpdated" Margin="10, 0, 5, 0"/>
-            <Button Grid.Column="2" Content="..." HorizontalAlignment="Right" Click="OpenSampleFile"/>
+    <Grid>
+        <TextBlock x:Name="lbl_noAssociations" Text="No associations found.&#x0d;&#x0a;Please create some in the Home tab first!" FontSize="16" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
+        <Grid x:Name="grd_main" Margin="10" HorizontalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="File Extension:" Grid.Column="0" FontSize="16" VerticalAlignment="Center" Margin="0, 0, 10, 0"/>
+                <ComboBox x:Name="cb_fileExtensions" Grid.Column="1" MinWidth="110" SelectionChanged="DataUpdated"/>
+            </Grid>
+            <ListBox x:Name="lb_viewer" Grid.Row="1" Width="568" Height="272.8" Margin="10" SelectionChanged="OpenAssociationInformation">
+                <ListBoxItem Content="File associations will be displayed here."/>
+            </ListBox>
+            <Grid Grid.Row="2" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Sample File Path:" Grid.Column="0" FontSize="16" VerticalAlignment="Center"/>
+                <TextBox x:Name="txt_sampleFilePath" Grid.Column="1" Width="250" TextChanged="DataUpdated" Margin="10, 0, 5, 0"/>
+                <Button Grid.Column="2" Content="..." HorizontalAlignment="Right" Click="OpenSampleFile"/>
+            </Grid>
         </Grid>
     </Grid>
 </Page>

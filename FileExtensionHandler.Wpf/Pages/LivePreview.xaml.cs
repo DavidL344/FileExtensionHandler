@@ -35,6 +35,14 @@ namespace FileExtensionHandler.Pages
         public LivePreview()
         {
             InitializeComponent();
+            if (!Directory.Exists(Vars.DefaultSaveLocation)
+             || !Directory.Exists(Vars.Dir_Associations)
+             || !Directory.Exists(Vars.Dir_FileExtensions))
+            {
+                grd_main.Visibility = Visibility.Collapsed;
+                lbl_noAssociations.Visibility = Visibility.Visible;
+                return;
+            }
             LoadAllFileExtensions();
             LoadFileAssociations();
         }
