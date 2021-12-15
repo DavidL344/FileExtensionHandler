@@ -57,6 +57,8 @@ namespace FileExtensionHandler.Shared
                 return String.Join(".", versionArray);
             }
         }
+
+        internal static string AssemblyLocation => Assembly.GetExecutingAssembly().Location;
         #endregion
     }
 }
