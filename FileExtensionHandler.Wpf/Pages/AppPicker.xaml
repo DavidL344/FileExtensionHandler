@@ -6,8 +6,9 @@
       xmlns:local="clr-namespace:FileExtensionHandler.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
+      Background="{DynamicResource SystemControlPageBackgroundAltHighBrush}"
       Title="AppPicker">
-    
+
     <Grid x:Name="grd_main" HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -23,6 +24,8 @@
             <ListBoxItem Content="Foobar2000&#x0a;          &quot;C:\Program Files (x86)\foobar2000\foobar2000.exe&quot; &quot;%1&quot;"/>
             <ListBoxItem Content="Windows Media Player&#x0a;          &quot;C:\Program Files (x86)\Windows Media Player\wmplayer.exe&quot; /prefetch:6 /Open &quot;%1&quot;"/>
         </ListBox>
-        <TextBlock x:Name="footer" Grid.Row="3" Text="Selected file: Sample.mp3" FontSize="14" TextAlignment="Center"/>
+        <ScrollViewer Grid.Row="3" MaxWidth="580" MinHeight="32" MaxHeight="50" Margin="0, 0, 10, 0" Padding="25, 0">
+            <TextBlock x:Name="footer" Text="Selected file: Sample.mp3" FontSize="14" TextAlignment="Center" TextWrapping="Wrap"/>
+        </ScrollViewer>
     </Grid>
 </Page>
