@@ -21,10 +21,8 @@ namespace FileExtensionHandler.Shared
 
         internal void Start()
         {
-            this.FileInformation = GetFileInformation();
-            if (this.FileInformation == null) return;
-
-            if (FileInformation.DefaultAssociationIndex != -1)
+            this.FileInformation = new FileInformation(Arguments, Vars.Dir_Associations, Vars.Dir_FileExtensions);
+            if (!FileInformation.CalledFromAppProtocol && (FileInformation.Associations.Count == 0 || FileInformation.Associations.Count == 1))
             {
                 FileInformation.OpenWith(FileInformation.DefaultAssociationIndex);
                 return;
@@ -35,17 +33,6 @@ namespace FileExtensionHandler.Shared
                 Title = ""
             };
             window.ShowDialog();
-        }
-
-        internal FileInformation GetFileInformation()
-        {
-            FileInformation fileInformation = new FileInformation(Arguments, Vars.Dir_Associations, Vars.Dir_FileExtensions);
-            if (fileInformation.Associations.Count > 0) return fileInformation;
-            if (fileInformation.FileExtension != null && fileInformation.FileExtension.Node == null) return fileInformation;
-
-            Arguments arguments = new Arguments(Arguments);
-            Process.Start(arguments.ParsedNoParameters);
-            return null;
         }
     }
 }

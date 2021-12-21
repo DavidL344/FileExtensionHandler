@@ -58,6 +58,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Dialogs\AppProtocolConfirmation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialogs\AssociationPreview.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -69,6 +73,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dialogs\AppProtocolConfirmation.xaml.cs">
+      <DependentUpon>AppProtocolConfirmation.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\AssociationPreview.xaml.cs">
       <DependentUpon>AssociationPreview.xaml</DependentUpon>

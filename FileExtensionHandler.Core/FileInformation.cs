@@ -23,8 +23,9 @@ namespace FileExtensionHandler.Core
 
         public string Name => Arguments.Name;
         public string Location => Arguments.Parsed;
+        public string LocationNoParameters => Arguments.ParsedNoParameters;
         public bool Streamed => Arguments.Streamed;
-        public string Type => !string.IsNullOrWhiteSpace(FileExtension.Name) ? FileExtension.Name : null;
+        public string Type => (FileExtension != null && !string.IsNullOrWhiteSpace(FileExtension.Name)) ? FileExtension.Name : null;
 
         public string[] ProtocolsUsed => Arguments.ProtocolsUsed;
         public bool CalledFromAppProtocol => Arguments.CalledFromAppProtocol;
@@ -144,7 +145,12 @@ namespace FileExtensionHandler.Core
         {
             if (id == -1)
             {
-                if (DefaultAssociationIndex == -1) return;
+                if (DefaultAssociationIndex == -1)
+                {
+                    string location = Streamed ? Location : LocationNoParameters;
+                    Process.Start(location);
+                    return;
+                }
                 id = DefaultAssociationIndex;
             }
             ProcessStartInfo processStartInfo = GetProcessData(id);

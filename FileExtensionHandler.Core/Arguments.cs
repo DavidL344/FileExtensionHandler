@@ -17,7 +17,7 @@ namespace FileExtensionHandler.Core
         public readonly string ParsedNoParameters;
 
         public string Name => Path.GetFileName(ParsedNoParameters);
-        public bool Streamed => ProtocolsUsed.Intersect(CommunicationProtocols).Any();
+        public bool Streamed => Parsed.Contains("://");
 
         public string[] ProtocolsUsed { get; private set; }
         public bool CalledFromAppProtocol => ProtocolsUsed.Contains(AppProtocol);
@@ -29,8 +29,15 @@ namespace FileExtensionHandler.Core
         public Arguments(string[] args, string appProtocol = "fexth://")
         {
             this.AppProtocol = appProtocol;
-            this.Protocols = new string[] { appProtocol, "file:///", "http://", "https://" };
-            this.CommunicationProtocols = new string[] { "http://", "https://" };
+            this.CommunicationProtocols = new string[] { "http://", "https://", "ftp://", "ftps://", "smb://" };
+
+            List<string> protocolList = new List<string>
+            {
+                appProtocol, "file:///"
+            };
+            foreach (string communicationProtocol in this.CommunicationProtocols)
+                protocolList.Add(communicationProtocol);
+            this.Protocols = protocolList.ToArray();
 
             this.Raw = args;
             this.Parsed = this.Parse();

@@ -96,7 +96,7 @@ namespace FileExtensionHandler.Pages
             {
                 // Suppress the exception when the user cancels the UAC prompt
                 int errorCode = (ex is Win32Exception) ? (ex as Win32Exception).NativeErrorCode : ex.HResult;
-                if (errorCode != 1223) MessageBox.Show(String.Format("An unknown error has occured.\r\nException type: {0}\r\nException Description: {1}", ex.GetType(), ex.Message));
+                if (errorCode != 1223) MessageBox.Show(String.Format("An unknown error has occured.\r\nException type: {0}\r\nException Description: {1}", ex.GetType(), ex.Message), "Error | fexth", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {

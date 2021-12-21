@@ -25,14 +25,7 @@
         <TextBlock Grid.Row="0" Text="This option registers fexth:// as a file protocol:"/>
         <CheckBox x:Name="chk_regProtocol" Grid.Row="1" Content="Register the app's file protocol" HorizontalAlignment="Center" Margin="0, 5" Click="ChangeRegistryState"/>
         <TextBlock Grid.Row="2" TextAlignment="Center">
-            The protocol can be used to open your local files through a hypertext link.
-            <LineBreak/>
-            <LineBreak/>
-            <Bold>
-                Currently, there's no way of stopping the command execution
-                <LineBreak/>
-                from the hyperlink if there's a default association set!
-            </Bold>
+            The protocol can be used to open files through a hypertext link.
         </TextBlock>
     </Grid>
 </Page>
