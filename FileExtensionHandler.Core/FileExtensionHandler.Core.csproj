@@ -80,6 +80,7 @@
     <Compile Include="Model\Association.cs" />
     <Compile Include="Model\FileExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AppRegistry.cs" />
     <Compile Include="Samples.cs" />
   </ItemGroup>
   <ItemGroup>
