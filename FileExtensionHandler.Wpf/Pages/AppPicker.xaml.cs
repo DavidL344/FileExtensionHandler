@@ -4,6 +4,7 @@ using FileExtensionHandler.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -100,7 +101,7 @@ namespace FileExtensionHandler.Pages
             {
                 FileInformation.OpenWith(id);
             }
-            catch (Exception e)
+            catch (Exception e) when (!Debugger.IsAttached)
             {
                 // Suppress the exception when the user cancels the UAC prompt
                 int errorCode = (e is Win32Exception) ? (e as Win32Exception).NativeErrorCode : e.HResult;

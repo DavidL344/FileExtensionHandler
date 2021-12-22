@@ -44,7 +44,7 @@ namespace FileExtensionHandler.Pages
                 }
                 AppRegistry.UnregisterProtocol();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!Debugger.IsAttached)
             {
                 // Suppress the exception when the user cancels the UAC prompt
                 int errorCode = (ex is Win32Exception) ? (ex as Win32Exception).NativeErrorCode : ex.HResult;
