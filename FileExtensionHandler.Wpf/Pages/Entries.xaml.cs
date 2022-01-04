@@ -4,6 +4,7 @@ using FileExtensionHandler.Shared;
 using ModernWpf.Controls;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -46,7 +47,6 @@ namespace FileExtensionHandler.Pages
                         dg_fileExtensions.Visibility = Visibility.Collapsed;
                         lbl_header.Text = "Associations:";
                         dg_associations.Visibility = Visibility.Visible;
-
                         break;
                     case "dg_fileExtensions":
                         dg_associations.Visibility = Visibility.Collapsed;
@@ -67,12 +67,19 @@ namespace FileExtensionHandler.Pages
         {
             string btn_prefix = "btn_";
             AppBarButton appBarButton = sender as AppBarButton;
-            if (appBarButton == null || !appBarButton.Name.StartsWith(btn_prefix)) return;
-            switch (appBarButton.Name.Substring(btn_prefix.Length))
+            AppBarToggleButton appBarToggleButton = sender as AppBarToggleButton;
+
+            if (appBarButton == null || !appBarButton.Name.StartsWith(btn_prefix))
+                if (appBarToggleButton == null || !appBarToggleButton.Name.StartsWith(btn_prefix)) return;
+
+            string stringToSwitch = appBarButton != null ? appBarButton.Name.Substring(btn_prefix.Length) : appBarToggleButton.Name.Substring(btn_prefix.Length);
+            switch (stringToSwitch)
             {
                 case "add":
+                    ComingSoon();
                     break;
                 case "remove":
+                    ComingSoon();
                     break;
                 case "refresh":
                     RefreshView();
@@ -83,7 +90,9 @@ namespace FileExtensionHandler.Pages
                 case "save":
                     SaveToDisk();
                     break;
-                case "more":
+                case "locate":
+                    if (ActiveDataGrid.Name == "dg_associations") Process.Start(Vars.Dir_Associations);
+                    if (ActiveDataGrid.Name == "dg_fileExtensions") Process.Start(Vars.Dir_FileExtensions);
                     break;
                 default:
                     break;
@@ -97,8 +106,29 @@ namespace FileExtensionHandler.Pages
                 MessageBox.Show("Unable to perform the save operation!\r\nPlease check the data entered.", "fexth", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            //MessageBox.Show(((FileExtension)dataGrid.Items[3]).Name);
-            //MessageBox.Show(FileExtensions[3].Name);
+            try
+            {
+                switch (ActiveDataGrid.Name)
+                {
+                    case "dg_associations":
+                        List<Association> associationsToSave = dg_associations.Items.OfType<Association>().ToList();
+                        foreach (Association associationToSave in associationsToSave)
+                            AssociationsController.SaveToJson(associationToSave, Vars.Dir_Associations);
+                        break;
+                    case "dg_fileExtensions":
+                        List<FileExtension> fileExtensionsToSave = dg_fileExtensions.Items.OfType<FileExtension>().ToList();
+                        foreach (FileExtension fileExtensionToSave in fileExtensionsToSave)
+                            FileExtensionsController.SaveToJson(fileExtensionToSave, Vars.Dir_FileExtensions);
+                        break;
+                    default:
+                        break;
+                }
+                MessageBox.Show("Data saved!", "fexth", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show($"Unable to save the data: {e.Message}", "Error | fexth", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
 
         private void RefreshView()
@@ -122,26 +152,14 @@ namespace FileExtensionHandler.Pages
                 default:
                     return;
             }
-            UpdateView(dataGrid, false);
+            UpdateView(dataGrid);
         }
 
-        private void UpdateView(DataGrid dataGrid, bool keepEdits = false)
+        private void UpdateView(DataGrid dataGrid)
         {
-            if (keepEdits)
-            {
-                dataGrid.CommitEdit();
-                dataGrid.CommitEdit();
-            }
-            else
-            {
-                dataGrid.CancelEdit();
-                dataGrid.CancelEdit();
-            }
-
             if (dataGrid.ItemsSource != null)
             {
                 dataGrid.SelectedIndex = -1;
-                //dataGrid.Items.Refresh();
                 dataGrid.ItemsSource = null;
             }
             
@@ -157,6 +175,13 @@ namespace FileExtensionHandler.Pages
                     return;
             }
             if (!dataGrid.IsEnabled) dataGrid.IsEnabled = true;
+
+            ScrollViewer scrollViewer = External.GetVisualChild<ScrollViewer>(dataGrid);
+            if (scrollViewer != null)
+            {
+                scrollViewer.ScrollToTop();
+                scrollViewer.ScrollToLeftEnd();
+            }
         }
 
         private void SwitchView()
@@ -188,8 +213,6 @@ namespace FileExtensionHandler.Pages
 
         public bool IsGridValid(DataGrid dataGrid)
         {
-            ActiveDataGrid.CommitEdit();
-            ActiveDataGrid.CommitEdit();
             try
             {
                 if (LatestEditArgs != null)
@@ -212,23 +235,12 @@ namespace FileExtensionHandler.Pages
                             return false;
                     }
                 }
-                return IsBindingValid(dataGrid);
+                return External.IsBindingValid(dataGrid);
             }
             catch
             {
                 return false;
             }
-        }
-
-        private bool IsBindingValid(DependencyObject parent)
-        {
-            if (Validation.GetHasError(parent)) return false;
-            for (int i = 0; i != VisualTreeHelper.GetChildrenCount(parent); ++i)
-            {
-                DependencyObject child = VisualTreeHelper.GetChild(parent, i);
-                if (!IsBindingValid(child)) return false;
-            }
-            return true;
         }
 
         private bool DirectoriesExist()
@@ -243,6 +255,11 @@ namespace FileExtensionHandler.Pages
                 lbl_noAssociations.Visibility = Visibility.Visible;
             }
             return exists;
+        }
+
+        private void ComingSoon(object sender = null, RoutedEventArgs e = null)
+        {
+            MessageBox.Show("Coming Soon!", "fexth", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

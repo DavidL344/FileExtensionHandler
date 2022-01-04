@@ -121,6 +121,7 @@
     <Compile Include="Pages\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Shared\External.cs" />
     <Compile Include="Shared\Handler.cs" />
     <Compile Include="Shared\Vars.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
