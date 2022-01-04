@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace FileExtensionHandler.Core.Controller
 {
-    internal class FileExtensionsController
+    public class FileExtensionsController
     {
         /// <summary>
         /// Saves the file extension information to the disk.
         /// </summary>
         /// <param name="fileExtensionClass">The file extension class to serialize.</param>
         /// <param name="fileExtensionsDir">The directory containing file extension information.</param>
-        internal static void SaveToJson(FileExtension fileExtensionClass, string fileExtensionsDir)
+        public static void SaveToJson(FileExtension fileExtensionClass, string fileExtensionsDir)
         {
             string filePath = $@"{fileExtensionsDir}\{fileExtensionClass.Node}.json";
             string jsonData = Serialize(fileExtensionClass);
@@ -29,7 +29,7 @@ namespace FileExtensionHandler.Core.Controller
         /// <param name="fileExtension">The file extension name of the "<![CDATA[<file extension>]]>.json" file.</param>
         /// <param name="fileExtensionsDir">The directory containing file extension information.</param>
         /// <returns>Desearialized file extension information.</returns>
-        internal static FileExtension LoadFromJson(string fileExtension, string fileExtensionsDir)
+        public static FileExtension LoadFromJson(string fileExtension, string fileExtensionsDir)
         {
             string filePath = $@"{fileExtensionsDir}\{fileExtension}.json";
             if (!File.Exists(filePath))
@@ -47,11 +47,29 @@ namespace FileExtensionHandler.Core.Controller
         }
 
         /// <summary>
+        /// Loads a list containing file extension information.
+        /// </summary>
+        /// <param name="fileExtensionsDir">The directory containing file extension information.</param>
+        /// <returns>A list of desearialized file extension information entries.</returns>
+        public static List<FileExtension> GetFileExtensions(string fileExtensionsDir)
+        {
+            List<FileExtension> loadedFileExtensionsList = new List<FileExtension>();
+            DirectoryInfo directoryInfo = new DirectoryInfo(fileExtensionsDir);
+            foreach (FileInfo file in directoryInfo.GetFiles("*.json"))
+            {
+                string fileExtension = Path.GetFileNameWithoutExtension(file.Name);
+                FileExtension fileExtensionData = LoadFromJson(fileExtension, fileExtensionsDir);
+                loadedFileExtensionsList.Add(fileExtensionData);
+            }
+            return loadedFileExtensionsList;
+        }
+
+        /// <summary>
         /// Serializes the file extension information into a readable JSON format.
         /// </summary>
         /// <param name="fileExtensionClass">The file extension class to serialize.</param>
         /// <returns>A JSON serialized class.</returns>
-        internal static string Serialize(FileExtension fileExtensionClass)
+        public static string Serialize(FileExtension fileExtensionClass)
         {
             return JsonConvert.SerializeObject(fileExtensionClass, Formatting.Indented);
         }
@@ -62,7 +80,7 @@ namespace FileExtensionHandler.Core.Controller
         /// <param name="fileExtensionJson">A JSON serialized class.</param>
         /// <param name="node">The file extension name of the "<![CDATA[<file extension>]]>.json" file.</param>
         /// <returns>A deserialized file extension class.</returns>
-        internal static FileExtension Deserialize(string fileExtensionJson, string node = null)
+        public static FileExtension Deserialize(string fileExtensionJson, string node = null)
         {
             FileExtension data = JsonConvert.DeserializeObject<FileExtension>(fileExtensionJson);
             data.Node = node;
