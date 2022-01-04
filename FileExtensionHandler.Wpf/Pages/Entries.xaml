@@ -4,11 +4,52 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:FileExtensionHandler.Pages"
+      xmlns:ui="http://schemas.modernwpf.com/2019"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
+      Background="{DynamicResource SystemControlPageBackgroundAltHighBrush}"
       Title="Entries">
 
+    <Page.Resources>
+        <DataTemplate x:Key="RowDetailsTemplate">
+            <StackPanel Width="750" HorizontalAlignment="Left">
+                <Grid Margin="5">
+                    <Button HorizontalAlignment="Center" IsEnabled="False">
+                        <StackPanel Orientation="Horizontal">
+                            <ui:SymbolIcon Symbol="Edit"/>
+                            <TextBlock Text="Edit" FontWeight="SemiBold" FontSize="13" Margin="5, 0, 0, 0"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </StackPanel>
+        </DataTemplate>
+    </Page.Resources>
     <Grid>
-        <TextBlock Text="Coming Soon!" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock x:Name="lbl_noAssociations" Text="No associations found.&#x0d;&#x0a;Please create some in the Home tab first!" FontSize="16" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
+        <Grid x:Name="grd_main" Margin="10" HorizontalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <TextBlock x:Name="lbl_header" Text="File Extensions:" Grid.Row="0" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0, 0, 10, 0"/>
+            <Grid Grid.Row="1" Margin="10">
+                <DataGrid x:Name="dg_fileExtensions" RowDetailsTemplate="{StaticResource RowDetailsTemplate}" CanUserAddRows="False" CanUserDeleteRows="False" FrozenColumnCount="1" RowDetailsVisibilityMode="VisibleWhenSelected" IsEnabled="False" Loaded="ViewerLoaded" CellEditEnding="CellEditEnding" Visibility="Visible"/>
+                <DataGrid x:Name="dg_associations" RowDetailsTemplate="{StaticResource RowDetailsTemplate}" CanUserAddRows="False" CanUserDeleteRows="False" FrozenColumnCount="1" RowDetailsVisibilityMode="VisibleWhenSelected" IsEnabled="False" Loaded="ViewerLoaded" CellEditEnding="CellEditEnding" Visibility="Collapsed"/>
+            </Grid>
+
+            <ui:CommandBar Grid.Row="2" DefaultLabelPosition="Bottom" HorizontalAlignment="Center">
+                <ui:AppBarButton x:Name="btn_save" Label="Save" Icon="Save" Click="AppBarButtonClicked" IsEnabled="False"/>
+                <ui:AppBarButton x:Name="btn_refresh" Label="Refresh" Icon="Refresh" Click="AppBarButtonClicked"/>
+                <ui:AppBarSeparator/>
+                <ui:AppBarButton x:Name="btn_add" Label="Add" Icon="Add" Click="AppBarButtonClicked" IsEnabled="False"/>
+                <ui:AppBarButton x:Name="btn_edit" Label="Edit" Icon="Edit" Click="AppBarButtonClicked" IsEnabled="False"/>
+                <ui:AppBarButton x:Name="btn_remove" Label="Remove" Icon="Remove" Click="AppBarButtonClicked" IsEnabled="False"/>
+                <ui:AppBarSeparator/>
+                <ui:AppBarButton x:Name="btn_switch" Label="Switch to..." Icon="Switch" Click="AppBarButtonClicked"/>
+                <ui:AppBarButton x:Name="btn_more" Label="More" Icon="More" Click="AppBarButtonClicked" IsEnabled="False"/>
+            </ui:CommandBar>
+        </Grid>
     </Grid>
 </Page>
