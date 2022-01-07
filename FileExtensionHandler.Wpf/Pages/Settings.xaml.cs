@@ -1,4 +1,4 @@
-﻿using FileExtensionHandler.Core;
+﻿using FileExtensionHandler.Core.Controller;
 using FileExtensionHandler.Shared;
 using Microsoft.Win32;
 using System;
@@ -25,7 +25,6 @@ namespace FileExtensionHandler.Pages
     /// </summary>
     public partial class Settings : Page
     {
-        private readonly AppRegistry AppRegistry = new AppRegistry(Vars.AssemblyLocation);
         public Settings()
         {
             InitializeComponent();
@@ -37,18 +36,22 @@ namespace FileExtensionHandler.Pages
             chk_regProtocol.IsEnabled = false;
             try
             {
-                if (!AppRegistry.IsProtocolRegistered)
+                if (!ProtocolController.IsRegistered(Vars.Protocol, Vars.AssemblyLocation))
                 {
-                    AppRegistry.RegisterProtocol();
+                    ProtocolController.Register(Vars.Protocol, Vars.AssemblyLocation);
                     return;
                 }
-                AppRegistry.UnregisterProtocol();
+                ProtocolController.Unregister(Vars.Protocol);
             }
-            catch (Exception ex) when (!Debugger.IsAttached)
+            catch (Exception ex)
             {
                 // Suppress the exception when the user cancels the UAC prompt
                 int errorCode = (ex is Win32Exception) ? (ex as Win32Exception).NativeErrorCode : ex.HResult;
-                if (errorCode != 1223) MessageBox.Show(String.Format("An unknown error has occured.\r\nException type: {0}\r\nException Description: {1}", ex.GetType(), ex.Message), "Error | fexth", MessageBoxButton.OK, MessageBoxImage.Error);
+                if (errorCode != 1223)
+                {
+                    if (Debugger.IsAttached) throw;
+                    MessageBox.Show(String.Format("An unknown error has occured.\r\nException type: {0}\r\nException Description: {1}", ex.GetType(), ex.Message), "Error | fexth", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
             finally
             {
@@ -59,7 +62,7 @@ namespace FileExtensionHandler.Pages
 
         private void RefreshRegistryCheckBox()
         {
-            chk_regProtocol.IsChecked = AppRegistry.IsProtocolRegistered;
+            chk_regProtocol.IsChecked = ProtocolController.IsRegistered(Vars.Protocol, Vars.AssemblyLocation);
             chk_regProtocol.Content = (bool)chk_regProtocol.IsChecked ? "Registered the app's file protocol" : "Register the app's file protocol";
         }
     }
