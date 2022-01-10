@@ -12,7 +12,7 @@ namespace FileExtensionHandler.Core.Model
         /// <summary>
         /// The file extension's file name.
         /// </summary>
-        /// <remarks>Used for targetting the association by its file name.</remarks>
+        /// <remarks>Used for targetting the file extension by its file name.</remarks>
         [JsonIgnore]
         public string Node { get; internal set; }
 
