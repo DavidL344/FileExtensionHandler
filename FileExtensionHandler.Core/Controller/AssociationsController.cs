@@ -12,6 +12,21 @@ namespace FileExtensionHandler.Core.Controller
     public class AssociationsController
     {
         /// <summary>
+        /// Creates a new association entry.
+        /// </summary>
+        /// <param name="node">The association's identifier.</param>
+        /// <returns>A new association entry with its node.</returns>
+        public static Association Create(string node)
+        {
+            return new Association()
+            {
+                Node = node,
+                Command = String.Empty,
+                Arguments = "%1"
+            };
+        }
+
+        /// <summary>
         /// Saves the association information to the disk.
         /// </summary>
         /// <param name="associationClass">The association class to serialize.</param>

@@ -12,6 +12,20 @@ namespace FileExtensionHandler.Core.Controller
     public class FileExtensionsController
     {
         /// <summary>
+        /// Creates a new file extension entry.
+        /// </summary>
+        /// <param name="node">The file extension's identifier</param>
+        /// <returns>A new file extension entry with its node.</returns>
+        public static FileExtension Create(string node)
+        {
+            return new FileExtension()
+            {
+                Node = node,
+                Associations = new string[] { }
+            };
+        }
+
+        /// <summary>
         /// Saves the file extension information to the disk.
         /// </summary>
         /// <param name="fileExtensionClass">The file extension class to serialize.</param>

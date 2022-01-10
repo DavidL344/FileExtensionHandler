@@ -8,21 +8,30 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Background="{DynamicResource SystemControlPageBackgroundAltHighBrush}"
-      Title="Entries">
+      Title="Entries"
+      Loaded="Page_Loaded">
 
     <Page.Resources>
-        <DataTemplate x:Key="RowDetailsTemplate">
-            <StackPanel Width="725" HorizontalAlignment="Left">
-                <Grid Margin="5">
-                    <Button HorizontalAlignment="Center" Click="ComingSoon">
-                        <StackPanel Orientation="Horizontal">
-                            <ui:SymbolIcon Symbol="Edit"/>
-                            <TextBlock Text="Edit Associations" FontWeight="SemiBold" FontSize="13" Margin="5, 0, 0, 0"/>
-                        </StackPanel>
-                    </Button>
-                </Grid>
-            </StackPanel>
-        </DataTemplate>
+        <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="FrozenColumnCount" Value="1"/>
+            <Setter Property="RowDetailsVisibilityMode" Value="VisibleWhenSelected"/>
+            <Setter Property="IsEnabled" Value="False"/>
+            <Setter Property="IsReadOnly" Value="{Binding ElementName=btn_readonly, Path=IsChecked}"/>
+            <!--<Setter Property="HeadersVisibility" Value="Column"/>-->
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+            <EventSetter Event="Loaded" Handler="ViewerLoaded"/>
+            <EventSetter Event="SelectionChanged" Handler="RemoveButtonHandler"/>
+            <EventSetter Event="MouseDoubleClick" Handler="CellDoubleClick"/>
+        </Style>
+        <Style TargetType="ui:AppBarButton" BasedOn="{StaticResource {x:Type ui:AppBarButton}}">
+            <EventSetter Event="Click" Handler="AppBarButtonClicked"/>
+        </Style>
+        <Style x:Key="AppBarButtonLock" TargetType="ui:AppBarButton" BasedOn="{StaticResource {x:Type ui:AppBarButton}}">
+            <Setter Property="IsEnabled" Value="{Binding ElementName=btn_readonly, Path=IsChecked}"/>
+        </Style>
     </Page.Resources>
     <Grid>
         <TextBlock x:Name="lbl_noAssociations" Text="No associations found.&#x0d;&#x0a;Please create some in the Home tab first!" FontSize="16" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
@@ -32,23 +41,24 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            
-            <TextBlock x:Name="lbl_header" Text="File Extensions:" Grid.Row="0" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0, 0, 10, 0"/>
+
+            <!-- Text="{Binding ActiveGridTag, ElementName=<Page Name>}" -->
+            <TextBlock x:Name="lbl_header" Grid.Row="0" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0, 0, 10, 0"/>
             <Grid Grid.Row="1" Margin="10">
-                <DataGrid x:Name="dg_fileExtensions" RowDetailsTemplate="{StaticResource RowDetailsTemplate}" CanUserAddRows="False" CanUserDeleteRows="False" FrozenColumnCount="1" RowDetailsVisibilityMode="VisibleWhenSelected" IsEnabled="False" IsReadOnly="{Binding ElementName=btn_readonly, Path=IsChecked}" Loaded="ViewerLoaded" CellEditEnding="CellEditEnding" Visibility="Visible"/>
-                <DataGrid x:Name="dg_associations" CanUserAddRows="False" CanUserDeleteRows="False" FrozenColumnCount="1" RowDetailsVisibilityMode="VisibleWhenSelected" IsEnabled="False" IsReadOnly="{Binding ElementName=btn_readonly, Path=IsChecked}" Loaded="ViewerLoaded" CellEditEnding="CellEditEnding" Visibility="Collapsed"/>
+                <DataGrid x:Name="dg_fileExtensions" Tag="File Extensions" CellEditEnding="CellEditEnding"/>
+                <DataGrid x:Name="dg_associations" Tag="Associations" CellEditEnding="CellEditEnding"/>
             </Grid>
 
             <ui:CommandBar Grid.Row="2" DefaultLabelPosition="Bottom" HorizontalAlignment="Center">
-                <ui:AppBarButton x:Name="btn_save" Label="Save" Icon="Save" Click="AppBarButtonClicked" IsEnabled="{Binding ElementName=btn_readonly, Path=IsChecked}"/>
-                <ui:AppBarButton x:Name="btn_refresh" Label="Refresh" Icon="Refresh" Click="AppBarButtonClicked" IsEnabled="{Binding ElementName=btn_readonly, Path=IsChecked}"/>
+                <ui:AppBarButton x:Name="btn_save" Label="Save" Icon="Save" Style="{StaticResource AppBarButtonLock}"/>
+                <ui:AppBarButton x:Name="btn_refresh" Label="Refresh" Icon="Refresh" Style="{StaticResource AppBarButtonLock}"/>
                 <ui:AppBarSeparator/>
-                <ui:AppBarButton x:Name="btn_add" Label="Add" Icon="Add" Click="AppBarButtonClicked" IsEnabled="{Binding ElementName=btn_readonly, Path=IsChecked}"/>
-                <ui:AppBarToggleButton x:Name="btn_readonly" Label="Read-only" Icon="View" IsChecked="True" Click="AppBarButtonClicked"/>
-                <ui:AppBarButton x:Name="btn_remove" Label="Remove" Icon="Remove" Click="AppBarButtonClicked" IsEnabled="{Binding ElementName=btn_readonly, Path=IsChecked}"/>
+                <ui:AppBarButton x:Name="btn_add" Label="Add" Icon="Add" Style="{StaticResource AppBarButtonLock}"/>
+                <ui:AppBarToggleButton x:Name="btn_readonly" Label="Inline lock" Icon="ProtectedDocument" IsChecked="True"/>
+                <ui:AppBarButton x:Name="btn_remove" Label="Remove" Icon="Remove" Style="{StaticResource AppBarButtonLock}"/>
                 <ui:AppBarSeparator/>
-                <ui:AppBarButton x:Name="btn_switch" Label="Switch to..." Icon="Switch" Click="AppBarButtonClicked"/>
-                <ui:AppBarButton x:Name="btn_locate" Label="Locate" Icon="Folder" Click="AppBarButtonClicked"/>
+                <ui:AppBarButton x:Name="btn_switch" Label="Switch to..." Icon="Switch"/>
+                <ui:AppBarButton x:Name="btn_locate" Label="Locate" Icon="Folder"/>
             </ui:CommandBar>
         </Grid>
     </Grid>

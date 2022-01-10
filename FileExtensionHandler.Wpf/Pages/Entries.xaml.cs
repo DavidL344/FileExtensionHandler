@@ -41,21 +41,10 @@ namespace FileExtensionHandler.Pages
             }
             set
             {
-                switch (value.Name)
-                {
-                    case "dg_associations":
-                        dg_fileExtensions.Visibility = Visibility.Collapsed;
-                        lbl_header.Text = "Associations:";
-                        dg_associations.Visibility = Visibility.Visible;
-                        break;
-                    case "dg_fileExtensions":
-                        dg_associations.Visibility = Visibility.Collapsed;
-                        lbl_header.Text = "File Extensions:";
-                        dg_fileExtensions.Visibility = Visibility.Visible;
-                        break;
-                    default:
-                        break;
-                }
+                if (ActiveDataGrid != null) ActiveDataGrid.Visibility = Visibility.Collapsed;
+                value.Visibility = Visibility.Visible;
+                btn_remove.IsEnabled = ActiveDataGrid.SelectedIndex != -1;
+                lbl_header.Text = (ActiveDataGrid != null && ActiveDataGrid.Tag != null) ? $"{(string)ActiveDataGrid.Tag}:" : "Error";
             }
         }
         public Entries()
@@ -67,19 +56,15 @@ namespace FileExtensionHandler.Pages
         {
             string btn_prefix = "btn_";
             AppBarButton appBarButton = sender as AppBarButton;
-            AppBarToggleButton appBarToggleButton = sender as AppBarToggleButton;
+            if (appBarButton == null || !appBarButton.Name.StartsWith(btn_prefix)) return;
 
-            if (appBarButton == null || !appBarButton.Name.StartsWith(btn_prefix))
-                if (appBarToggleButton == null || !appBarToggleButton.Name.StartsWith(btn_prefix)) return;
-
-            string stringToSwitch = appBarButton != null ? appBarButton.Name.Substring(btn_prefix.Length) : appBarToggleButton.Name.Substring(btn_prefix.Length);
-            switch (stringToSwitch)
+            switch (appBarButton.Name.Substring(btn_prefix.Length))
             {
                 case "add":
-                    ComingSoon();
+                    AddEntry();
                     break;
                 case "remove":
-                    ComingSoon();
+                    RemoveEntry();
                     break;
                 case "refresh":
                     RefreshView();
@@ -99,11 +84,64 @@ namespace FileExtensionHandler.Pages
             }
         }
 
-        private void SaveToDisk()
+        private async void AddEntry()
+        {
+            switch (ActiveDataGrid.Name)
+            {
+                case "dg_associations":
+                    Dialogs.Entries.Add newAssociationDialog = new Dialogs.Entries.Add(new Association());
+                    if (await newAssociationDialog.ShowAsync() != ContentDialogResult.Primary)
+                        return;
+                    AssociationsController.SaveToJson(newAssociationDialog.Association, Vars.Dir_Associations);
+                    break;
+                case "dg_fileExtensions":
+                    Dialogs.Entries.Add newFileExtensionDialog = new Dialogs.Entries.Add(new FileExtension());
+                    if (await newFileExtensionDialog.ShowAsync() != ContentDialogResult.Primary)
+                        return;
+                    FileExtensionsController.SaveToJson(newFileExtensionDialog.FileExtension, Vars.Dir_FileExtensions);
+                    break;
+                default:
+                    return;
+            }
+            RefreshView();
+        }
+
+        private async void RemoveEntry()
+        {
+            object data = ActiveDataGrid.SelectedItem;
+            if (data == null) return;
+
+            Dialogs.Entries.Remove removeDialog;
+            string node;
+            string filePath;
+
+            switch (ActiveDataGrid.Name)
+            {
+                case "dg_associations":
+                    node = ((Association)data).Node;
+                    filePath = $@"{Vars.Dir_Associations}\{node}.json";
+                    break;
+                case "dg_fileExtensions":
+                    node = ((FileExtension)data).Node;
+                    filePath = $@"{Vars.Dir_FileExtensions}\{node}.json";
+                    break;
+                default:
+                    return;
+            }
+            removeDialog = new Dialogs.Entries.Remove(node, filePath);
+
+            if (await removeDialog.ShowAsync() != ContentDialogResult.Secondary)
+                return;
+
+            File.Delete(filePath);
+            RefreshView();
+        }
+
+        private async void SaveToDisk()
         {
             if (!IsGridValid(ActiveDataGrid))
             {
-                MessageBox.Show("Unable to perform the save operation!\r\nPlease check the data entered.", "fexth", MessageBoxButton.OK, MessageBoxImage.Error);
+                await new Dialogs.Information("Unable to perform the save operation!\r\nPlease check the data entered.", "Error").ShowAsync();
                 return;
             }
             try
@@ -123,11 +161,11 @@ namespace FileExtensionHandler.Pages
                     default:
                         break;
                 }
-                MessageBox.Show("Data saved!", "fexth", MessageBoxButton.OK, MessageBoxImage.Information);
+                await new Dialogs.Information("Data saved!").ShowAsync();
             }
             catch (Exception e)
             {
-                MessageBox.Show($"Unable to save the data: {e.Message}", "Error | fexth", MessageBoxButton.OK, MessageBoxImage.Information);
+                await new Dialogs.Information($"Unable to save the data: {e.Message}", "Error").ShowAsync();
             }
         }
 
@@ -179,6 +217,8 @@ namespace FileExtensionHandler.Pages
             ScrollViewer scrollViewer = External.GetVisualChild<ScrollViewer>(dataGrid);
             if (scrollViewer != null)
             {
+                // This throws a Binding Failure when the datagrid has the "HeadersVisibility" property set to "Column"
+                // If the property is set that way, then an error is also thrown when the user moves the horizontal slider
                 scrollViewer.ScrollToTop();
                 scrollViewer.ScrollToLeftEnd();
             }
@@ -260,6 +300,37 @@ namespace FileExtensionHandler.Pages
         private void ComingSoon(object sender = null, RoutedEventArgs e = null)
         {
             MessageBox.Show("Coming Soon!", "fexth", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            ActiveDataGrid = dg_fileExtensions;
+        }
+
+        private void CellDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (!(sender is DataGrid dataGrid)) return;
+            if (!dataGrid.IsReadOnly) return;
+
+            object data = ActiveDataGrid.SelectedItem;
+            if (data == null) return;
+
+            switch (ActiveDataGrid.Name)
+            {
+                case "dg_associations":
+                    Process.Start($@"{Vars.Dir_Associations}\{((Association)data).Node}.json");
+                    break;
+                case "dg_fileExtensions":
+                    Process.Start($@"{Vars.Dir_FileExtensions}\{((FileExtension)data).Node}.json");
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void RemoveButtonHandler(object sender, SelectionChangedEventArgs e)
+        {
+            btn_remove.IsEnabled = ActiveDataGrid.SelectedIndex != -1;
         }
     }
 }
