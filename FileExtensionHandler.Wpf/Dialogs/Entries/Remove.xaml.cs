@@ -31,6 +31,7 @@ namespace FileExtensionHandler.Dialogs.Entries
             if (name != null) Title = $"Delete \"{name}\"";
             if (filePath != null) tb_text.Text = $"This will delete \"{filePath}\"\r\n\r\nThis action cannot be undone!";
             SecondaryButtonText = $"Confirm ({TimerSeconds})";
+            TimerSeconds--;
         }
 
         private void ContentDialog_Loaded(object sender, RoutedEventArgs e)

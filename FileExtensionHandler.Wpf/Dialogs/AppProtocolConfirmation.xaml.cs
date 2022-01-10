@@ -30,6 +30,7 @@ namespace FileExtensionHandler.Dialogs
         {
             InitializeComponent();
             SecondaryButtonText = $"Yes ({TimerSeconds})";
+            TimerSeconds--;
         }
 
         private void Confirm(ContentDialog sender, ContentDialogButtonClickEventArgs args)
