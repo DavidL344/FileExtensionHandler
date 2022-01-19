@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FileExtensionHandler.Model;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -29,7 +30,6 @@ namespace FileExtensionHandler.Shared
 
         internal static string Dir_Associations => DefaultSaveLocation + @"\Associations";
         internal static string Dir_FileExtensions => DefaultSaveLocation + @"\File Extensions";
-
 
         #region Assembly Attribute Accessors
         internal static string AssemblyTitle

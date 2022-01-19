@@ -6,17 +6,21 @@
       xmlns:local="clr-namespace:FileExtensionHandler.Pages"
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
+      Background="{DynamicResource SystemControlPageBackgroundAltHighBrush}"
       Title="Home">
 
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,50">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="Welcome to fexth!" FontSize="16" TextAlignment="Center" Margin="0, 0, 0, 20"/>
-        <TextBlock x:Name="txt_instructions" Grid.Row="1" FontSize="14" TextAlignment="Center"/>
-        <Button x:Name="btn_newAssociations" Grid.Row="2" Content="Generate file associations" Visibility="Collapsed" HorizontalAlignment="Center" Margin="10" Click="SaveSamplesToDisk"/>
-        <Button x:Name="btn_openAppDir" Grid.Row="2" Content="Open application data directory" HorizontalAlignment="Center" Margin="10" Click="OpenAppDataDir"/>
+    <Page.Resources>
+        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+    </Page.Resources>
+    <Grid>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0, 0, 0, 50">
+            <TextBlock Text="Welcome to fexth!" FontSize="16" TextAlignment="Center" Margin="0, 0, 0, 20"/>
+            <TextBlock x:Name="txt_instructions" FontSize="14" TextAlignment="Center"/>
+            <Button x:Name="btn_newAssociations" Content="Generate file associations" Visibility="Collapsed" Click="SaveSamplesToDisk"/>
+            <Button x:Name="btn_openAppDir" Content="Open application data directory" Click="OpenAppDataDir"/>
+        </StackPanel>
     </Grid>
 </Page>

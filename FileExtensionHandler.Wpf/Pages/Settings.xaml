@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:FileExtensionHandler.Pages"
+      xmlns:ui="http://schemas.modernwpf.com/2019"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Background="{DynamicResource SystemControlPageBackgroundAltHighBrush}"
@@ -16,16 +17,13 @@
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
     </Page.Resources>
-    <Grid Margin="10" VerticalAlignment="Center" HorizontalAlignment="Center">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="This option registers fexth:// as a file protocol:"/>
-        <CheckBox x:Name="chk_regProtocol" Grid.Row="1" Content="Register the app's file protocol" HorizontalAlignment="Center" Margin="0, 5" Click="ChangeRegistryState"/>
-        <TextBlock Grid.Row="2" TextAlignment="Center">
+    <Grid Margin="10">
+        <ui:SimpleStackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock Text="This option registers fexth:// as a file protocol:"/>
+            <CheckBox x:Name="chk_regProtocol" Content="Register the app's file protocol" HorizontalAlignment="Center" Margin="0, 5" Click="ChangeRegistryState"/>
+            <TextBlock TextAlignment="Center">
             The protocol can be used to open files through a hypertext link.
-        </TextBlock>
+            </TextBlock>
+        </ui:SimpleStackPanel>
     </Grid>
 </Page>

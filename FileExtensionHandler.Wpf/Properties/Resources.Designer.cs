@@ -59,5 +59,35 @@ namespace FileExtensionHandler.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] LICENSE {
+            get {
+                object obj = ResourceManager.GetObject("LICENSE", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] LICENSE_ModernWpfUI {
+            get {
+                object obj = ResourceManager.GetObject("LICENSE_ModernWpfUI", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] LICENSE_Newtonsoft_Json {
+            get {
+                object obj = ResourceManager.GetObject("LICENSE_Newtonsoft_Json", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

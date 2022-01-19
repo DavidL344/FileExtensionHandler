@@ -8,7 +8,8 @@
         mc:Ignorable="d"
         ui:WindowHelper.UseModernWindowStyle="True"
         Title="MainWindow" Height="450" Width="800"
-        WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        KeyDown="ShowLicenseInformation">
     <Grid>
         <DockPanel>
             <ui:NavigationView x:Name="nv_main" PaneDisplayMode="Top" IsBackButtonVisible="Collapsed" SelectionChanged="NavigateToPage">
@@ -16,6 +17,11 @@
                     <ui:NavigationViewItem Content="Home" Tag="Home" Icon="Home"/>
                     <ui:NavigationViewItem Content="Entries" Tag="Entries" Icon="Edit"/>
                     <ui:NavigationViewItem Content="Live Preview" Tag="LivePreview" Icon="PreviewLink"/>
+                    <ui:NavigationViewItem Content="About" Tag="About">
+                        <ui:NavigationViewItem.Icon>
+                            <ui:FontIcon Glyph="&#xe946;"/>
+                        </ui:NavigationViewItem.Icon>
+                    </ui:NavigationViewItem>
                 </ui:NavigationView.MenuItems>
                 <ui:Frame x:Name="contentFrame"/>
             </ui:NavigationView>

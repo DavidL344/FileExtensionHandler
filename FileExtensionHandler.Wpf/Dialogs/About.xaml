@@ -1,0 +1,27 @@
+﻿<ui:ContentDialog x:Class="FileExtensionHandler.Dialogs.About"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:ui="http://schemas.modernwpf.com/2019"
+      xmlns:local="clr-namespace:FileExtensionHandler.Dialogs"
+      mc:Ignorable="d" 
+      d:DesignHeight="450"
+      d:DesignWidth="800"
+      Title="License Information"
+      PrimaryButtonText="Open the repository"
+      SecondaryButtonText="Open the license"
+      CloseButtonText="OK"
+      IsPrimaryButtonEnabled="False"
+      IsSecondaryButtonEnabled="False"
+      DefaultButton="Close"
+      PrimaryButtonClick="OpenRepo"
+      SecondaryButtonClick="OpenLicense"
+      Loaded="OnLoad"
+      Closing="ContentDialog_Closing">
+
+    <Grid>
+        <ui:ProgressRing x:Name="pr_status" Width="100" Height="100" IsActive="True"/>
+        <TabControl x:Name="tc_licenseInfo" TabStripPlacement="Bottom" Width="496.8" Height="228" Visibility="Hidden"/>
+    </Grid>
+</ui:ContentDialog>
