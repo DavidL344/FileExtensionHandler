@@ -17,26 +17,38 @@ namespace FileExtensionHandler.Core
         public readonly string ParsedNoParameters;
 
         public string Name => Path.GetFileName(ParsedNoParameters);
-        public bool Streamed => Parsed.Contains("://");
+        public bool Streamed
+        {
+            get
+            {
+                int minimumProtocolsToQualify = 1;
+                if (ProtocolsUsed.Contains("file:///") || ProtocolsUsed.Contains("file://")) minimumProtocolsToQualify++;
+                if (ProtocolsUsed.Contains("fexth://") || ProtocolsUsed.Contains("fexth:")) minimumProtocolsToQualify++;
+                return ProtocolsUsed.Count() >= minimumProtocolsToQualify;
+            }
+        }
 
         public string[] ProtocolsUsed { get; private set; }
-        public bool CalledFromAppProtocol => ProtocolsUsed.Contains(AppProtocol);
+        public bool CalledFromAppProtocol => ProtocolsUsed.Contains($"{AppProtocol}://") || ProtocolsUsed.Contains($"{AppProtocol}:");
 
         private readonly string AppProtocol;
         private readonly string[] Protocols;
         private readonly string[] CommunicationProtocols;
 
-        public Arguments(string[] args, string appProtocol = "fexth://")
+        public Arguments(string[] args, string appProtocol = "fexth")
         {
             this.AppProtocol = appProtocol;
-            this.CommunicationProtocols = new string[] { "http://", "https://", "ftp://", "ftps://", "smb://" };
+            this.CommunicationProtocols = new string[] { "http", "https", "ftp", "ftps", "smb" };
 
             List<string> protocolList = new List<string>
             {
-                appProtocol, "file:///"
+                $"{appProtocol}://", $"{appProtocol}:", "file:///", "file://"
             };
             foreach (string communicationProtocol in this.CommunicationProtocols)
-                protocolList.Add(communicationProtocol);
+            {
+                protocolList.Add($"{communicationProtocol}://");
+                protocolList.Add($"{communicationProtocol}:");
+            }
             this.Protocols = protocolList.ToArray();
 
             this.Raw = args;
@@ -61,8 +73,16 @@ namespace FileExtensionHandler.Core
                 protocolsUsed.Add(protocol);
 
                 // Remove all protocols except the ones used for client-server communication
-                if (!CommunicationProtocols.Contains(protocol))
+                string[] protocolEndings = new string[] { ":///", "://", ":" };
+                string rawProtocol = string.Empty;
+
+                foreach (string protocolEnding in protocolEndings)
+                {
+                    if (!protocol.EndsWith(protocolEnding)) continue;
+                    rawProtocol = protocol.Substring(0, protocol.Length - protocolEnding.Length);
+                    if (CommunicationProtocols.Contains(rawProtocol)) continue;
                     pathParsed = pathParsed.Remove(protocolIndex, protocol.Length);
+                }
             }
             this.ProtocolsUsed = protocolsUsed.ToArray();
 

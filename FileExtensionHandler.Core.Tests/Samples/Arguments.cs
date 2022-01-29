@@ -18,7 +18,11 @@ namespace FileExtensionHandler.Core.Tests.Samples
             { "DiskFileProtocol", new string[] { $"file:///{BaselinePath}".Replace('\\', '/') } },
 
             { "FexthDisk", new string[] { $"fexth://{BaselinePath}".Replace('\\', '/') } },
+            { "FexthAltDisk", new string[] { $"fexth:{BaselinePath}".Replace('\\', '/') } },
             { "FexthDiskFileProtocol", new string[] { $"fexth://file:///{BaselinePath}".Replace('\\', '/') } },
+            { "FexthAltDiskFileProtocol", new string[] { $"fexth:file:///{BaselinePath}".Replace('\\', '/') } },
+            { "FexthDiskAltFileProtocol", new string[] { $"fexth://file://{BaselinePath}".Replace('\\', '/') } },
+            { "FexthAltDiskAltFileProtocol", new string[] { $"fexth:file://{BaselinePath}".Replace('\\', '/') } },
 
             { "Streamed", new string[] { StreamablePath } },
             { "FexthStreamed", new string[] { $"fexth://{StreamablePath}" } }

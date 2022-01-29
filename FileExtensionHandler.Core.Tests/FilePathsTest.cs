@@ -69,13 +69,13 @@ namespace FileExtensionHandler.Core.Tests
             foreach (KeyValuePair<string, string> validFilePath in FilePaths.Valid)
             {
                 FileInformation fileInformation = new FileInformation(validFilePath.Value, Vars.Dir_Associations, Vars.Dir_FileExtensions);
-                if (validFilePath.Key.Contains("Disk")) Assert.IsFalse(fileInformation.Streamed);
+                if (validFilePath.Key.Contains("Disk") && !validFilePath.Key.Contains("Fexth")) Assert.IsFalse(fileInformation.Streamed);
                 if (validFilePath.Key.Contains("Streamed")) Assert.IsTrue(fileInformation.Streamed);
 
                 if (validFilePath.Key.Contains("Fexth"))
                 {
                     Assert.IsTrue(fileInformation.CalledFromAppProtocol);
-                    Assert.IsTrue(fileInformation.ProtocolsUsed.Contains("fexth://"));
+                    Assert.IsTrue(fileInformation.ProtocolsUsed.Contains("fexth://") || fileInformation.ProtocolsUsed.Contains("fexth:"));
                 }
 
                 if (validFilePath.Key.Contains("FileProtocol"))

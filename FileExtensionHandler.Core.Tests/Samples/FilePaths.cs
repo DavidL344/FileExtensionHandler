@@ -18,7 +18,9 @@ namespace FileExtensionHandler.Core.Tests.Samples
             { "DiskFileProtocol", $"file:///{BaselinePath}".Replace('\\', '/') },
 
             { "FexthDisk", $"fexth://{BaselinePath}".Replace('\\', '/') },
+            { "FexthAltDisk", $"fexth:{BaselinePath}".Replace('\\', '/') },
             { "FexthDiskFileProtocol", $"fexth://file:///{BaselinePath}".Replace('\\', '/') },
+            { "FexthAltDiskFileProtocol", $"fexth:file:///{BaselinePath}".Replace('\\', '/') },
 
             { "Streamed", StreamablePath },
             { "FexthStreamed", $"fexth://{StreamablePath}" }
