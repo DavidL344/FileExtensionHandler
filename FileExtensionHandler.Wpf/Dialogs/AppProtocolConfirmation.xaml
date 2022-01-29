@@ -22,7 +22,7 @@
         </Style>
     </ui:ContentDialog.Resources>
     <Grid x:Name="grd_main">
-        <TextBlock TextAlignment="Center">
+        <TextBlock x:Name="tb_content" TextAlignment="Center">
             This command was called from the app's protocol.
             <LineBreak/>
             <LineBreak/>

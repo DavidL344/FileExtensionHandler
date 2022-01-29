@@ -1,6 +1,6 @@
 ﻿using FileExtensionHandler.Core.Controller;
+using FileExtensionHandler.Dialogs;
 using FileExtensionHandler.Shared;
-using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,14 +31,14 @@ namespace FileExtensionHandler.Pages
             RefreshRegistryCheckBox();
         }
 
-        private void ChangeRegistryState(object sender, RoutedEventArgs e)
+        private async void ChangeRegistryState(object sender, RoutedEventArgs e)
         {
             chk_regProtocol.IsEnabled = false;
             try
             {
                 if (!ProtocolController.IsRegistered(Vars.Protocol, Vars.AssemblyLocation))
                 {
-                    ProtocolController.Register(Vars.Protocol, Vars.AssemblyLocation);
+                    if (await ConfirmRegistration()) ProtocolController.Register(Vars.Protocol, Vars.AssemblyLocation);
                     return;
                 }
                 ProtocolController.Unregister(Vars.Protocol);
@@ -64,6 +64,13 @@ namespace FileExtensionHandler.Pages
         {
             chk_regProtocol.IsChecked = ProtocolController.IsRegistered(Vars.Protocol, Vars.AssemblyLocation);
             chk_regProtocol.Content = (bool)chk_regProtocol.IsChecked ? "Registered the app's file protocol" : "Register the app's file protocol";
+        }
+
+        private async Task<bool> ConfirmRegistration()
+        {
+            AppProtocolConfirmation confirmation = new AppProtocolConfirmation(AppProtocolConfirmation.ProtocolAction.Register);
+            await confirmation.ShowAsync();
+            return confirmation.Continue;
         }
     }
 }

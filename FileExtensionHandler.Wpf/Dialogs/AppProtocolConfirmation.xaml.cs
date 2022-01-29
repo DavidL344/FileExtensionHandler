@@ -22,13 +22,16 @@ namespace FileExtensionHandler.Dialogs
     /// </summary>
     public partial class AppProtocolConfirmation
     {
+        public enum ProtocolAction { Register, Run }
         internal bool Continue { get; private set; } = false;
         private readonly Timer Timer = new Timer();
         private readonly int TimerSeconds = 3;
         private int TimeElapsed = 0;
-        public AppProtocolConfirmation()
+        public AppProtocolConfirmation(ProtocolAction protocolAction = ProtocolAction.Run)
         {
             InitializeComponent();
+            if (protocolAction == ProtocolAction.Register)
+                tb_content.Text = $"Registering the app's protocol could potentially\r\nmake your system more vulnerable to attacks.\r\n\r\nProceed anyway?";
             SecondaryButtonText = $"Yes ({TimerSeconds})";
             TimerSeconds--;
         }
