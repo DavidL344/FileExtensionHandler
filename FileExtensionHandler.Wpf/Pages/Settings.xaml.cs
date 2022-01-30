@@ -45,6 +45,8 @@ namespace FileExtensionHandler.Pages
             }
             catch (Exception ex)
             {
+                await new Dialogs.DialogBox(ex).ShowAsync();
+
                 // Suppress the exception when the user cancels the UAC prompt
                 int errorCode = (ex is Win32Exception) ? (ex as Win32Exception).NativeErrorCode : ex.HResult;
                 if (errorCode != 1223)

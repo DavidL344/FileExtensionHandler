@@ -1,5 +1,6 @@
 ﻿using FileExtensionHandler.Core.Controller;
 using FileExtensionHandler.Core.Model;
+using FileExtensionHandler.Dialogs;
 using FileExtensionHandler.Shared;
 using ModernWpf.Controls;
 using System;
@@ -141,7 +142,7 @@ namespace FileExtensionHandler.Pages
         {
             if (!IsGridValid(ActiveDataGrid))
             {
-                await new Dialogs.Information("Unable to perform the save operation!\r\nPlease check the data entered.", "Error").ShowAsync();
+                await new DialogBox("Unable to perform the save operation!\r\nPlease check the data entered.", "Error").ShowAsync();
                 return;
             }
             try
@@ -161,11 +162,11 @@ namespace FileExtensionHandler.Pages
                     default:
                         break;
                 }
-                await new Dialogs.Information("Data saved!").ShowAsync();
+                await new DialogBox("Data saved!", "Success").ShowAsync();
             }
             catch (Exception e)
             {
-                await new Dialogs.Information($"Unable to save the data: {e.Message}", "Error").ShowAsync();
+                await new DialogBox($"Unable to save the data: {e.Message}", "Error").ShowAsync();
             }
         }
 
