@@ -4,26 +4,31 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:FileExtensionHandler.Pages"
+      xmlns:global="clr-namespace:FileExtensionHandler"
       xmlns:ui="http://schemas.modernwpf.com/2019"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Background="{DynamicResource SystemControlPageBackgroundAltHighBrush}"
-      Title="Settings">
+      Title="Settings" x:Name="pg_settings">
 
     <Page.Resources>
-        <Style TargetType="TextBlock">
-            <Setter Property="FontSize" Value="15"/>
+        <Style TargetType="ui:SimpleStackPanel">
+            <Setter Property="Spacing" Value="10"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
     </Page.Resources>
     <Grid Margin="10">
-        <ui:SimpleStackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-            <TextBlock Text="This option registers fexth:// as a file protocol:"/>
-            <CheckBox x:Name="chk_regProtocol" Content="Register the app's file protocol" HorizontalAlignment="Center" Margin="0, 5" Click="ChangeRegistryState"/>
-            <TextBlock TextAlignment="Center">
-            The protocol can be used to open files through a hypertext link.
-            </TextBlock>
+        <ui:SimpleStackPanel>
+            <TextBlock Text="{Binding ElementName=pg_settings, Path=AppTitle}"/>
+            <Button Content="Protocol Registration..." Click="OpenProtocolMenu"/>
         </ui:SimpleStackPanel>
     </Grid>
 </Page>
