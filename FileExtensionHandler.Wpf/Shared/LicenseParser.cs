@@ -45,6 +45,14 @@ namespace FileExtensionHandler.Shared
                 LicenseType = "MIT",
                 LicenseURL = "https://raw.githubusercontent.com/JamesNK/Newtonsoft.Json/master/LICENSE.md",
                 LicenseResource = Properties.Resources.LICENSE_Newtonsoft_Json
+            },
+            new License
+            {
+                Name = "CommandLineParser",
+                RepositoryURL = "https://github.com/commandlineparser/commandline",
+                LicenseType = "MIT",
+                LicenseURL = "https://raw.githubusercontent.com/commandlineparser/commandline/master/License.md",
+                LicenseResource = Properties.Resources.LICENSE_CommandLineParser
             }
         };
 

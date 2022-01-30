@@ -73,6 +73,16 @@ namespace FileExtensionHandler.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] LICENSE_CommandLineParser {
+            get {
+                object obj = ResourceManager.GetObject("LICENSE_CommandLineParser", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] LICENSE_ModernWpfUI {
             get {
                 object obj = ResourceManager.GetObject("LICENSE_ModernWpfUI", resourceCulture);

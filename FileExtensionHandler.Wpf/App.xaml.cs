@@ -1,4 +1,6 @@
-﻿using FileExtensionHandler.Shared;
+﻿using CommandLine;
+using FileExtensionHandler.Model;
+using FileExtensionHandler.Shared;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -25,10 +27,21 @@ namespace FileExtensionHandler
             try
             {
                 Args = InjectArgs ? InjectedArgs : e.Args;
+                MessageBox.Show(Args.Length.ToString());
+
                 if (Args.Length > 0)
                 {
-                    Handler handler = new Handler(Args);
-                    handler.Start();
+                    string[] args = Args;
+
+                    if (Args[0] != "--open" || Args.Length == 1)
+                    {
+                        List<string> argsList = Args.ToList();
+                        argsList.Insert(0, "--open");
+                        args = argsList.ToArray();
+                    }
+
+                    ParserResult<Options> result = Parser.Default.ParseArguments<Options>(args)
+                        .WithParsed(OpenFile).WithNotParsed(HandleParseError);
                 }
                 else
                 {
@@ -36,6 +49,8 @@ namespace FileExtensionHandler
                     window.ShowDialog();
                 }
                 this.Close();
+
+                
             }
             catch (Exception ex) when (!Debugger.IsAttached)
             {
@@ -44,6 +59,25 @@ namespace FileExtensionHandler
                 if (errorCode != 1223) MessageBox.Show(String.Format("A fatal error has occured.\r\nException type: {0}\r\nException Description: {1}", ex.GetType(), ex.Message), "Fatal Error | fexth", MessageBoxButton.OK, MessageBoxImage.Error);
                 this.Close();
             }
+        }
+
+        private void OpenFile(Options options)
+        {
+            if (options.Open != null)
+            {
+                Handler handler = new Handler(options.Open.ToArray());
+                handler.Start();
+            }
+        }
+
+        private void HandleParseError(IEnumerable<Error> errors)
+        {
+            string errStr = String.Empty;
+            foreach (Error error in errors)
+            {
+                errStr += error.Tag + "\r\n";
+            }
+            MessageBox.Show(errStr);
         }
 
         private void Close()
