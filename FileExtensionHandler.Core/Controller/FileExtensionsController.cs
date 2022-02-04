@@ -1,11 +1,4 @@
 ﻿using FileExtensionHandler.Core.Model;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FileExtensionHandler.Core.Controller
 {
@@ -18,46 +11,83 @@ namespace FileExtensionHandler.Core.Controller
         /// <returns>A new file extension entry with its node.</returns>
         public static FileExtension Create(string node)
         {
-            return new FileExtension()
-            {
-                Node = node,
-                Associations = new string[] { }
-            };
+            return new FileExtension { Node = node };
         }
 
         /// <summary>
-        /// Saves the file extension information to the disk.
+        /// Copies an existing file extension entry.
         /// </summary>
-        /// <param name="fileExtensionClass">The file extension class to serialize.</param>
-        /// <param name="fileExtensionsDir">The directory containing file extension information.</param>
-        public static void SaveToJson(FileExtension fileExtensionClass, string fileExtensionsDir)
+        /// <param name="node">The file extension's new identifier.</param>
+        /// <param name="fileExtension">An existing file extension to create a copy of.</param>
+        /// <returns>A new file extension entry with the entries copied from an existing entry.</returns>
+        public static FileExtension CopyTo(string node, FileExtension fileExtension)
         {
-            string filePath = $@"{fileExtensionsDir}\{fileExtensionClass.Node}.json";
-            string jsonData = Serialize(fileExtensionClass);
-            File.WriteAllText(filePath, jsonData);
+            FileExtension associationCopy = SerializationController.Clone(fileExtension);
+            associationCopy.Node = node;
+            return associationCopy;
+        }
+
+        /// <summary>
+        /// Copies an existing file extension entry asynchronously.
+        /// </summary>
+        /// <param name="node">The file extension's new identifier.</param>
+        /// <param name="fileExtension">An existing file extension to create a copy of.</param>
+        /// <returns>A new file extension entry with the entries copied from an existing entry.</returns>
+        public static async Task<FileExtension> CopyToAsync(string node, FileExtension fileExtension, CancellationToken cancellationToken = default)
+        {
+            FileExtension fileExtensionCopy = await SerializationController.CloneAsync(fileExtension, cancellationToken);
+            fileExtensionCopy.Node = node;
+            return fileExtensionCopy;
+        }
+
+        /// <summary>
+        /// Saves the association information to the disk.
+        /// </summary>
+        /// <param name="fileExtension">The file extension information to serialize.</param>
+        /// <param name="fileExtensionsDir">The directory containing file extension information.</param>
+        public static void SaveToJson(FileExtension fileExtension, string fileExtensionsDir)
+        {
+            string filePath = $@"{fileExtensionsDir}\{fileExtension.Node}.json";
+            SerializationController.SerializeToFile(fileExtension, filePath);
+        }
+
+        /// <summary>
+        /// Saves the association information to the disk asynchronously.
+        /// </summary>
+        /// <param name="fileExtension">The file extension information to serialize.</param>
+        /// <param name="fileExtensionsDir">The directory containing file extension information.</param>
+        public static async Task SaveToJsonAsync(FileExtension fileExtension, string fileExtensionsDir, CancellationToken cancellationToken = default)
+        {
+            string filePath = $@"{fileExtensionsDir}\{fileExtension.Node}.json";
+            await SerializationController.SerializeToFileAsync(fileExtension, filePath, cancellationToken);
         }
 
         /// <summary>
         /// Loads the file extension information.
         /// </summary>
-        /// <param name="fileExtension">The file extension name of the "<![CDATA[<file extension>]]>.json" file.</param>
+        /// <param name="node">The file extension name of the "<![CDATA[<file extension>]]>.json" file.</param>
         /// <param name="fileExtensionsDir">The directory containing file extension information.</param>
         /// <returns>Desearialized file extension information.</returns>
-        public static FileExtension LoadFromJson(string fileExtension, string fileExtensionsDir)
+        public static FileExtension LoadFromJson(string node, string fileExtensionsDir)
         {
-            string filePath = $@"{fileExtensionsDir}\{fileExtension}.json";
-            if (!File.Exists(filePath))
-                return fileExtension == "" ? new FileExtension
-                {
-                    Node = null,
-                    Name = "",
-                    Icon = null,
-                    IconIndex = 0,
-                    Associations = new string[] { },
-                    DefaultAssociation = null
-                } : null;
-            string jsonData = File.ReadAllText(filePath);
-            return Deserialize(jsonData, fileExtension);
+            string filePath = $@"{fileExtensionsDir}\{node}.json";
+            FileExtension fileExtension = SerializationController.DeserializeFile<FileExtension>(filePath);
+            fileExtension.Node = node;
+            return fileExtension;
+        }
+
+        /// <summary>
+        /// Loads the file extension information asynchronously.
+        /// </summary>
+        /// <param name="node">The file extension name of the "<![CDATA[<file extension>]]>.json" file.</param>
+        /// <param name="fileExtensionsDir">The directory containing file extension information.</param>
+        /// <returns>Desearialized file extension information.</returns>
+        public static async Task<FileExtension> LoadFromJsonAsync(string node, string fileExtensionsDir, CancellationToken cancellationToken = default)
+        {
+            string filePath = $@"{fileExtensionsDir}\{node}.json";
+            FileExtension fileExtension = await SerializationController.DeserializeFileAsync<FileExtension>(filePath, cancellationToken);
+            fileExtension.Node = node;
+            return fileExtension;
         }
 
         /// <summary>
@@ -67,38 +97,33 @@ namespace FileExtensionHandler.Core.Controller
         /// <returns>A list of desearialized file extension information entries.</returns>
         public static List<FileExtension> GetFileExtensions(string fileExtensionsDir)
         {
-            List<FileExtension> loadedFileExtensionsList = new List<FileExtension>();
-            DirectoryInfo directoryInfo = new DirectoryInfo(fileExtensionsDir);
+            List<FileExtension> fileExtensions = new();
+            DirectoryInfo directoryInfo = new(fileExtensionsDir);
             foreach (FileInfo file in directoryInfo.GetFiles("*.json"))
             {
-                string fileExtension = Path.GetFileNameWithoutExtension(file.Name);
-                FileExtension fileExtensionData = LoadFromJson(fileExtension, fileExtensionsDir);
-                loadedFileExtensionsList.Add(fileExtensionData);
+                string fileExtensionNode = Path.GetFileNameWithoutExtension(file.Name);
+                FileExtension fileExtensionData = LoadFromJson(fileExtensionNode, fileExtensionsDir);
+                fileExtensions.Add(fileExtensionData);
             }
-            return loadedFileExtensionsList;
+            return fileExtensions;
         }
 
         /// <summary>
-        /// Serializes the file extension information into a readable JSON format.
+        /// Loads a list containing file extension information asynchronously.
         /// </summary>
-        /// <param name="fileExtensionClass">The file extension class to serialize.</param>
-        /// <returns>A JSON serialized class.</returns>
-        public static string Serialize(FileExtension fileExtensionClass)
+        /// <param name="fileExtensionsDir">The directory containing file extension information.</param>
+        /// <returns>A list of desearialized file extension information entries.</returns>
+        public static async Task<List<FileExtension>> GetFileExtensionsAsync(string fileExtensionsDir, CancellationToken cancellationToken = default)
         {
-            return JsonConvert.SerializeObject(fileExtensionClass, Formatting.Indented);
-        }
-
-        /// <summary>
-        /// Deserializes the JSON format into the file extension class.
-        /// </summary>
-        /// <param name="fileExtensionJson">A JSON serialized class.</param>
-        /// <param name="node">The file extension name of the "<![CDATA[<file extension>]]>.json" file.</param>
-        /// <returns>A deserialized file extension class.</returns>
-        public static FileExtension Deserialize(string fileExtensionJson, string node = null)
-        {
-            FileExtension data = JsonConvert.DeserializeObject<FileExtension>(fileExtensionJson);
-            data.Node = node;
-            return data;
+            List<FileExtension> fileExtensions = new();
+            DirectoryInfo directoryInfo = new(fileExtensionsDir);
+            foreach (FileInfo file in directoryInfo.GetFiles("*.json"))
+            {
+                string fileExtensionNode = Path.GetFileNameWithoutExtension(file.Name);
+                FileExtension associationData = await LoadFromJsonAsync(fileExtensionNode, fileExtensionsDir, cancellationToken);
+                fileExtensions.Add(associationData);
+            }
+            return fileExtensions;
         }
     }
 }

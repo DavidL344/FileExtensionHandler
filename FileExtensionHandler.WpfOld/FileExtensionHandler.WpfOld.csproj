@@ -201,7 +201,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FileExtensionHandler.Core\FileExtensionHandler.Core.csproj">
+    <ProjectReference Include="..\FileExtensionHandler.CoreOld\FileExtensionHandler.CoreOld.csproj">
       <Project>{ac4e5d79-9445-444d-8547-da8c4e255db7}</Project>
       <Name>FileExtensionHandler.Core</Name>
     </ProjectReference>

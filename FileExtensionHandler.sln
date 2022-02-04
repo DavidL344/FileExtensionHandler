@@ -1,13 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31424.327
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileExtensionHandler.Wpf", "FileExtensionHandler.Wpf\FileExtensionHandler.Wpf.csproj", "{B9190FD5-BEDE-49B7-A78D-8518675345A1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileExtensionHandler.WpfOld", "FileExtensionHandler.WpfOld\FileExtensionHandler.WpfOld.csproj", "{B9190FD5-BEDE-49B7-A78D-8518675345A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileExtensionHandler.Core", "FileExtensionHandler.Core\FileExtensionHandler.Core.csproj", "{AC4E5D79-9445-444D-8547-DA8C4E255DB7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileExtensionHandler.CoreOld", "FileExtensionHandler.CoreOld\FileExtensionHandler.CoreOld.csproj", "{AC4E5D79-9445-444D-8547-DA8C4E255DB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileExtensionHandler.Core.Tests", "FileExtensionHandler.Core.Tests\FileExtensionHandler.Core.Tests.csproj", "{A13A26BF-B4E4-4024-A903-DF75F8D028FB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileExtensionHandler.CoreOld.Tests", "FileExtensionHandler.CoreOld.Tests\FileExtensionHandler.CoreOld.Tests.csproj", "{A13A26BF-B4E4-4024-A903-DF75F8D028FB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileExtensionHandler.Core", "FileExtensionHandler.Core\FileExtensionHandler.Core.csproj", "{0AC66E60-8560-4FA4-BE20-881210A1BCB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileExtensionHandler.Core.Tests", "FileExtensionHandler.Core.Tests\FileExtensionHandler.Core.Tests.csproj", "{82F78C3A-AFAA-43B5-B78B-E5BB2DCE2A35}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +31,14 @@ Global
 		{A13A26BF-B4E4-4024-A903-DF75F8D028FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A13A26BF-B4E4-4024-A903-DF75F8D028FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A13A26BF-B4E4-4024-A903-DF75F8D028FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AC66E60-8560-4FA4-BE20-881210A1BCB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AC66E60-8560-4FA4-BE20-881210A1BCB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AC66E60-8560-4FA4-BE20-881210A1BCB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AC66E60-8560-4FA4-BE20-881210A1BCB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82F78C3A-AFAA-43B5-B78B-E5BB2DCE2A35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82F78C3A-AFAA-43B5-B78B-E5BB2DCE2A35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82F78C3A-AFAA-43B5-B78B-E5BB2DCE2A35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82F78C3A-AFAA-43B5-B78B-E5BB2DCE2A35}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

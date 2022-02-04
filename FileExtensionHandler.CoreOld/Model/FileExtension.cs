@@ -1,27 +1,32 @@
 ﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace FileExtensionHandler.Core.Model
 {
-    public struct FileExtension
+    public class FileExtension
     {
         /// <summary>
         /// The file extension's file name.
         /// </summary>
         /// <remarks>Used for targetting the file extension by its file name.</remarks>
         [JsonIgnore]
-        public string? Node { get; internal set; }
+        public string Node { get; internal set; }
 
         /// <summary>
         /// A short file type description.
         /// </summary>
         [JsonProperty("name")]
-        public string Name { get; set; } = String.Empty;
+        public string Name { get; set; }
 
         /// <summary>
         /// The icon used for the file extension in the handler.
         /// </summary>
         [JsonProperty("icon")]
-        public string Icon { get; set; } = String.Empty;
+        public string Icon { get; set; }
 
         /// <summary>
         /// The index of the specified icon for the handler.
@@ -34,14 +39,14 @@ namespace FileExtensionHandler.Core.Model
         /// </summary>
         /// <remarks>The elements can be modified by converting them to <![CDATA[ List<string> ]]> first.</remarks>
         [JsonProperty("associations")]
-        public string[] Associations { get; set; } = Array.Empty<string>();
+        public string[] Associations { get; set; }
 
         /// <summary>
         /// A default association for the file extension.
         /// </summary>
         /// <remarks>Can be overriden by forced selection.</remarks>
         [JsonProperty("defaultAssociation")]
-        public string? DefaultAssociation { get; set; }
+        public string DefaultAssociation { get; set; }
 
         [JsonProperty("defaultCheckboxHide")]
         public bool DefaultCheckboxHide { get; set; }

@@ -1,0 +1,12 @@
+﻿<Project>
+    <PropertyGroup>
+		<Title>FileExtensionHandler.Core.Tests</Title>
+		<Description></Description>
+		<Company>DavidL344</Company>
+		<Product>FileExtensionHandler.Core.Tests</Product>
+		<Copyright>Copyright © 2021-2022 DavidL344</Copyright>
+		<AssemblyVersion>0.6.0</AssemblyVersion>
+		<FileVersion>0.6.0.0</FileVersion>
+		<Version>0.6.0</Version>
+    </PropertyGroup>
+</Project>
