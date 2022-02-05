@@ -85,7 +85,7 @@ namespace FileExtensionHandler.Core.Controller
         public static async Task<T> DeserializeFileAsync<T>(string filePath, CancellationToken cancellationToken = default) where T : struct
         {
             string jsonData = await File.ReadAllTextAsync(filePath, cancellationToken);
-            return await Task.Run(async () => await DeserializeAsync<T>(filePath), cancellationToken);
+            return await Task.Run(async () => await DeserializeAsync<T>(jsonData), cancellationToken);
         }
 
         /// <summary>
