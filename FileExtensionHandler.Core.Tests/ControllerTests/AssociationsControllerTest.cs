@@ -5,6 +5,7 @@ using FileExtensionHandler.Core.Tests.Assembly.Samples;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ObjectsComparer;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FileExtensionHandler.Core.Tests.ControllerTests
 {
@@ -46,9 +47,9 @@ namespace FileExtensionHandler.Core.Tests.ControllerTests
         }
 
         [TestMethod]
-        public void GetAssociationsAsync()
+        public async Task GetAssociationsAsync()
         {
-            List<Association> associationsFromDisk = Helpers.SortList(AssociationsController.GetAssociationsAsync(Vars.Options.AssociationsDirectory).Result);
+            List<Association> associationsFromDisk = Helpers.SortList(await AssociationsController.GetAssociationsAsync(Vars.Options.AssociationsDirectory));
             bool isEqual = _comparerList.Compare(_associations, associationsFromDisk, out IEnumerable<Difference> differences);
             Assert.IsTrue(isEqual, $"There were the following differences in the structs:\r\n{Helpers.StringifyIEnumerable(differences)}");
         }
@@ -57,7 +58,20 @@ namespace FileExtensionHandler.Core.Tests.ControllerTests
         public void GetAssociationsForFileExtension()
         {
             List<Association> associations = AssociationsController.GetAssociations(Shared.SampleMp3FileExtension, Vars.Options.AssociationsDirectory);
-            
+
+            for (int i = 0; i < associations.Count; i++)
+            {
+                Association association = associations[i];
+                Assert.IsNotNull(association);
+                Assert.AreEqual(Shared.AudioAssociations[i], association.Node, $"'{Shared.AudioAssociations[i]}' doesn't match '{association.Node}'!");
+            }
+        }
+
+        [TestMethod]
+        public async Task GetAssociationsForFileExtensionAsync()
+        {
+            List<Association> associations = await AssociationsController.GetAssociationsAsync(Shared.SampleMp3FileExtension, Vars.Options.AssociationsDirectory);
+
             for (int i = 0; i < associations.Count; i++)
             {
                 Association association = associations[i];
@@ -73,6 +87,16 @@ namespace FileExtensionHandler.Core.Tests.ControllerTests
             string fileExtension = ".mp3";
             string associationNode = FileExtensions.Collection[fileExtension].Associations[0];
             Association association = AssociationsController.LoadFromJson(associationNode, Vars.Options.AssociationsDirectory);
+            bool isEqual = _comparerAssociation.Compare(Associations.Collection[associationNode], association, out IEnumerable<Difference> differences);
+            Assert.IsTrue(isEqual, $"There were the following differences in the structs:\r\n{Helpers.StringifyIEnumerable(differences)}");
+        }
+
+        [TestMethod]
+        public async Task LoadFromJsonAsync()
+        {
+            string fileExtension = ".mp3";
+            string associationNode = FileExtensions.Collection[fileExtension].Associations[0];
+            Association association = await AssociationsController.LoadFromJsonAsync(associationNode, Vars.Options.AssociationsDirectory);
             bool isEqual = _comparerAssociation.Compare(Associations.Collection[associationNode], association, out IEnumerable<Difference> differences);
             Assert.IsTrue(isEqual, $"There were the following differences in the structs:\r\n{Helpers.StringifyIEnumerable(differences)}");
         }
