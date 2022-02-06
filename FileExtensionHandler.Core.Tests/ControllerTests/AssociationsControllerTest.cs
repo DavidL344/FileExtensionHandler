@@ -16,6 +16,7 @@ namespace FileExtensionHandler.Core.Tests.ControllerTests
         private readonly ObjectsComparer.Comparer<Association> _comparerAssociation = new();
         private readonly ObjectsComparer.Comparer<List<Association>> _comparerList = new();
         private readonly List<FileExtension> _fileExtensions = Helpers.SortList(FileExtensions.List);
+        private IEnumerable<Difference>? _differences;
 
         [TestMethod]
         public void Create()
@@ -42,16 +43,16 @@ namespace FileExtensionHandler.Core.Tests.ControllerTests
         public void GetAssociations()
         {
             List<Association> associationsFromDisk = Helpers.SortList(AssociationsController.GetAssociations(Vars.Options.AssociationsDirectory));
-            bool isEqual = _comparerList.Compare(_associations, associationsFromDisk, out IEnumerable<Difference> differences);
-            Assert.IsTrue(isEqual, $"There were the following differences in the structs:\r\n{Helpers.StringifyIEnumerable(differences)}");
+            bool isEqual = _comparerList.Compare(_associations, associationsFromDisk, out _differences);
+            Assert.IsTrue(isEqual, $"There were the following differences in the structs:\r\n{Helpers.StringifyIEnumerable(_differences)}");
         }
 
         [TestMethod]
         public async Task GetAssociationsAsync()
         {
             List<Association> associationsFromDisk = Helpers.SortList(await AssociationsController.GetAssociationsAsync(Vars.Options.AssociationsDirectory));
-            bool isEqual = _comparerList.Compare(_associations, associationsFromDisk, out IEnumerable<Difference> differences);
-            Assert.IsTrue(isEqual, $"There were the following differences in the structs:\r\n{Helpers.StringifyIEnumerable(differences)}");
+            bool isEqual = _comparerList.Compare(_associations, associationsFromDisk, out _differences);
+            Assert.IsTrue(isEqual, $"There were the following differences in the structs:\r\n{Helpers.StringifyIEnumerable(_differences)}");
         }
 
         [TestMethod]
@@ -87,8 +88,8 @@ namespace FileExtensionHandler.Core.Tests.ControllerTests
             string fileExtension = ".mp3";
             string associationNode = FileExtensions.Collection[fileExtension].Associations[0];
             Association association = AssociationsController.LoadFromJson(associationNode, Vars.Options.AssociationsDirectory);
-            bool isEqual = _comparerAssociation.Compare(Associations.Collection[associationNode], association, out IEnumerable<Difference> differences);
-            Assert.IsTrue(isEqual, $"There were the following differences in the structs:\r\n{Helpers.StringifyIEnumerable(differences)}");
+            bool isEqual = _comparerAssociation.Compare(Associations.Collection[associationNode], association, out _differences);
+            Assert.IsTrue(isEqual, $"There were the following differences in the structs:\r\n{Helpers.StringifyIEnumerable(_differences)}");
         }
 
         [TestMethod]
@@ -97,8 +98,8 @@ namespace FileExtensionHandler.Core.Tests.ControllerTests
             string fileExtension = ".mp3";
             string associationNode = FileExtensions.Collection[fileExtension].Associations[0];
             Association association = await AssociationsController.LoadFromJsonAsync(associationNode, Vars.Options.AssociationsDirectory);
-            bool isEqual = _comparerAssociation.Compare(Associations.Collection[associationNode], association, out IEnumerable<Difference> differences);
-            Assert.IsTrue(isEqual, $"There were the following differences in the structs:\r\n{Helpers.StringifyIEnumerable(differences)}");
+            bool isEqual = _comparerAssociation.Compare(Associations.Collection[associationNode], association, out _differences);
+            Assert.IsTrue(isEqual, $"There were the following differences in the structs:\r\n{Helpers.StringifyIEnumerable(_differences)}");
         }
     }
 }
