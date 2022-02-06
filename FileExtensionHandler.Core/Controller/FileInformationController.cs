@@ -9,8 +9,8 @@ namespace FileExtensionHandler.Core.Controller
         public string AppProtocol { get; set; } = "fexth";
         public string[] CommunicationProtocols { get; set; } = { "http", "https", "ftp", "ftps", "smb" };
         public bool RemoveTrailingCharacter { get; set; } = true;
-        public bool UseUrlDecode { get; set; } = true;
         public bool ThrowOnInvalidCharacters { get; set; } = true;
+        public bool UseUrlDecode { get; set; } = true;
 
         private readonly string[] _protocols;
         private List<Association> _associations;
