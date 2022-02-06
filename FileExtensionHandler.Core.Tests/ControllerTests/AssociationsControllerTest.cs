@@ -32,9 +32,9 @@ namespace FileExtensionHandler.Core.Tests.ControllerTests
         }
 
         [TestMethod]
-        public void CopyToAsync()
+        public async Task CopyToAsync()
         {
-            Association clonedAssociation = AssociationsController.CopyToAsync(Shared.SampleMp3Association.Node ?? "null", Shared.SampleAssociation).Result;
+            Association clonedAssociation = await AssociationsController.CopyToAsync(Shared.SampleMp3Association.Node ?? "null", Shared.SampleAssociation);
             Assert.AreEqual(Shared.SampleMp3Association.Node, clonedAssociation.Node);
         }
 
