@@ -19,7 +19,6 @@ namespace FileExtensionHandler.Core.Tests.Assembly
                 foreach (KeyValuePair<string, FileExtension> fileExtension in FileExtensions.Collection)
                     list.Add(fileExtension.Key);
                 list.Add(".unknownFileExtension");
-                list.Add(""); // A file with no file extension
                 return list;
             }
         }
@@ -37,12 +36,15 @@ namespace FileExtensionHandler.Core.Tests.Assembly
             foreach (string directory in Directories)
                 Assert.IsTrue(Directory.Exists(directory));
 
+            Assert.IsTrue(Directory.GetFiles(Vars.Options.AssociationsDirectory, "*.json", SearchOption.TopDirectoryOnly).Length == Associations.List.Count, "The association count doesn't match!");
+            Assert.IsTrue(Directory.GetFiles(Vars.Options.FileExtensionsDirectory, "*.json", SearchOption.TopDirectoryOnly).Length == FileExtensions.List.Count, "The file extension count doesn't match!");
+            Assert.IsTrue(Directory.GetFiles(Vars.Dir_Test_Files, "*", SearchOption.TopDirectoryOnly).Length == FileExtensionNameList.Count, "The sample file count doesn't match!" + $"{Directory.GetFiles(Vars.Dir_Test_Files, "*", SearchOption.TopDirectoryOnly).Length} {FileExtensionNameList.Count}");
+
             foreach (Association association in Associations.List)
             {
                 string joinedPath = Path.Join(Vars.Options.AssociationsDirectory, $"{association.Node}.json");
                 Assert.IsTrue(File.Exists(joinedPath), $"Association '{association.Node}' doesn't exist!\r\nPath: {joinedPath}");
             }
-                
             
             foreach (FileExtension fileExtension in FileExtensions.List)
             {

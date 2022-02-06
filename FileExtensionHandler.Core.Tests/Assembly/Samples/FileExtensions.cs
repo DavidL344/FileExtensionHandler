@@ -57,10 +57,6 @@ namespace FileExtensionHandler.Core.Tests.Assembly.Samples
             new FileExtension()
             {
                 Node = ""
-            },
-            new FileExtension()
-            {
-                Node = null
             }
         };
 
