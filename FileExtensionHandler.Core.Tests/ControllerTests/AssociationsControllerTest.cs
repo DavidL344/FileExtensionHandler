@@ -85,8 +85,7 @@ namespace FileExtensionHandler.Core.Tests.ControllerTests
         public void LoadFromJson()
         {
             //string jsonPath = Path.Join(Vars.Options.AssociationsDirectory, $"{node}.json"); <-- for SerializationControllerTest.cs:LoadFromJson()
-            string fileExtension = Shared.SampleMp3Association.Node ?? "null";
-            string associationNode = FileExtensions.Collection[fileExtension].Associations[0];
+            string associationNode = Shared.SampleMp3Association.Node ?? "null";
             Association association = AssociationsController.LoadFromJson(associationNode, Vars.Options.AssociationsDirectory);
             bool isEqual = _comparerAssociation.Compare(Associations.Collection[associationNode], association, out _differences);
             Assert.IsTrue(isEqual, $"There were the following differences in the structs:\r\n{Helpers.StringifyIEnumerable(_differences)}");
@@ -95,8 +94,7 @@ namespace FileExtensionHandler.Core.Tests.ControllerTests
         [TestMethod]
         public async Task LoadFromJsonAsync()
         {
-            string fileExtension = Shared.SampleMp3Association.Node ?? "null";
-            string associationNode = FileExtensions.Collection[fileExtension].Associations[0];
+            string associationNode = Shared.SampleMp3Association.Node ?? "null";
             Association association = await AssociationsController.LoadFromJsonAsync(associationNode, Vars.Options.AssociationsDirectory);
             bool isEqual = _comparerAssociation.Compare(Associations.Collection[associationNode], association, out _differences);
             Assert.IsTrue(isEqual, $"There were the following differences in the structs:\r\n{Helpers.StringifyIEnumerable(_differences)}");

@@ -17,9 +17,9 @@ namespace FileExtensionHandler.Core.Tests.Assembly.Samples
             "fexth.msedge.open-private"
         };
 
-        internal static readonly Association SampleAssociation = new() { Node = ".sample" };
-        internal static readonly Association SampleMp3Association = new() { Node = ".mp3" };
-        internal static readonly FileExtension SampleFileExtension = new() { Node = "fexth.sample.open" };
+        internal static readonly Association SampleAssociation = new() { Node = "fexth.sample.open" };
+        internal static readonly Association SampleMp3Association = new() { Node = Shared.AudioAssociations[0] };
+        internal static readonly FileExtension SampleFileExtension = new() { Node = ".sample" };
         internal static readonly FileExtension SampleMp3FileExtension = FileExtensions.Collection[".mp3"];
     }
 }
