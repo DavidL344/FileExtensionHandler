@@ -44,7 +44,7 @@ namespace FileExtensionHandler.Core.Tests.ControllerTests
         {
             List<Association> associationsFromDisk = Helpers.SortList(AssociationsController.GetAssociations(Vars.Options.AssociationsDirectory));
             bool isEqual = _comparerList.Compare(_associations, associationsFromDisk, out _differences);
-            Assert.IsTrue(isEqual, $"There were the following differences in the structs:\r\n{Helpers.StringifyIEnumerable(_differences)}");
+            Assert.IsTrue(isEqual, Helpers.ParseCompareDiff(_differences));
         }
 
         [TestMethod]
@@ -52,7 +52,7 @@ namespace FileExtensionHandler.Core.Tests.ControllerTests
         {
             List<Association> associationsFromDisk = Helpers.SortList(await AssociationsController.GetAssociationsAsync(Vars.Options.AssociationsDirectory));
             bool isEqual = _comparerList.Compare(_associations, associationsFromDisk, out _differences);
-            Assert.IsTrue(isEqual, $"There were the following differences in the structs:\r\n{Helpers.StringifyIEnumerable(_differences)}");
+            Assert.IsTrue(isEqual, Helpers.ParseCompareDiff(_differences));
         }
 
         [TestMethod]
@@ -84,11 +84,10 @@ namespace FileExtensionHandler.Core.Tests.ControllerTests
         [TestMethod]
         public void LoadFromJson()
         {
-            //string jsonPath = Path.Join(Vars.Options.AssociationsDirectory, $"{node}.json"); <-- for SerializationControllerTest.cs:LoadFromJson()
             string associationNode = Shared.SampleMp3Association.Node ?? "null";
             Association association = AssociationsController.LoadFromJson(associationNode, Vars.Options.AssociationsDirectory);
             bool isEqual = _comparerAssociation.Compare(Associations.Collection[associationNode], association, out _differences);
-            Assert.IsTrue(isEqual, $"There were the following differences in the structs:\r\n{Helpers.StringifyIEnumerable(_differences)}");
+            Assert.IsTrue(isEqual, Helpers.ParseCompareDiff(_differences));
         }
 
         [TestMethod]
@@ -97,7 +96,7 @@ namespace FileExtensionHandler.Core.Tests.ControllerTests
             string associationNode = Shared.SampleMp3Association.Node ?? "null";
             Association association = await AssociationsController.LoadFromJsonAsync(associationNode, Vars.Options.AssociationsDirectory);
             bool isEqual = _comparerAssociation.Compare(Associations.Collection[associationNode], association, out _differences);
-            Assert.IsTrue(isEqual, $"There were the following differences in the structs:\r\n{Helpers.StringifyIEnumerable(_differences)}");
+            Assert.IsTrue(isEqual, Helpers.ParseCompareDiff(_differences));
         }
     }
 }
