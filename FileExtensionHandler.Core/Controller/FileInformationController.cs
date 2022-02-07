@@ -36,17 +36,32 @@ namespace FileExtensionHandler.Core.Controller
             _associations = new List<Association>();
         }
 
-        public FileInformation Parse(string[] args)
+        public FileInformation Parse(params string[] args)
         {
             string pathParsed = String.Join(" ", args);
             List<string> protocolsUsed = new();
 
             foreach (string protocol in _protocols)
             {
+                // When a protocol doesn't get removed from the parsed string,
+                // its substring version would be recognized as a unique protocol again
+                // Example: protocol "https://" would be recognized as both "https://" and "https:"
+                bool protocolAlreadyAdded = false;
+                foreach (string protocolUsed in protocolsUsed)
+                {
+                    if (protocol.Contains(protocolUsed))
+                    {
+                        protocolAlreadyAdded = true;
+                        break;
+                    }
+                }
+                if (protocolAlreadyAdded) continue;
+
                 // Take note of the protocols used
                 int protocolIndex = pathParsed.IndexOf(protocol);
                 if (protocolIndex < 0) continue;
-                protocolsUsed.Add(protocol);
+                string protocolName = protocol.Replace(":///", String.Empty).Replace("://", String.Empty).Replace(":", String.Empty);
+                protocolsUsed.Add(protocolName);
 
                 // Remove all protocols except the ones used for client-server communication
                 string[] protocolEndings = new string[] { ":///", "://", ":" };
