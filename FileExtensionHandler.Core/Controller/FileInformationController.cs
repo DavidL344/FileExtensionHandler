@@ -119,7 +119,24 @@ namespace FileExtensionHandler.Core.Controller
                 throw new ArgumentException("The file name contains invalid characters!");
         }
 
-        public void OpenFile(string filePath, FileInformation fileInformation, int id = -1)
+        //public void OpenFile(string filePath, FileInformation fileInformation, int id = -1)
+        //{
+        //    if (id == -1)
+        //    {
+        //        int defaultAssociationIndex = fileInformation.DefaultAssociationIndex;
+        //        if (defaultAssociationIndex == -1)
+        //        {
+        //            string location = fileInformation.Streamed ? fileInformation.Location : fileInformation.LocationNoParameters;
+        //            Process.Start(location);
+        //            return;
+        //        }
+        //        id = defaultAssociationIndex;
+        //    }
+        //    if (id >= _associations.Count || id < 0) throw new ArgumentOutOfRangeException();
+        //    OpenFile(filePath, _associations[id]);
+        //}
+
+        public void OpenFile(FileInformation fileInformation, int id = -1)
         {
             if (id == -1)
             {
@@ -133,7 +150,7 @@ namespace FileExtensionHandler.Core.Controller
                 id = defaultAssociationIndex;
             }
             if (id >= _associations.Count || id < 0) throw new ArgumentOutOfRangeException();
-            OpenFile(filePath, _associations[id]);
+            OpenFile(fileInformation.Location, _associations[id]);
         }
 
         public static void OpenFile(string filePath, Association association)
