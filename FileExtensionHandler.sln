@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileExtensionHandler.Core",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileExtensionHandler.Core.Tests", "FileExtensionHandler.Core.Tests\FileExtensionHandler.Core.Tests.csproj", "{82F78C3A-AFAA-43B5-B78B-E5BB2DCE2A35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileExtensionHandler.Wpf", "FileExtensionHandler.Wpf\FileExtensionHandler.Wpf.csproj", "{FA270BA5-E200-4B91-85B9-DA4BB2E5D847}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileExtensionHandler.Wpf", "FileExtensionHandler.Wpf\FileExtensionHandler.Wpf.csproj", "{FA270BA5-E200-4B91-85B9-DA4BB2E5D847}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
